@@ -176,6 +176,7 @@ acpi "INT33CA" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_RT5640 : sound/soc/cod
 acpi "INT33FC" : CONFIG_ACPI : drivers/acpi/acpi_lpss.c
 acpi "INT33FC" : CONFIG_PINCTRL_BAYTRAIL : drivers/pinctrl/pinctrl-baytrail.c
 acpi "INT3403" : CONFIG_ACPI_INT3403_THERMAL CONFIG_THERMAL : drivers/thermal/int3403_thermal.c
+acpi "INT3404" : CONFIG_ACPI : drivers/acpi/device_pm.c
 acpi "INT3430" : CONFIG_ACPI : drivers/acpi/acpi_lpss.c
 acpi "INT3430" : CONFIG_SPI CONFIG_SPI_PXA2XX : drivers/spi/spi-pxa2xx.c
 acpi "INT3431" : CONFIG_ACPI : drivers/acpi/acpi_lpss.c
@@ -308,6 +309,7 @@ acpi "PNP0B02" : CONFIG_ACPI : drivers/acpi/acpi_pnp.c
 acpi "PNP0B02" : CONFIG_ACPI CONFIG_X86 : drivers/acpi/acpi_cmos_rtc.c
 acpi "PNP0C09" : CONFIG_ACPI : drivers/acpi/ec.c
 acpi "PNP0C0A" : CONFIG_ACPI CONFIG_ACPI_BATTERY : drivers/acpi/battery.c
+acpi "PNP0C0B" : CONFIG_ACPI : drivers/acpi/device_pm.c
 acpi "PNP0C0B" : CONFIG_ACPI CONFIG_ACPI_FAN : drivers/acpi/fan.c
 acpi "PNP0C0C" : CONFIG_ACPI : drivers/acpi/scan.c
 acpi "PNP0C0C" : CONFIG_ACPI CONFIG_ACPI_BUTTON : drivers/acpi/button.c
@@ -1006,6 +1008,10 @@ hid 0003 0000054c 0000042f : CONFIG_HID : drivers/hid/hid-core.c
 hid 0003 0000054c 0000042f : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
 hid 0003 0000054c 000005c4 : CONFIG_HID : drivers/hid/hid-core.c
 hid 0003 0000054c 000005c4 : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
+hid 0003 0000054c 000009cc : CONFIG_HID : drivers/hid/hid-core.c
+hid 0003 0000054c 000009cc : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
+hid 0003 0000054c 00000ba0 : CONFIG_HID : drivers/hid/hid-core.c
+hid 0003 0000054c 00000ba0 : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
 hid 0003 0000054c 00001000 : CONFIG_HID : drivers/hid/hid-core.c
 hid 0003 0000054c 00001000 : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
 hid 0003 00000566 00003004 : CONFIG_HID : drivers/hid/hid-core.c
@@ -1575,6 +1581,8 @@ hid 0005 0000054c 00000306 : CONFIG_HID : drivers/hid/hid-core.c
 hid 0005 0000054c 00000306 : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
 hid 0005 0000054c 000005c4 : CONFIG_HID : drivers/hid/hid-core.c
 hid 0005 0000054c 000005c4 : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
+hid 0005 0000054c 000009cc : CONFIG_HID : drivers/hid/hid-core.c
+hid 0005 0000054c 000009cc : CONFIG_HID CONFIG_HID_SONY : drivers/hid/hid-sony.c
 hid 0005 0000056a 00000081 : CONFIG_HID : drivers/hid/hid-core.c
 hid 0005 0000056a 00000081 : CONFIG_HID CONFIG_HID_WACOM : drivers/hid/hid-wacom.c
 hid 0005 0000056a 000000bd : CONFIG_HID : drivers/hid/hid-core.c
@@ -2925,7 +2933,7 @@ ieee1394 001287 000036 00a02d 010001 : CONFIG_DVB_FIREDTV : drivers/media/firewi
 ieee1394 001292 00f970 00a02d 010001 : CONFIG_SND CONFIG_SND_FIREWIRE_SPEAKERS : sound/firewire/speakers.c
 ieee1394 00130e 000000 ...... ...... : CONFIG_SND CONFIG_SND_BEBOB : sound/firewire/bebob/bebob.c
 ieee1394 00130e 000003 ...... ...... : CONFIG_SND CONFIG_SND_BEBOB : sound/firewire/bebob/bebob.c
-ieee1394 00130e 000006 ...... ...... : CONFIG_SND CONFIG_SND_BEBOB : sound/firewire/bebob/bebob.c
+ieee1394 00130e 000006 00a02d 010001 : CONFIG_SND CONFIG_SND_BEBOB : sound/firewire/bebob/bebob.c
 ieee1394 001486 0000f8 ...... ...... : CONFIG_SND CONFIG_SND_FIREWORKS : sound/firewire/fireworks/fireworks.c
 ieee1394 001486 000af2 ...... ...... : CONFIG_SND CONFIG_SND_FIREWORKS : sound/firewire/fireworks/fireworks.c
 ieee1394 001486 000af4 ...... ...... : CONFIG_SND CONFIG_SND_FIREWORKS : sound/firewire/fireworks/fireworks.c
@@ -2971,7 +2979,7 @@ input .... .... .... .... 0000000a 00010000 .... 0000000000000003 .. .... .. ...
 input .... .... .... .... 00000020 ........ .... ................ .. .... .. ................ 0008 : CONFIG_RFKILL CONFIG_RFKILL_INPUT : net/rfkill/input.c
 input .... .... .... .... 00040000 ........ .... ................ .. .... .. ................ .... : CONFIG_VT : drivers/tty/vt/keyboard.c
 input .... .... .... .... 00400000 ........ .... ................ .. .... .. ................ .... : CONFIG_INPUT CONFIG_INPUT_APMPOWER : drivers/input/apm-power.c
-kver 3 16 65 0 0 3.16.65 "Museum of Fishiegoodies"
+kver 3 16 85 0 0 3.16.85 "Museum of Fishiegoodies"
 module 21285 "DC21285 serial port support" : CONFIG_SERIAL_21285 : drivers/tty/serial/Kconfig
 module 3c509 "3c509/3c579 'EtherLink III' support" : CONFIG_EL3 : drivers/net/ethernet/3com/Kconfig
 module 3c515 "3c515 ISA 'Fast EtherLink'" : CONFIG_3C515 : drivers/net/ethernet/3com/Kconfig
@@ -7131,7 +7139,6 @@ module rfkill-gpio "GPIO RFKILL driver" : CONFIG_RFKILL_GPIO : net/rfkill/Kconfi
 module rfkill-regulator "Generic rfkill regulator driver" : CONFIG_RFKILL_REGULATOR : net/rfkill/Kconfig
 module ring_buffer_benchmark "Ring buffer benchmark stress tester" : CONFIG_RING_BUFFER_BENCHMARK : kernel/trace/Kconfig
 module rio-scan "Basic" : CONFIG_RAPIDIO_ENUM_BASIC : drivers/rapidio/Kconfig
-module rio500 "USB Diamond Rio500 support" : CONFIG_USB_RIO500 : drivers/usb/misc/Kconfig
 module rionet "RapidIO Ethernet over messaging driver support" : CONFIG_RIONET : drivers/net/Kconfig
 module riowd "RIO Hardware Watchdog support" : CONFIG_WATCHDOG_RIO : drivers/watchdog/Kconfig
 module rivafb "nVidia Riva support" : CONFIG_FB_RIVA : drivers/video/fbdev/Kconfig
@@ -8601,6 +8608,7 @@ module test_bpf "Test BPF filter functionality" : CONFIG_TEST_BPF : lib/Kconfig.
 module test_module "Test module loading with 'hello world' module" : CONFIG_TEST_MODULE : lib/Kconfig.debug
 module test_nx "Testcase for the NX non-executable stack feature" : CONFIG_DEBUG_NX_TEST : arch/x86/Kconfig.debug
 module test_power "Test power driver" : CONFIG_TEST_POWER : drivers/power/Kconfig
+module test_siphash "Perform selftest on hash functions" : CONFIG_TEST_HASH : lib/Kconfig.debug
 module test_user_copy "Test user/kernel boundary protections" : CONFIG_TEST_USER_COPY : lib/Kconfig.debug
 module testmmiotrace "Test module for mmiotrace" : CONFIG_MMIOTRACE_TEST : kernel/trace/Kconfig
 module tg3 "Broadcom Tigon3 support" : CONFIG_TIGON3 : drivers/net/ethernet/broadcom/Kconfig
@@ -16280,6 +16288,7 @@ pci 8086 0166 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 016a .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 016a .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 016a 152d 8990 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
+pci 8086 02ee .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 0402 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 0402 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 0406 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
@@ -16316,6 +16325,7 @@ pci 8086 043c .... .... ...... : CONFIG_ETHERNET CONFIG_IGB CONFIG_NET_VENDOR_IN
 pci 8086 0440 .... .... ...... : CONFIG_ETHERNET CONFIG_IGB CONFIG_NET_VENDOR_INTEL : drivers/net/ethernet/intel/igb/igb_main.c
 pci 8086 0600 .... .... ...... : CONFIG_SCSI CONFIG_SCSI_GDTH : drivers/scsi/gdth.c
 pci 8086 0601 .... .... ...... : CONFIG_SCSI CONFIG_SCSI_GDTH : drivers/scsi/gdth.c
+pci 8086 06ee .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 0701 .... .... ...... : CONFIG_MTD CONFIG_MTD_NAND_DENALI_PCI : drivers/mtd/nand/denali_pci.c
 pci 8086 0800 .... .... ...... : CONFIG_SPI CONFIG_SPI_DW_PCI : drivers/spi/spi-dw-pci.c
 pci 8086 0802 .... .... ...... : CONFIG_I2C_DESIGNWARE_PCI : drivers/i2c/busses/i2c-designware-pcidrv.c
@@ -16396,6 +16406,7 @@ pci 8086 0a2b .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv
 pci 8086 0a2b .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 0a2e .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 0a2e .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
+pci 8086 0aaa .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 0c02 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 0c02 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 0c06 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
@@ -16686,6 +16697,7 @@ pci 8086 19cf .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.
 pci 8086 1a21 .... .... 060000 : CONFIG_AGP_INTEL : drivers/char/agp/intel-agp.c
 pci 8086 1a30 .... .... 060000 : CONFIG_AGP_INTEL : drivers/char/agp/intel-agp.c
 pci 8086 1a38 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
+pci 8086 1aaa .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 1c00 .... .... ...... : CONFIG_ATA CONFIG_ATA_PIIX : drivers/ata/ata_piix.c
 pci 8086 1c01 .... .... ...... : CONFIG_ATA CONFIG_ATA_PIIX : drivers/ata/ata_piix.c
 pci 8086 1c02 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
@@ -16833,6 +16845,7 @@ pci 8086 22b2 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv
 pci 8086 22b2 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 22b3 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 22b3 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
+pci 8086 22b7 .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 2310 .... .... ...... : CONFIG_LPC_ICH : drivers/mfd/lpc_ich.c
 pci 8086 2323 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 2326 .... .... ...... : CONFIG_ATA CONFIG_ATA_PIIX : drivers/ata/ata_piix.c
@@ -17180,6 +17193,7 @@ pci 8086 2f27 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : driver
 pci 8086 2f2e .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
 pci 8086 2f2f .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
 pci 8086 3124 .... .... ...... : CONFIG_ATA CONFIG_SATA_SIL24 : drivers/ata/sata_sil24.c
+pci 8086 31aa .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 3200 .... .... 010600 : CONFIG_ATA CONFIG_SATA_VITESSE : drivers/ata/sata_vsc.c
 pci 8086 3340 .... .... 060000 : CONFIG_AGP_INTEL : drivers/char/agp/intel-agp.c
 pci 8086 3429 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
@@ -17191,6 +17205,7 @@ pci 8086 3430 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : driver
 pci 8086 3431 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
 pci 8086 3432 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
 pci 8086 3433 .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
+pci 8086 34ee .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 3575 .... .... 060000 : CONFIG_AGP_INTEL : drivers/char/agp/intel-agp.c
 pci 8086 3577 .... .... ...... : CONFIG_FB_INTEL : drivers/video/fbdev/intelfb/intelfbdrv.c
 pci 8086 3577 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
@@ -17287,6 +17302,7 @@ pci 8086 3ca8 .... .... ...... : CONFIG_EDAC CONFIG_EDAC_SBRIDGE : drivers/edac/
 pci 8086 402f .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
 pci 8086 4030 .... .... ...... : CONFIG_EDAC CONFIG_EDAC_I5400 : drivers/edac/i5400_edac.c
 pci 8086 4030 .... .... ...... : CONFIG_HWMON CONFIG_SENSORS_I5K_AMB : drivers/hwmon/i5k_amb.c
+pci 8086 4b7e .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 5009 .... .... ...... : CONFIG_FB_LE80578 : drivers/video/fbdev/vermilion/vermilion.c
 pci 8086 500d .... .... ...... : CONFIG_MTD CONFIG_MTD_INTEL_VR_NOR : drivers/mtd/maps/intel_vr_nor.c
 pci 8086 5028 .... .... ...... : CONFIG_ATA CONFIG_ATA_PIIX : drivers/ata/ata_piix.c
@@ -17295,6 +17311,7 @@ pci 8086 502b .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.
 pci 8086 5031 .... .... ...... : CONFIG_LPC_ICH : drivers/mfd/lpc_ich.c
 pci 8086 5032 .... .... ...... : CONFIG_I2C_I801 : drivers/i2c/busses/i2c-i801.c
 pci 8086 530d .... .... 0580.. : CONFIG_MTD CONFIG_MTD_PCI : drivers/mtd/maps/pci.c
+pci 8086 5aaa .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 5ae3 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 65f0 .... .... ...... : CONFIG_EDAC CONFIG_EDAC_I5100 : drivers/edac/i5100_edac.c
 pci 8086 65ff .... .... ...... : CONFIG_DMADEVICES CONFIG_INTEL_IOATDMA : drivers/dma/ioat/pci.c
@@ -17506,20 +17523,24 @@ pci 8086 9d07 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.
 pci 8086 9d2b .... .... ...... : CONFIG_MMC_SDHCI_PCI : drivers/mmc/host/sdhci-pci.c
 pci 8086 9d2c .... .... ...... : CONFIG_MMC_SDHCI_PCI : drivers/mmc/host/sdhci-pci.c
 pci 8086 9d2d .... .... ...... : CONFIG_MMC_SDHCI_PCI : drivers/mmc/host/sdhci-pci.c
+pci 8086 9d30 .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 9d70 .... .... ...... : CONFIG_SND CONFIG_SND_HDA_INTEL : sound/pci/hda/hda_intel.c
 pci 8086 9dd3 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
+pci 8086 9dee .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 a000 .... .... 060000 : CONFIG_AGP_INTEL : drivers/char/agp/intel-agp.c
 pci 8086 a001 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 a001 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
 pci 8086 a010 .... .... 060000 : CONFIG_AGP_INTEL : drivers/char/agp/intel-agp.c
 pci 8086 a011 .... .... 03.... : CONFIG_DRM_I915 : drivers/gpu/drm/i915/i915_drv.c
 pci 8086 a011 .... .... 03.... : CONFIG_PCI : arch/x86/kernel/early-quirks.c
+pci 8086 a0ee .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 a102 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a103 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a105 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a106 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a107 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a10f .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
+pci 8086 a130 .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 a170 .... .... ...... : CONFIG_SND CONFIG_SND_HDA_INTEL : sound/pci/hda/hda_intel.c
 pci 8086 a182 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a186 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
@@ -17531,7 +17552,9 @@ pci 8086 a206 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.
 pci 8086 a252 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a256 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
 pci 8086 a270 .... .... ...... : CONFIG_SND CONFIG_SND_HDA_INTEL : sound/pci/hda/hda_intel.c
+pci 8086 a2b0 .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 a356 .... .... ...... : CONFIG_ATA CONFIG_SATA_AHCI : drivers/ata/ahci.c
+pci 8086 a36e .... .... ...... : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_DWC3 CONFIG_USB_DWC3_PCI CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/dwc3/dwc3-pci.c
 pci 8086 b555 1332 5460 ...... : CONFIG_BLK_DEV_UMEM : drivers/block/umem.c
 pci 8086 e006 .... .... ...... : CONFIG__UNKNOWN__ : drivers/usb/chipidea/ci_hdrc_pci.c
 pci 8e0e 0302 8e0e 0001 ...... : CONFIG_SERIAL_8250 CONFIG_SERIAL_8250_PCI : drivers/tty/serial/8250/8250_pci.c
@@ -21587,6 +21610,600 @@ serio 03 25 .. .. : CONFIG_INPUT CONFIG_INPUT_KEYBOARD CONFIG_KEYBOARD_HIL : dri
 serio 05 .. .. .. : CONFIG_INPUT CONFIG_INPUT_MOUSE CONFIG_MOUSE_PS2 : drivers/input/mouse/psmouse-base.c
 serio 06 .. .. .. : CONFIG_INPUT CONFIG_INPUT_KEYBOARD CONFIG_KEYBOARD_ATKBD : drivers/input/keyboard/atkbd.c
 serio 06 .. .. .. : CONFIG_INPUT CONFIG_SERIO CONFIG_SERIO_RAW : drivers/input/serio/serio_raw.c
+spi "160s33b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "160s33b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "320s33b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "320s33b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "640s33b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "640s33b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "ad1835" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_AD1836 : sound/soc/codecs/ad1836.c
+spi "ad1836" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_AD1836 : sound/soc/codecs/ad1836.c
+spi "ad1837" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_AD1836 : sound/soc/codecs/ad1836.c
+spi "ad1838" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_AD1836 : sound/soc/codecs/ad1836.c
+spi "ad1839" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_AD1836 : sound/soc/codecs/ad1836.c
+spi "ad2s1200" : CONFIG_AD2S1200 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/resolver/ad2s1200.c
+spi "ad2s1205" : CONFIG_AD2S1200 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/resolver/ad2s1200.c
+spi "ad2s1210" : CONFIG_AD2S1210 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/resolver/ad2s1210.c
+spi "ad2s90" : CONFIG_AD2S90 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/resolver/ad2s90.c
+spi "ad5024" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5025" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5044" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5045" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5064" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5064-1" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5065" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5160" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5161" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5162" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5165" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5200" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5201" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5203" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5204" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5206" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5207" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5231" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5232" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5233" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5235" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5260" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5262" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5263" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5270" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5271" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5290" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5291" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5292" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5293" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad5300" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5310" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5320" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5360" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5361" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5362" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5363" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5370" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5371" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5372" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5373" : CONFIG_AD5360 CONFIG_IIO : drivers/iio/dac/ad5360.c
+spi "ad5380-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5380-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5381-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5381-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5382-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5382-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5383-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5383-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5384-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5384-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5390-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5390-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5391-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5391-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5392-3" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5392-5" : CONFIG_AD5380 CONFIG_IIO : drivers/iio/dac/ad5380.c
+spi "ad5415" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5426" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5429" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5432" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5439" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5443" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5444" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5446" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5449" : CONFIG_AD5449 CONFIG_IIO : drivers/iio/dac/ad5449.c
+spi "ad5450" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5451" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5452" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5453" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5501" : CONFIG_AD5504 CONFIG_IIO : drivers/iio/dac/ad5504.c
+spi "ad5504" : CONFIG_AD5504 CONFIG_IIO : drivers/iio/dac/ad5504.c
+spi "ad5512a" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5541a" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5542a" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5543" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5553" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5601" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5611" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5620-1250" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5620-2500" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5621" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5624r3" : CONFIG_AD5624R_SPI CONFIG_IIO : drivers/iio/dac/ad5624r_spi.c
+spi "ad5624r5" : CONFIG_AD5624R_SPI CONFIG_IIO : drivers/iio/dac/ad5624r_spi.c
+spi "ad5628-1" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5628-2" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5640-1250" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5640-2500" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5641" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5644r3" : CONFIG_AD5624R_SPI CONFIG_IIO : drivers/iio/dac/ad5624r_spi.c
+spi "ad5644r5" : CONFIG_AD5624R_SPI CONFIG_IIO : drivers/iio/dac/ad5624r_spi.c
+spi "ad5648-1" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5648-2" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5660-1250" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5660-2500" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5662" : CONFIG_AD5446 CONFIG_IIO : drivers/iio/dac/ad5446.c
+spi "ad5664r3" : CONFIG_AD5624R_SPI CONFIG_IIO : drivers/iio/dac/ad5624r_spi.c
+spi "ad5664r5" : CONFIG_AD5624R_SPI CONFIG_IIO : drivers/iio/dac/ad5624r_spi.c
+spi "ad5666-1" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5666-2" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5668-1" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5668-2" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5668-3" : CONFIG_AD5064 CONFIG_IIO : drivers/iio/dac/ad5064.c
+spi "ad5684" : CONFIG_AD5686 CONFIG_IIO : drivers/iio/dac/ad5686.c
+spi "ad5685" : CONFIG_AD5686 CONFIG_IIO : drivers/iio/dac/ad5686.c
+spi "ad5686" : CONFIG_AD5686 CONFIG_IIO : drivers/iio/dac/ad5686.c
+spi "ad5735" : CONFIG_AD5755 CONFIG_IIO : drivers/iio/dac/ad5755.c
+spi "ad5737" : CONFIG_AD5755 CONFIG_IIO : drivers/iio/dac/ad5755.c
+spi "ad5744" : CONFIG_AD5764 CONFIG_IIO : drivers/iio/dac/ad5764.c
+spi "ad5744r" : CONFIG_AD5764 CONFIG_IIO : drivers/iio/dac/ad5764.c
+spi "ad5755" : CONFIG_AD5755 CONFIG_IIO : drivers/iio/dac/ad5755.c
+spi "ad5755-1" : CONFIG_AD5755 CONFIG_IIO : drivers/iio/dac/ad5755.c
+spi "ad5757" : CONFIG_AD5755 CONFIG_IIO : drivers/iio/dac/ad5755.c
+spi "ad5760" : CONFIG_AD5791 CONFIG_IIO : drivers/iio/dac/ad5791.c
+spi "ad5764" : CONFIG_AD5764 CONFIG_IIO : drivers/iio/dac/ad5764.c
+spi "ad5764r" : CONFIG_AD5764 CONFIG_IIO : drivers/iio/dac/ad5764.c
+spi "ad5780" : CONFIG_AD5791 CONFIG_IIO : drivers/iio/dac/ad5791.c
+spi "ad5781" : CONFIG_AD5791 CONFIG_IIO : drivers/iio/dac/ad5791.c
+spi "ad5790" : CONFIG_AD5791 CONFIG_IIO : drivers/iio/dac/ad5791.c
+spi "ad5791" : CONFIG_AD5791 CONFIG_IIO : drivers/iio/dac/ad5791.c
+spi "ad7091r" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7170" : CONFIG_AD7780 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7780.c
+spi "ad7171" : CONFIG_AD7780 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7780.c
+spi "ad7190" : CONFIG_AD7192 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7192.c
+spi "ad7192" : CONFIG_AD7192 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7192.c
+spi "ad7195" : CONFIG_AD7192 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7192.c
+spi "ad7265" : CONFIG_AD7266 CONFIG_IIO : drivers/iio/adc/ad7266.c
+spi "ad7266" : CONFIG_AD7266 CONFIG_IIO : drivers/iio/adc/ad7266.c
+spi "ad7273" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7274" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7276" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7277" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7278" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7280a" : CONFIG_AD7280 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7280a.c
+spi "ad7298" : CONFIG_AD7298 CONFIG_IIO : drivers/iio/adc/ad7298.c
+spi "ad7303" : CONFIG_AD7303 CONFIG_IIO : drivers/iio/dac/ad7303.c
+spi "ad7314" : CONFIG_HWMON CONFIG_SENSORS_AD7314 : drivers/hwmon/ad7314.c
+spi "ad7376" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad7466" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7467" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7468" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7475" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7476" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7476a" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7477" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7477a" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7478" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7478a" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7495" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7606-4" : CONFIG_AD7606 CONFIG_AD7606_IFACE_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7606_spi.c
+spi "ad7606-6" : CONFIG_AD7606 CONFIG_AD7606_IFACE_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7606_spi.c
+spi "ad7606-8" : CONFIG_AD7606 CONFIG_AD7606_IFACE_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7606_spi.c
+spi "ad7780" : CONFIG_AD7780 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7780.c
+spi "ad7781" : CONFIG_AD7780 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7780.c
+spi "ad7785" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7787" : CONFIG_AD7791 CONFIG_IIO : drivers/iio/adc/ad7791.c
+spi "ad7788" : CONFIG_AD7791 CONFIG_IIO : drivers/iio/adc/ad7791.c
+spi "ad7789" : CONFIG_AD7791 CONFIG_IIO : drivers/iio/adc/ad7791.c
+spi "ad7790" : CONFIG_AD7791 CONFIG_IIO : drivers/iio/adc/ad7791.c
+spi "ad7791" : CONFIG_AD7791 CONFIG_IIO : drivers/iio/adc/ad7791.c
+spi "ad7792" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7793" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7794" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7795" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7796" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7797" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7798" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7799" : CONFIG_AD7793 CONFIG_IIO : drivers/iio/adc/ad7793.c
+spi "ad7816" : CONFIG_AD7816 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7816.c
+spi "ad7817" : CONFIG_AD7816 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7816.c
+spi "ad7818" : CONFIG_AD7816 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7816.c
+spi "ad7887" : CONFIG_AD7887 CONFIG_IIO : drivers/iio/adc/ad7887.c
+spi "ad7904" : CONFIG_AD7923 CONFIG_IIO : drivers/iio/adc/ad7923.c
+spi "ad7910" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7914" : CONFIG_AD7923 CONFIG_IIO : drivers/iio/adc/ad7923.c
+spi "ad7920" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad7923" : CONFIG_AD7923 CONFIG_IIO : drivers/iio/adc/ad7923.c
+spi "ad7924" : CONFIG_AD7923 CONFIG_IIO : drivers/iio/adc/ad7923.c
+spi "ad7940" : CONFIG_AD7476 CONFIG_IIO : drivers/iio/adc/ad7476.c
+spi "ad8366" : CONFIG_AD8366 CONFIG_IIO : drivers/iio/amplifiers/ad8366.c
+spi "ad8400" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad8402" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad8403" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "ad9523-1" : CONFIG_AD9523 CONFIG_IIO : drivers/iio/frequency/ad9523.c
+spi "ad9832" : CONFIG_AD9832 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/frequency/ad9832.c
+spi "ad9833" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/frequency/ad9834.c
+spi "ad9834" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/frequency/ad9834.c
+spi "ad9835" : CONFIG_AD9832 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/frequency/ad9832.c
+spi "ad9837" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/frequency/ad9834.c
+spi "ad9838" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/frequency/ad9834.c
+spi "adau1361" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1761_SPI : sound/soc/codecs/adau1761-spi.c
+spi "adau1381" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1781_SPI : sound/soc/codecs/adau1781-spi.c
+spi "adau1461" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1761_SPI : sound/soc/codecs/adau1761-spi.c
+spi "adau1761" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1761_SPI : sound/soc/codecs/adau1761-spi.c
+spi "adau1781" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1781_SPI : sound/soc/codecs/adau1781-spi.c
+spi "adau1961" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1761_SPI : sound/soc/codecs/adau1761-spi.c
+spi "adau1977" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1977_SPI : sound/soc/codecs/adau1977-spi.c
+spi "adau1978" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1977_SPI : sound/soc/codecs/adau1977-spi.c
+spi "adau1979" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAU1977_SPI : sound/soc/codecs/adau1977-spi.c
+spi "adav801" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_ADAV801 : sound/soc/codecs/adav801.c
+spi "adcxx1s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "adcxx2s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "adcxx4s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "adcxx8s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "ade7758" : CONFIG_ADE7758 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7758_core.c
+spi "ade7854" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "ade7858" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "ade7868" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "ade7878" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "adf4350" : CONFIG_ADF4350 CONFIG_IIO : drivers/iio/frequency/adf4350.c
+spi "adf4351" : CONFIG_ADF4350 CONFIG_IIO : drivers/iio/frequency/adf4350.c
+spi "adis16080" : CONFIG_ADIS16080 CONFIG_IIO : drivers/iio/gyro/adis16080.c
+spi "adis16100" : CONFIG_ADIS16080 CONFIG_IIO : drivers/iio/gyro/adis16080.c
+spi "adis16133" : CONFIG_ADIS16136 CONFIG_IIO : drivers/iio/gyro/adis16136.c
+spi "adis16135" : CONFIG_ADIS16136 CONFIG_IIO : drivers/iio/gyro/adis16136.c
+spi "adis16136" : CONFIG_ADIS16136 CONFIG_IIO : drivers/iio/gyro/adis16136.c
+spi "adis16250" : CONFIG_ADIS16260 CONFIG_IIO : drivers/iio/gyro/adis16260.c
+spi "adis16251" : CONFIG_ADIS16260 CONFIG_IIO : drivers/iio/gyro/adis16260.c
+spi "adis16255" : CONFIG_ADIS16260 CONFIG_IIO : drivers/iio/gyro/adis16260.c
+spi "adis16260" : CONFIG_ADIS16260 CONFIG_IIO : drivers/iio/gyro/adis16260.c
+spi "adis16265" : CONFIG_ADIS16260 CONFIG_IIO : drivers/iio/gyro/adis16260.c
+spi "adis16300" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16334" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16350" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16354" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16355" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16360" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16362" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16364" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16365" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16375" : CONFIG_ADIS16480 CONFIG_IIO : drivers/iio/imu/adis16480.c
+spi "adis16400" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16405" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16448" : CONFIG_ADIS16400 CONFIG_IIO : drivers/iio/imu/adis16400_core.c
+spi "adis16480" : CONFIG_ADIS16480 CONFIG_IIO : drivers/iio/imu/adis16480.c
+spi "adis16485" : CONFIG_ADIS16480 CONFIG_IIO : drivers/iio/imu/adis16480.c
+spi "adis16488" : CONFIG_ADIS16480 CONFIG_IIO : drivers/iio/imu/adis16480.c
+spi "adn2850" : CONFIG_AD525X_DPOT_SPI : drivers/misc/ad525x_dpot-spi.c
+spi "adt7301" : CONFIG_HWMON CONFIG_SENSORS_AD7314 : drivers/hwmon/ad7314.c
+spi "adt7302" : CONFIG_HWMON CONFIG_SENSORS_AD7314 : drivers/hwmon/ad7314.c
+spi "adt7310" : CONFIG_HWMON CONFIG_SENSORS_ADT7310 : drivers/hwmon/adt7310.c
+spi "adt7316" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7317" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7318" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7320" : CONFIG_HWMON CONFIG_SENSORS_ADT7310 : drivers/hwmon/adt7310.c
+spi "adt7516" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7517" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7519" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adxrs450" : CONFIG_ADXRS450 CONFIG_IIO : drivers/iio/gyro/adxrs450.c
+spi "adxrs453" : CONFIG_ADXRS450 CONFIG_IIO : drivers/iio/gyro/adxrs450.c
+spi "ak4104" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_AK4104 : sound/soc/codecs/ak4104.c
+spi "as3935" : CONFIG_AS3935 CONFIG_IIO : drivers/iio/proximity/as3935.c
+spi "at25df041a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25df041a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at25df321a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25df321a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at25df641" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25df641" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at25fs010" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25fs010" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at25fs040" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25fs040" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at26df081a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26df081a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at26df161a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26df161a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at26df321" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26df321" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at26f004" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26f004" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at45db081d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at45db081d" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "at86rf212" : CONFIG_IEEE802154 CONFIG_IEEE802154_AT86RF230 : drivers/net/ieee802154/at86rf230.c
+spi "at86rf230" : CONFIG_IEEE802154 CONFIG_IEEE802154_AT86RF230 : drivers/net/ieee802154/at86rf230.c
+spi "at86rf231" : CONFIG_IEEE802154 CONFIG_IEEE802154_AT86RF230 : drivers/net/ieee802154/at86rf230.c
+spi "at86rf233" : CONFIG_IEEE802154 CONFIG_IEEE802154_AT86RF230 : drivers/net/ieee802154/at86rf230.c
+spi "bmp180" : CONFIG_BMP085_SPI : drivers/misc/bmp085-spi.c
+spi "bmp181" : CONFIG_BMP085_SPI : drivers/misc/bmp085-spi.c
+spi "cat25128" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25128" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "cat25c03" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c03" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "cat25c09" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c09" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "cat25c11" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c11" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "cat25c17" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c17" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "cros-ec-spi" : CONFIG_MFD_CROS_EC_SPI : drivers/mfd/cros_ec_spi.c
+spi "da9052" : CONFIG_MFD_DA9052_SPI : drivers/mfd/da9052-spi.c
+spi "da9053-aa" : CONFIG_MFD_DA9052_SPI : drivers/mfd/da9052-spi.c
+spi "da9053-ba" : CONFIG_MFD_DA9052_SPI : drivers/mfd/da9052-spi.c
+spi "da9053-bb" : CONFIG_MFD_DA9052_SPI : drivers/mfd/da9052-spi.c
+spi "da9053-bc" : CONFIG_MFD_DA9052_SPI : drivers/mfd/da9052-spi.c
+spi "dac7512" : CONFIG_TI_DAC7512 : drivers/misc/ti_dac7512.c
+spi "ds1343" : CONFIG_RTC_DRV_DS1343 CONFIG_RTC_LIB : drivers/rtc/rtc-ds1343.c
+spi "ds1344" : CONFIG_RTC_DRV_DS1343 CONFIG_RTC_LIB : drivers/rtc/rtc-ds1343.c
+spi "ecp3-17" : CONFIG_LATTICE_ECP3_CONFIG : drivers/misc/lattice-ecp3-config.c
+spi "ecp3-35" : CONFIG_LATTICE_ECP3_CONFIG : drivers/misc/lattice-ecp3-config.c
+spi "en25f32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25f32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "en25p32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25p32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "en25p64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25p64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "en25q32b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25q32b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "en25q64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25q64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "en25qh128" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25qh256" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25qh256" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "f25l32pa" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "f25l32pa" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "gd25q32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "gd25q32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "gd25q64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "gd25q64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "ifx6160" : CONFIG_SERIAL_IFX6X60 : drivers/tty/serial/ifx6x60.c
+spi "ifx6260" : CONFIG_SERIAL_IFX6X60 : drivers/tty/serial/ifx6x60.c
+spi "kxsd9" : CONFIG_IIO CONFIG_KXSD9 : drivers/iio/accel/kxsd9.c
+spi "l3g4200d" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "l3g4is_ui" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "l3gd20" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "lis331dlh" : CONFIG_IIO CONFIG_IIO_ST_ACCEL_SPI_3AXIS : drivers/iio/accel/st_accel_spi.c
+spi "lis3dh" : CONFIG_IIO CONFIG_IIO_ST_ACCEL_SPI_3AXIS : drivers/iio/accel/st_accel_spi.c
+spi "lis3mdl" : CONFIG_IIO CONFIG_IIO_ST_MAGN_SPI_3AXIS : drivers/iio/magnetometer/st_magn_spi.c
+spi "lm70" : CONFIG_HWMON CONFIG_SENSORS_LM70 : drivers/hwmon/lm70.c
+spi "lm71" : CONFIG_HWMON CONFIG_SENSORS_LM70 : drivers/hwmon/lm70.c
+spi "lm74" : CONFIG_HWMON CONFIG_SENSORS_LM70 : drivers/hwmon/lm70.c
+spi "lps001wp" : CONFIG_IIO CONFIG_IIO_ST_PRESS_SPI : drivers/iio/pressure/st_pressure_spi.c
+spi "lps25h" : CONFIG_IIO CONFIG_IIO_ST_PRESS_SPI : drivers/iio/pressure/st_pressure_spi.c
+spi "lps331ap" : CONFIG_IIO CONFIG_IIO_ST_PRESS_SPI : drivers/iio/pressure/st_pressure_spi.c
+spi "lsm330_accel" : CONFIG_IIO CONFIG_IIO_ST_ACCEL_SPI_3AXIS : drivers/iio/accel/st_accel_spi.c
+spi "lsm330_gyro" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "lsm330d_accel" : CONFIG_IIO CONFIG_IIO_ST_ACCEL_SPI_3AXIS : drivers/iio/accel/st_accel_spi.c
+spi "lsm330d_gyro" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "lsm330dl_accel" : CONFIG_IIO CONFIG_IIO_ST_ACCEL_SPI_3AXIS : drivers/iio/accel/st_accel_spi.c
+spi "lsm330dl_gyro" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "lsm330dlc_accel" : CONFIG_IIO CONFIG_IIO_ST_ACCEL_SPI_3AXIS : drivers/iio/accel/st_accel_spi.c
+spi "lsm330dlc_gyro" : CONFIG_IIO CONFIG_IIO_ST_GYRO_SPI_3AXIS : drivers/iio/gyro/st_gyro_spi.c
+spi "m25p05" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p05" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p05-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p05-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p10" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p10-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p10-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p128" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p128" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p128-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p128-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p16" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p16-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p16-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p20" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p20" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p20-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p20-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p32-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p32-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p40" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p40" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p40-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p40-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p64-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p64-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p80" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25p80-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p80-nonjedec" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25pe16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25pe16" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25pe20" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25pe20" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25pe80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25pe80" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25px16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px16" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25px32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25px32-s0" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px32-s0" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25px32-s1" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px32-s1" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m25px64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m45pe10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m45pe10" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m45pe16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m45pe16" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "m45pe80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m45pe80" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "max1110" : CONFIG_HWMON CONFIG_SENSORS_MAX1111 : drivers/hwmon/max1111.c
+spi "max1111" : CONFIG_HWMON CONFIG_SENSORS_MAX1111 : drivers/hwmon/max1111.c
+spi "max1112" : CONFIG_HWMON CONFIG_SENSORS_MAX1111 : drivers/hwmon/max1111.c
+spi "max1113" : CONFIG_HWMON CONFIG_SENSORS_MAX1111 : drivers/hwmon/max1111.c
+spi "max14830" : CONFIG_SERIAL_MAX310X : drivers/tty/serial/max310x.c
+spi "max3107" : CONFIG_SERIAL_MAX310X : drivers/tty/serial/max310x.c
+spi "max3108" : CONFIG_SERIAL_MAX310X : drivers/tty/serial/max310x.c
+spi "max3109" : CONFIG_SERIAL_MAX310X : drivers/tty/serial/max310x.c
+spi "max7301" : CONFIG_GPIO_MAX7301 : drivers/gpio/gpio-max7301.c
+spi "mc13783" : CONFIG_MFD_MC13XXX_SPI : drivers/mfd/mc13xxx-spi.c
+spi "mc13892" : CONFIG_MFD_MC13XXX_SPI : drivers/mfd/mc13xxx-spi.c
+spi "mc34708" : CONFIG_MFD_MC13XXX_SPI : drivers/mfd/mc13xxx-spi.c
+spi "mcp23s08" : CONFIG_GPIO_MCP23S08 : drivers/gpio/gpio-mcp23s08.c
+spi "mcp23s17" : CONFIG_GPIO_MCP23S08 : drivers/gpio/gpio-mcp23s08.c
+spi "mcp2510" : CONFIG_CAN CONFIG_CAN_MCP251X : drivers/net/can/spi/mcp251x.c
+spi "mcp2515" : CONFIG_CAN CONFIG_CAN_MCP251X : drivers/net/can/spi/mcp251x.c
+spi "mcp3204" : CONFIG_IIO CONFIG_MCP320X : drivers/iio/adc/mcp320x.c
+spi "mcp3208" : CONFIG_IIO CONFIG_MCP320X : drivers/iio/adc/mcp320x.c
+spi "mr25h10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mr25h10" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mr25h256" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mr25h256" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mrf24j40" : CONFIG_IEEE802154 CONFIG_IEEE802154_MRF24J40 : drivers/net/ieee802154/mrf24j40.c
+spi "mrf24j40ma" : CONFIG_IEEE802154 CONFIG_IEEE802154_MRF24J40 : drivers/net/ieee802154/mrf24j40.c
+spi "msi001" : CONFIG_MEDIA_TUNER_MSI001 CONFIG_STAGING CONFIG_USB_MSI3101 : drivers/staging/media/msi3101/msi001.c
+spi "mx25l12805d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l12805d" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l12855e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l12855e" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l1606e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l1606e" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l2005a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l2005a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l25635e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l25635e" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l25655e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l25655e" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l3205d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l3205d" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l3255e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l3255e" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l4005a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l4005a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l6405d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l6405d" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx25l8005" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l8005" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx66l1g55g" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx66l1g55g" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "mx66l51235l" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx66l51235l" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q00" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q032" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q032" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q064" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q064" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q128a11" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q128a11" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q128a13" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q128a13" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q256a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q256a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q512a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "n25q512a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "n25q512ax3" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "pcm1792a" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_PCM1792A : sound/soc/codecs/pcm1792a.c
+spi "pcm5121" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_PCM512x_SPI : sound/soc/codecs/pcm512x-spi.c
+spi "pcm5122" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_PCM512x_SPI : sound/soc/codecs/pcm512x-spi.c
+spi "pm25lq032" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "pm25lq032" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "pm25lv010" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "pm25lv010" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "pm25lv512" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "pm25lv512" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "rx4581" : CONFIG_RTC_DRV_RX4581 CONFIG_RTC_LIB : drivers/rtc/rtc-rx4581.c
+spi "s25fl008k" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl008k" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl016k" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl016k" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl064k" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl064k" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl129p0" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl129p0" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl129p1" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl129p1" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl256s0" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl256s0" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl256s1" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl256s1" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25fl512s" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl512s" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl004a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl004a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl008a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl008a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl016a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl016a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl032a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl032a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl032p" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl032p" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl064a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl064a" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl064p" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl064p" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl12800" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl12800" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s25sl12801" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl12801" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "s70fl01gs" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s70fl01gs" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sca3000_d01" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sca3000_e02" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sca3000_e04" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sca3000_e05" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sst25vf016b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf016b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25vf032b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf032b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25vf040b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf040b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25vf064c" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf064c" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25vf080b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf080b" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25wf010" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf010" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25wf020" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf020" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25wf040" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf040" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "sst25wf512" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf512" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "stmpe1601" : CONFIG_STMPE_SPI : drivers/mfd/stmpe-spi.c
+spi "stmpe2401" : CONFIG_STMPE_SPI : drivers/mfd/stmpe-spi.c
+spi "stmpe2403" : CONFIG_STMPE_SPI : drivers/mfd/stmpe-spi.c
+spi "stmpe610" : CONFIG_STMPE_SPI : drivers/mfd/stmpe-spi.c
+spi "stmpe801" : CONFIG_STMPE_SPI : drivers/mfd/stmpe-spi.c
+spi "stmpe811" : CONFIG_STMPE_SPI : drivers/mfd/stmpe-spi.c
+spi "tmp121" : CONFIG_HWMON CONFIG_SENSORS_LM70 : drivers/hwmon/lm70.c
+spi "trf7970a" : CONFIG_NFC_TRF7970A : drivers/nfc/trf7970a.c
+spi "w25q128" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q128" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25q256" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q256" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25q32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25q32dw" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q32dw" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25q64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25q80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q80" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25q80bl" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q80bl" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x10" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x16" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x20" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x20" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x32" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x40" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x40" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x64" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "w25x80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x80" : CONFIG_MTD CONFIG_MTD_SPI_NOR : drivers/mtd/spi-nor/spi-nor.c
+spi "wm5102" : CONFIG_MFD_ARIZONA_SPI : drivers/mfd/arizona-spi.c
+spi "wm5110" : CONFIG_MFD_ARIZONA_SPI : drivers/mfd/arizona-spi.c
+spi "wm8310" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8311" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8312" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8320" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8321" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8325" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8326" : CONFIG_MFD_WM831X_SPI : drivers/mfd/wm831x-spi.c
+spi "wm8750" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_WM8750 : sound/soc/codecs/wm8750.c
+spi "wm8987" : CONFIG_SND CONFIG_SND_SOC CONFIG_SND_SOC_WM8750 : sound/soc/codecs/wm8750.c
 ssb 4243 0806 .. : CONFIG_B44 CONFIG_ETHERNET CONFIG_NET_VENDOR_BROADCOM : drivers/net/ethernet/broadcom/b44.c
 ssb 4243 0808 .. : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_EHCI_HCD CONFIG_USB_FHCI_HCD CONFIG_USB_FOTG210_HCD CONFIG_USB_FSL_MPH_DR_OF CONFIG_USB_FUSBH200_HCD CONFIG_USB_GADGET CONFIG_USB_HCD_SSB CONFIG_USB_HWA_HCD CONFIG_USB_IMX21_HCD CONFIG_USB_ISP116X_HCD CONFIG_USB_ISP1362_HCD CONFIG_USB_ISP1760_HCD CONFIG_USB_MAX3421_HCD CONFIG_USB_OHCI_HCD CONFIG_USB_PHY CONFIG_USB_R8A66597_HCD CONFIG_USB_SL811_HCD CONFIG_USB_U132_HCD CONFIG_USB_UHCI_HCD CONFIG_USB_XHCI_HCD : drivers/usb/host/ssb-hcd.c
 ssb 4243 0812 02 : CONFIG_B43LEGACY CONFIG_WLAN : drivers/net/wireless/b43legacy/main.c
@@ -21757,6 +22374,9 @@ usb 0403 6011 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 0403 6014 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 0403 6015 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 0403 7c90 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
+usb 0403 7c91 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
+usb 0403 7c92 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
+usb 0403 8348 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 0403 8372 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 0403 8698 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 0403 87d0 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
@@ -22426,6 +23046,7 @@ usb 045e 0721 .. .. .. 0e 01 00 0000 ffff : CONFIG_USB_VIDEO_CLASS : drivers/med
 usb 045e 0723 .. .. .. 0e 01 00 0000 ffff : CONFIG_USB_VIDEO_CLASS : drivers/media/usb/uvc/uvc_driver.c
 usb 045e 0770 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 045e 0775 .. .. .. .. .. .. 0000 ffff : CONFIG_INPUT CONFIG_INPUT_TOUCHSCREEN CONFIG_TOUCHSCREEN_SUR40 : drivers/input/touchscreen/sur40.c
+usb 045e 07c6 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 0460 0004 .. .. .. .. .. .. 0000 ffff : CONFIG_INPUT CONFIG_INPUT_TABLET CONFIG_TABLET_USB_ACECAD : drivers/input/tablet/acecad.c
 usb 0460 0008 .. .. .. .. .. .. 0000 ffff : CONFIG_INPUT CONFIG_INPUT_TABLET CONFIG_TABLET_USB_ACECAD : drivers/input/tablet/acecad.c
 usb 0461 0815 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_GSPCA CONFIG_USB_GSPCA_SPCA561 : drivers/media/usb/gspca/spca561.c
@@ -22435,6 +23056,7 @@ usb 046a 0023 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 046d .... .. .. .. 0e 01 00 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 046d .... .. .. .. ff 5d 01 0000 ffff : CONFIG_INPUT CONFIG_INPUT_JOYSTICK CONFIG_JOYSTICK_XPAD : drivers/input/joystick/xpad.c
 usb 046d .... .. .. .. ff 5d 81 0000 ffff : CONFIG_INPUT CONFIG_INPUT_JOYSTICK CONFIG_JOYSTICK_XPAD : drivers/input/joystick/xpad.c
+usb 046d 0825 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 046d 082d .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 046d 0840 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_GSPCA CONFIG_USB_STV06XX : drivers/media/usb/gspca/stv06xx/stv06xx.c
 usb 046d 0841 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
@@ -23675,6 +24297,7 @@ usb 067b 0611 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 067b 0612 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
 usb 067b 1234 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
 usb 067b 2303 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
+usb 067b 2304 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
 usb 067b 25a1 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_PLUSB CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/plusb.c
 usb 067b 331a .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
 usb 067b aaa0 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
@@ -24038,7 +24661,6 @@ usb 083a e506 .. .. .. .. .. .. 0000 ffff : CONFIG_WLAN CONFIG_ZD1211RW : driver
 usb 083a f503 .. .. .. .. .. .. 0000 ffff : CONFIG_P54_COMMON CONFIG_P54_USB CONFIG_WLAN : drivers/net/wireless/p54/p54usb.c
 usb 083a f511 .. .. .. .. .. .. 0000 ffff : CONFIG_RT2800USB CONFIG_RT2X00 CONFIG_WLAN : drivers/net/wireless/rt2x00/rt2800usb.c
 usb 083a f522 .. .. .. .. .. .. 0000 ffff : CONFIG_ATH_CARDS CONFIG_CARL9170 CONFIG_WLAN : drivers/net/wireless/ath/carl9170/usb.c
-usb 0841 0001 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_RIO500 : drivers/usb/misc/rio500.c
 usb 0846 1001 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/kaweth.c
 usb 0846 1002 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/kaweth.c
 usb 0846 1040 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_AX8817X CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/asix_devices.c
@@ -24174,9 +24796,11 @@ usb 0915 2000 .. .. .. .. .. .. 0000 ffff : CONFIG_P54_COMMON CONFIG_P54_USB CON
 usb 0915 2002 .. .. .. .. .. .. 0000 ffff : CONFIG_P54_COMMON CONFIG_P54_USB CONFIG_WLAN : drivers/net/wireless/p54/p54usb.c
 usb 091e 0003 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_GARMIN : drivers/usb/serial/garmin_gps.c
 usb 091e 0004 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_VISOR : drivers/usb/serial/visor.c
+usb 0920 7500 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 0921 1000 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_BELKIN : drivers/usb/serial/belkin_sa.c
 usb 0921 1200 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_BELKIN : drivers/usb/serial/belkin_sa.c
 usb 0923 010f .. .. .. .. .. .. 0000 ffff : CONFIG_USB_GSPCA CONFIG_USB_GSPCA_TV8532 : drivers/media/usb/gspca/tv8532.c
+usb 0926 0202 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 0926 3333 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
 usb 0930 .... .. .. .. 02 0d 00 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_CDC_NCM CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/cdc_ncm.c
 usb 0930 .... .. .. .. ff 01 01 0000 ffff : CONFIG_BT CONFIG_BT_HCIBTUSB : drivers/bluetooth/btusb.c
@@ -24433,6 +25057,7 @@ usb 0af7 0101 .. .. .. .. .. .. 0000 ffff : CONFIG_DVB_B2C2_FLEXCOP_USB : driver
 usb 0af9 0010 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_GSPCA CONFIG_USB_GSPCA_SPCA508 : drivers/media/usb/gspca/spca508.c
 usb 0af9 0011 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_GSPCA CONFIG_USB_GSPCA_SPCA508 : drivers/media/usb/gspca/spca508.c
 usb 0afa 03e8 .. .. .. .. .. .. 0000 ffff : CONFIG_INPUT CONFIG_INPUT_TOUCHSCREEN CONFIG_TOUCHSCREEN_USB_COMPOSITE : drivers/input/touchscreen/usbtouchscreen.c
+usb 0b00 3070 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 0b05 .... .. .. .. ff 01 01 0000 ffff : CONFIG_BT CONFIG_BT_HCIBTUSB : drivers/bluetooth/btusb.c
 usb 0b05 166a .. .. .. .. .. .. 0000 ffff : CONFIG_RT2800USB CONFIG_RT2X00 CONFIG_WLAN : drivers/net/wireless/rt2x00/rt2800usb.c
 usb 0b05 1706 .. .. .. .. .. .. 0000 ffff : CONFIG_RT2500USB CONFIG_RT2X00 CONFIG_WLAN : drivers/net/wireless/rt2x00/rt2500usb.c
@@ -24962,9 +25587,13 @@ usb 0c88 180a .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 0c8e 6000 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
 usb 0c98 1140 .. .. .. .. .. .. 0000 ffff : CONFIG_USBPCWATCHDOG CONFIG_WATCHDOG : drivers/watchdog/pcwd_usb.c
 usb 0ca6 a050 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
+usb 0caa 3001 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_PL2303 : drivers/usb/serial/pl2303.c
 usb 0cad 9001 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
 usb 0cad 9011 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
 usb 0cad 9012 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
+usb 0cad 9013 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
+usb 0cad 9015 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
+usb 0cad 9016 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
 usb 0ccd 0036 .. .. .. .. .. .. 0000 ffff : CONFIG_VIDEO_EM28XX : drivers/media/usb/em28xx/em28xx-cards.c
 usb 0ccd 0038 .. .. .. .. .. .. 0000 ffff : CONFIG_DVB_USB_CINERGY_T2 : drivers/media/usb/dvb-usb/cinergyT2-core.c
 usb 0ccd 0039 .. .. .. .. .. .. 0000 ffff : CONFIG_VIDEO_PVRUSB2 : drivers/media/usb/pvrusb2/pvrusb2-devattr.c
@@ -25499,6 +26128,7 @@ usb 10c4 8044 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 10c4 804e .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 8053 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 8054 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
+usb 10c4 8056 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 8066 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 806f .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 807a .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
@@ -25545,6 +26175,7 @@ usb 10c4 82f9 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 10c4 8341 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 8382 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 83a8 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
+usb 10c4 83aa .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 83d8 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 8411 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 10c4 8418 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
@@ -25621,6 +26252,7 @@ usb 110a 1613 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 110a 1618 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_MXUPORT : drivers/usb/serial/mxuport.c
 usb 110a 1653 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_MXUPORT : drivers/usb/serial/mxuport.c
 usb 110a 1658 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_MXUPORT : drivers/usb/serial/mxuport.c
+usb 110a 2210 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_MOS7840 : drivers/usb/serial/mos7840.c
 usb 1110 9000 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ATM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SPEEDTOUCH CONFIG_USB_UEAGLEATM : drivers/usb/atm/ueagle-atm.c
 usb 1110 9001 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ATM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SPEEDTOUCH CONFIG_USB_UEAGLEATM : drivers/usb/atm/ueagle-atm.c
 usb 1110 900f .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ATM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SPEEDTOUCH CONFIG_USB_UEAGLEATM : drivers/usb/atm/ueagle-atm.c
@@ -26560,6 +27192,8 @@ usb 152d 0310 .. .. .. 0e 01 00 0000 ffff : CONFIG_USB_VIDEO_CLASS : drivers/med
 usb 1532 .... .. .. .. ff 5d 01 0000 ffff : CONFIG_INPUT CONFIG_INPUT_JOYSTICK CONFIG_JOYSTICK_XPAD : drivers/input/joystick/xpad.c
 usb 1532 .... .. .. .. ff 5d 81 0000 ffff : CONFIG_INPUT CONFIG_INPUT_JOYSTICK CONFIG_JOYSTICK_XPAD : drivers/input/joystick/xpad.c
 usb 1532 0116 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY : drivers/usb/core/quirks.c
+usb 1546 0502 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
+usb 1546 0503 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 1554 5010 .. .. .. .. .. .. 0000 3f00 : CONFIG_DVB_USB_DIB0700 : drivers/media/usb/dvb-usb/dib0700_devices.c
 usb 1554 5010 .. .. .. .. .. .. 4000 4001 : CONFIG_VIDEO_CX231XX : drivers/media/usb/cx231xx/cx231xx-cards.c
 usb 1554 5014 .. .. .. .. .. .. 0000 ffff : CONFIG_VIDEO_CX231XX : drivers/media/usb/cx231xx/cx231xx-cards.c
@@ -27161,6 +27795,8 @@ usb 19d2 0412 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 19d2 0414 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 0417 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 0426 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
+usb 19d2 0601 .. .. .. ff .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
+usb 19d2 0602 .. .. .. ff .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 1003 .. .. .. 02 06 00 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_CDCETHER CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/cdc_ether.c
 usb 19d2 1008 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_QMI_WWAN CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/qmi_wwan.c
 usb 19d2 1008 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
@@ -27372,6 +28008,8 @@ usb 19d2 1428 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONE
 usb 19d2 1428 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 1432 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 1433 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
+usb 19d2 1476 .. .. .. ff .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
+usb 19d2 1481 .. .. .. ff 00 00 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 1533 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 1534 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 19d2 1535 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
@@ -27965,6 +28603,8 @@ usb 1bbb 011e .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONE
 usb 1bbb 0203 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 1bbb 0203 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_QMI_WWAN CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/qmi_wwan.c
 usb 1bc7 .... .. .. .. 02 06 00 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_CDCETHER CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/cdc_ether.c
+usb 1bc7 0021 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
+usb 1bc7 0023 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
 usb 1bc7 1003 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 1bc7 1004 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 1bc7 1005 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
@@ -27993,6 +28633,7 @@ usb 1bc7 900e .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 1bc9 6001 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 1be3 07a6 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_CP210X : drivers/usb/serial/cp210x.c
 usb 1c0c 0102 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
+usb 1c40 0477 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 1c40 0534 .. .. .. .. .. .. 0000 ffff : CONFIG_I2C_TINY_USB : drivers/i2c/busses/i2c-tiny-usb.c
 usb 1c4f 3000 .. .. .. 0e 01 00 0000 ffff : CONFIG_USB_VIDEO_CLASS : drivers/media/usb/uvc/uvc_driver.c
 usb 1c73 861f .. .. .. .. .. .. 0000 ffff : CONFIG_DVB_USB_ANYSEE : drivers/media/usb/dvb-usb-v2/anysee.c
@@ -28112,6 +28753,7 @@ usb 2001 330f .. .. .. .. .. .. 0000 ffff : CONFIG_R8188EU CONFIG_STAGING : driv
 usb 2001 3310 .. .. .. .. .. .. 0000 ffff : CONFIG_R8188EU CONFIG_STAGING : drivers/staging/rtl8188eu/os_dep/usb_intf.c
 usb 2001 3311 .. .. .. .. .. .. 0000 ffff : CONFIG_R8188EU CONFIG_STAGING : drivers/staging/rtl8188eu/os_dep/usb_intf.c
 usb 2001 3317 .. .. .. .. .. .. 0000 ffff : CONFIG_RT2800USB CONFIG_RT2X00 CONFIG_WLAN : drivers/net/wireless/rt2x00/rt2800usb.c
+usb 2001 331b .. .. .. .. .. .. 0000 ffff : CONFIG_R8188EU CONFIG_STAGING : drivers/staging/rtl8188eu/os_dep/usb_intf.c
 usb 2001 3700 .. .. .. .. .. .. 0000 ffff : CONFIG_PRISM2_USB CONFIG_STAGING : drivers/staging/wlan-ng/prism2usb.c
 usb 2001 3701 .. .. .. .. .. .. 0000 ffff : CONFIG_P54_COMMON CONFIG_P54_USB CONFIG_WLAN : drivers/net/wireless/p54/p54usb.c
 usb 2001 3702 .. .. .. .. .. .. 0000 ffff : CONFIG_PRISM2_USB CONFIG_STAGING : drivers/staging/wlan-ng/prism2usb.c
@@ -28362,7 +29004,9 @@ usb 2184 001c .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 2184 0036 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
 usb 2201 012c .. .. .. .. .. .. 0000 ffff : CONFIG_MMC_VUB300 : drivers/mmc/host/vub300.c
 usb 2262 0002 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
+usb 22b7 150d .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_FTDI_SIO : drivers/usb/serial/ftdi_sio.c
 usb 22b8 2a64 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
+usb 22b8 2a70 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 22b8 2c64 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
 usb 22b8 2c84 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_SIMPLE : drivers/usb/serial/usb-serial-simple.c
 usb 22b8 2d91 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
@@ -28373,15 +29017,18 @@ usb 22b8 2d96 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONF
 usb 22b8 2d97 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
 usb 22b8 2d99 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
 usb 22b8 2d9a .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
+usb 22b8 2e0a .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 22b8 4204 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
 usb 22b8 4214 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
 usb 22b8 4224 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
 usb 22b8 4234 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
 usb 22b8 4244 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_IPAQ : drivers/usb/serial/ipaq.c
+usb 22b8 4281 .. .. .. 0a 00 fc 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 22b8 6027 .. .. .. 02 0a 00 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_ZAURUS CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/zaurus.c
 usb 22b8 6425 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
 usb 22b8 6425 .. .. .. 02 0a 00 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_ZAURUS CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/zaurus.c
 usb 22b8 7000 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_ACM CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_PRINTER CONFIG_USB_TMC CONFIG_USB_WDM : drivers/usb/class/cdc-acm.c
+usb 22b8 900e .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 22de 6801 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 22de 6802 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 22de 6803 .. .. .. ff ff ff 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
@@ -28426,6 +29073,7 @@ usb 2304 0419 .. .. .. .. .. .. 0000 ffff : CONFIG_VIDEO_USBVISION : drivers/med
 usb 2357 000d .. .. .. ff 00 00 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 2357 0100 .. .. .. .. .. .. 0000 ffff : CONFIG_RTL8192CU CONFIG_RTLWIFI CONFIG_WLAN : drivers/net/wireless/rtlwifi/rtl8192cu/sw.c
 usb 2357 010c .. .. .. .. .. .. 0000 ffff : CONFIG_R8188EU CONFIG_STAGING : drivers/staging/rtl8188eu/os_dep/usb_intf.c
+usb 2357 0111 .. .. .. .. .. .. 0000 ffff : CONFIG_R8188EU CONFIG_STAGING : drivers/staging/rtl8188eu/os_dep/usb_intf.c
 usb 2357 0201 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c
 usb 2357 0201 .. .. .. .. .. .. 0000 ffff : CONFIG_USB_CATC CONFIG_USB_CDC_PHONET CONFIG_USB_HSO CONFIG_USB_IPHETH CONFIG_USB_KAWETH CONFIG_USB_NET_QMI_WWAN CONFIG_USB_PEGASUS CONFIG_USB_RTL8150 CONFIG_USB_USBNET CONFIG_USB_ZD1201 : drivers/net/usb/qmi_wwan.c
 usb 2357 9000 .. .. .. .. .. .. 0000 ffff : CONFIG_OF CONFIG_PCI CONFIG_USB CONFIG_USB_GADGET CONFIG_USB_PHY CONFIG_USB_SERIAL CONFIG_USB_SERIAL_OPTION : drivers/usb/serial/option.c

@@ -14384,6 +14384,198 @@ serio 03 25 .. .. : CONFIG_INPUT CONFIG_INPUT_KEYBOARD CONFIG_KEYBOARD_HIL : dri
 serio 05 .. .. .. : CONFIG_INPUT CONFIG_INPUT_MOUSE CONFIG_MOUSE_PS2 : drivers/input/mouse/psmouse-base.c
 serio 06 .. .. .. : CONFIG_INPUT CONFIG_INPUT_KEYBOARD CONFIG_KEYBOARD_ATKBD : drivers/input/keyboard/atkbd.c
 serio 06 .. .. .. : CONFIG_INPUT CONFIG_SERIO CONFIG_SERIO_RAW : drivers/input/serio/serio_raw.c
+spi "160s33b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "320s33b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "640s33b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "ad5444" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5446" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5501" : CONFIG_AD5504 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5504.c
+spi "ad5504" : CONFIG_AD5504 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5504.c
+spi "ad5512a" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5541a" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5542a" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5543" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5553" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5601" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5611" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5620-1250" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5620-2500" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5621" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5624r3" : CONFIG_AD5624R_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5624r_spi.c
+spi "ad5624r5" : CONFIG_AD5624R_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5624r_spi.c
+spi "ad5640-1250" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5640-2500" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5644r3" : CONFIG_AD5624R_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5624r_spi.c
+spi "ad5644r5" : CONFIG_AD5624R_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5624r_spi.c
+spi "ad5660-1250" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5660-2500" : CONFIG_AD5446 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5446.c
+spi "ad5664r3" : CONFIG_AD5624R_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5624r_spi.c
+spi "ad5664r5" : CONFIG_AD5624R_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5624r_spi.c
+spi "ad5760" : CONFIG_AD5791 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5791.c
+spi "ad5780" : CONFIG_AD5791 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5791.c
+spi "ad5781" : CONFIG_AD5791 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5791.c
+spi "ad5791" : CONFIG_AD5791 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dac/ad5791.c
+spi "ad7298" : CONFIG_AD7298 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7298_core.c
+spi "ad7314" : CONFIG_AD7314 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7314.c
+spi "ad7466" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7467" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7468" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7475" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7476" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7476a" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7477" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7477a" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7478" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7478a" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7495" : CONFIG_AD7476 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7476_core.c
+spi "ad7606-4" : CONFIG_AD7606 CONFIG_AD7606_IFACE_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7606_spi.c
+spi "ad7606-6" : CONFIG_AD7606 CONFIG_AD7606_IFACE_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7606_spi.c
+spi "ad7606-8" : CONFIG_AD7606 CONFIG_AD7606_IFACE_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7606_spi.c
+spi "ad7780" : CONFIG_AD7780 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7780.c
+spi "ad7781" : CONFIG_AD7780 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7780.c
+spi "ad7816" : CONFIG_AD7816 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7816.c
+spi "ad7817" : CONFIG_AD7816 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7816.c
+spi "ad7818" : CONFIG_AD7816 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7816.c
+spi "ad7887" : CONFIG_AD7887 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7887_core.c
+spi "ad9832" : CONFIG_AD9832 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dds/ad9832.c
+spi "ad9833" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dds/ad9834.c
+spi "ad9834" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dds/ad9834.c
+spi "ad9835" : CONFIG_AD9832 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dds/ad9832.c
+spi "ad9837" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dds/ad9834.c
+spi "ad9838" : CONFIG_AD9834 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/dds/ad9834.c
+spi "adcxx1s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "adcxx2s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "adcxx4s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "adcxx8s" : CONFIG_HWMON CONFIG_SENSORS_ADCXX : drivers/hwmon/adcxx.c
+spi "ade7758" : CONFIG_ADE7758 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7758_core.c
+spi "ade7854" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "ade7858" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "ade7868" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "ade7878" : CONFIG_ADE7854_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/meter/ade7854-spi.c
+spi "adis16250" : CONFIG_ADIS16260 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/gyro/adis16260_core.c
+spi "adis16251" : CONFIG_ADIS16260 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/gyro/adis16260_core.c
+spi "adis16255" : CONFIG_ADIS16260 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/gyro/adis16260_core.c
+spi "adis16260" : CONFIG_ADIS16260 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/gyro/adis16260_core.c
+spi "adis16265" : CONFIG_ADIS16260 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/gyro/adis16260_core.c
+spi "adis16300" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16350" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16354" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16355" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16360" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16362" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16364" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16365" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16400" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adis16405" : CONFIG_ADIS16400 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/imu/adis16400_core.c
+spi "adt7301" : CONFIG_AD7314 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7314.c
+spi "adt7302" : CONFIG_AD7314 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/ad7314.c
+spi "adt7310" : CONFIG_ADT7310 CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/adc/adt7310.c
+spi "adt7316" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7317" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7318" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7516" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7517" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "adt7519" : CONFIG_ADT7316_SPI CONFIG_IIO CONFIG_STAGING : drivers/staging/iio/addac/adt7316-spi.c
+spi "at25df041a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25df641" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25fs010" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at25fs040" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26df081a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26df161a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26df321" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "at26f004" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25128" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c03" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c09" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c11" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "cat25c17" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25f32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25p32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "en25p64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "ifx6160" : CONFIG_SERIAL_IFX6X60 : drivers/tty/serial/ifx6x60.c
+spi "ifx6260" : CONFIG_SERIAL_IFX6X60 : drivers/tty/serial/ifx6x60.c
+spi "lm70" : CONFIG_HWMON CONFIG_SENSORS_LM70 : drivers/hwmon/lm70.c
+spi "m25p05" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p05-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p10-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p128" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p128-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p16-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p20" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p20-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p32-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p40" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p40-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p64-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25p80-nonjedec" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25pe16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25pe80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px32-s0" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px32-s1" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m25px64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m45pe10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m45pe16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "m45pe80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "max7301" : CONFIG_GPIO_MAX7301 : drivers/gpio/max7301.c
+spi "mc13783" : CONFIG_MFD_MC13XXX : drivers/mfd/mc13xxx-core.c
+spi "mc13892" : CONFIG_MFD_MC13XXX : drivers/mfd/mc13xxx-core.c
+spi "mcp23s08" : CONFIG_GPIO_MCP23S08 : drivers/gpio/mcp23s08.c
+spi "mcp23s17" : CONFIG_GPIO_MCP23S08 : drivers/gpio/mcp23s08.c
+spi "mcp2510" : CONFIG_CAN CONFIG_CAN_MCP251X : drivers/net/can/mcp251x.c
+spi "mcp2515" : CONFIG_CAN CONFIG_CAN_MCP251X : drivers/net/can/mcp251x.c
+spi "mx25l12805d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l12855e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l1606e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l25635e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l25655e" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l3205d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l4005a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l6405d" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "mx25l8005" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl016k" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl064k" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl129p0" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl129p1" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl256s0" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl256s1" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25fl512s" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl004a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl008a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl016a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl032a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl032p" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl064a" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl12800" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s25sl12801" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "s70fl01gs" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sca3000_d01" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sca3000_e02" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sca3000_e04" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sca3000_e05" : CONFIG_IIO CONFIG_SCA3000 CONFIG_STAGING : drivers/staging/iio/accel/sca3000_core.c
+spi "sst25vf016b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf032b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf040b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25vf080b" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf010" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf020" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf040" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "sst25wf512" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "tmp121" : CONFIG_HWMON CONFIG_SENSORS_LM70 : drivers/hwmon/lm70.c
+spi "w25q32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25q64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x10" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x16" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x20" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x32" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x40" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x64" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
+spi "w25x80" : CONFIG_MTD CONFIG_MTD_M25P80 : drivers/mtd/devices/m25p80.c
 ssb .... .... .. : CONFIG_PCI CONFIG_USB CONFIG_USB_EHCI_HCD CONFIG_USB_FHCI_HCD CONFIG_USB_FSL_MPH_DR_OF CONFIG_USB_GADGET CONFIG_USB_HWA_HCD CONFIG_USB_IMX21_HCD CONFIG_USB_ISP116X_HCD CONFIG_USB_ISP1362_HCD CONFIG_USB_ISP1760_HCD CONFIG_USB_OHCI_HCD CONFIG_USB_OTG_UTILS CONFIG_USB_R8A66597_HCD CONFIG_USB_SL811_HCD CONFIG_USB_U132_HCD CONFIG_USB_UHCI_HCD CONFIG_USB_XHCI_HCD : drivers/usb/host/ohci-hcd.c
 ssb 4243 0806 .. : CONFIG_B44 : drivers/net/b44.c
 ssb 4243 0812 02 : CONFIG_B43LEGACY CONFIG_WLAN : drivers/net/wireless/b43legacy/main.c
