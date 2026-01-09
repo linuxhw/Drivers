@@ -1,0 +1,15768 @@
+NVIDIA Accelerated Linux Graphics Driver README and Installation Guide
+
+    NVIDIA Corporation
+    Last Updated: Wed Nov 27 22:49:58 UTC 2024
+    Most Recent Driver Version: 565.77
+
+Published by
+NVIDIA Corporation
+2701 San Tomas Expressway
+Santa Clara, CA
+95050
+
+
+NOTICE:
+
+ALL NVIDIA DESIGN SPECIFICATIONS, REFERENCE BOARDS, FILES, DRAWINGS,
+DIAGNOSTICS, LISTS, AND OTHER DOCUMENTS (TOGETHER AND SEPARATELY, "MATERIALS")
+ARE BEING PROVIDED "AS IS." NVIDIA MAKES NO WARRANTIES, EXPRESSED, IMPLIED,
+STATUTORY, OR OTHERWISE WITH RESPECT TO THE MATERIALS, AND EXPRESSLY DISCLAIMS
+ALL IMPLIED WARRANTIES OF NONINFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
+PARTICULAR PURPOSE. Information furnished is believed to be accurate and
+reliable. However, NVIDIA Corporation assumes no responsibility for the
+consequences of use of such information or for any infringement of patents or
+other rights of third parties that may result from its use. No license is
+granted by implication or otherwise under any patent or patent rights of
+NVIDIA Corporation. Specifications mentioned in this publication are subject
+to change without notice. This publication supersedes and replaces all
+information previously supplied. NVIDIA Corporation products are not
+authorized for use as critical components in life support devices or systems
+without express written approval of NVIDIA Corporation.
+
+NVIDIA, the NVIDIA logo, NVIDIA nForce, GeForce, NVIDIA Quadro, Vanta, TNT2,
+TNT, RIVA, RIVA TNT, Tegra, and TwinView are registered trademarks or
+trademarks of NVIDIA Corporation in the United States and/or other countries.
+
+Linux is a registered trademark of Linus Torvalds. Fedora and Red Hat are
+trademarks of Red Hat, Inc. SuSE is a registered trademark of SuSE AG.
+Mandriva is a registered trademark of Mandriva S.A. Intel is a registered
+trademark of Intel Corporation. OpenGL is a registered trademark of Silicon
+Graphics Inc. PCI Express is a registered trademark and/or service mark of
+PCI-SIG. Windows is a registered trademark of Microsoft Corporation in the
+United States and other countries. Other company and product names may be
+trademarks or registered trademarks of the respective owners with which they
+are associated.
+
+
+Copyright 2006 - 2024 NVIDIA Corporation. All rights reserved.
+
+______________________________________________________________________________
+
+TABLE OF CONTENTS
+______________________________________________________________________________
+
+Chapter 1. Introduction
+Chapter 2. Minimum Requirements
+Chapter 3. Selecting and Downloading the NVIDIA Packages for Your System
+Chapter 4. Installing the NVIDIA Driver
+Chapter 5. Listing of Installed Components
+Chapter 6. Configuring X for the NVIDIA Driver
+Chapter 7. Frequently Asked Questions
+Chapter 8. Common Problems
+Chapter 9. Known Issues
+Chapter 10. Allocating DMA Buffers on 64-bit Platforms
+Chapter 11. Specifying OpenGL Environment Variable Settings
+Chapter 12. Configuring Multiple Display Devices on One X Screen
+Chapter 13. Configuring GLX in Xinerama
+Chapter 14. Configuring Multiple X Screens on One Card
+Chapter 15. Support for the X Resize and Rotate Extension
+Chapter 16. Configuring a Notebook
+Chapter 17. Using the NVIDIA Driver with Optimus Laptops
+Chapter 18. Programming Modes
+Chapter 19. Configuring Flipping and UBB
+Chapter 20. Using the /proc File System Interface
+Chapter 21. Configuring Power Management Support
+Chapter 22. PCI-Express Runtime D3 (RTD3) Power Management
+Chapter 23. Dynamic Boost on Linux
+Chapter 24. Using the X Composite Extension
+Chapter 25. Using the nvidia-settings Utility
+Chapter 26. NVIDIA Spectre V2 Mitigation
+Chapter 27. Using the nvidia-smi Utility
+Chapter 28. The NVIDIA Management Library
+Chapter 29. Using the nvidia-debugdump Utility
+Chapter 30. Using the nvidia-persistenced Utility
+Chapter 31. Configuring SLI Mosaic
+Chapter 32. Configuring Frame Lock and Genlock
+Chapter 33. Configuring Depth 30 Displays
+Chapter 34. Offloading Graphics Display with RandR 1.4
+Chapter 35. PRIME Render Offload
+Chapter 36. Direct Rendering Manager Kernel Modesetting (DRM KMS)
+Chapter 37. Configuring External and Removable GPUs
+Chapter 38. NGX
+Chapter 39. OpenGL, Vulkan and VDPAU on Xwayland
+Chapter 40. GBM and GBM-based Wayland Compositors
+Chapter 41. Addressing Capabilities
+Chapter 42. GPUDirect RDMA Peer Memory Client
+Chapter 43. GSP Firmware
+Chapter 44. Open Linux Kernel Modules
+Chapter 45. NVIDIA Contact Info and Additional Resources
+Chapter 46. Acknowledgements
+
+Appendix A. Supported NVIDIA GPU Products
+Appendix B. X Config Options
+Appendix C. Display Device Names
+Appendix D. GLX Support
+Appendix E. Dots Per Inch
+Appendix F. i2c Bus Support
+Appendix G. VDPAU Support
+Appendix H. Audio Support
+Appendix I. Tips for New Linux Users
+Appendix J. Application Profiles
+Appendix K. GPU Names
+Appendix L. Wayland Known Issues
+
+______________________________________________________________________________
+
+Chapter 1. Introduction
+______________________________________________________________________________
+
+
+1A. ABOUT THE NVIDIA ACCELERATED LINUX GRAPHICS DRIVER
+
+The NVIDIA Accelerated Linux Graphics Driver brings accelerated 2D
+functionality and high-performance OpenGL support to Linux x86_64 with the use
+of NVIDIA graphics processing units (GPUs).
+
+These drivers provide optimized hardware acceleration for OpenGL and X
+applications and support nearly all recent NVIDIA GPU products (see Appendix A
+for a complete list of supported GPUs).
+
+
+1B. ABOUT THIS DOCUMENT
+
+This document provides instructions for the installation and use of the NVIDIA
+Accelerated Linux Graphics Driver. Chapter 3, Chapter 4 and Chapter 6 walk the
+user through the process of downloading, installing and configuring the
+driver. Chapter 7 addresses frequently asked questions about the installation
+process, and Chapter 8 provides solutions to common problems. The remaining
+chapters include details on different features of the NVIDIA Linux Driver.
+Frequently asked questions about specific tasks are included in the relevant
+chapters. These pages are posted on NVIDIA's web site (http://www.nvidia.com),
+and are installed in '/usr/share/doc/NVIDIA_GLX-1.0/'.
+
+
+1C. ABOUT THE AUDIENCE
+
+It is assumed that the user and reader of this document has at least a basic
+understanding of Linux techniques and terminology. However, new Linux users
+can refer to Appendix I for details on parts of the installation process.
+
+
+1D. ADDITIONAL INFORMATION
+
+In case additional information is required, Chapter 45 provides contact
+information for NVIDIA Linux driver resources, as well as a brief listing of
+external resources.
+
+______________________________________________________________________________
+
+Chapter 2. Minimum Requirements
+______________________________________________________________________________
+
+
+2A. MINIMUM SOFTWARE REQUIREMENTS
+
+
+
+    Software Element         Supported versions       Check With...
+    ---------------------    ---------------------    ---------------------
+    Linux kernel             4.15 and newer           `cat /proc/version`
+    X.Org xserver            1.7, 1.8, 1.9, 1.10,     `Xorg -version`
+                             1.11, 1.12, 1.13,    
+                             1.14, 1.15, 1.16,    
+                             1.17, 1.18, 1.19,    
+                             1.20, 21.1           
+    Kernel modutils          2.1.121 and newer        `insmod --version`
+    glibc                    2.11                     `/lib/libc.so.6`
+    libvdpau *               0.2                      `pkg-config
+                                                      --modversion vdpau`
+    libvulkan **             1.0.61                   `pkg-config
+                                                      --modversion vulkan`
+
+
+* Required for hardware-accelerated video playback. See Appendix G for more
+information.
+
+** Required for applications which use the Vulkan API.
+
+If you need to build the NVIDIA kernel module:
+
+    Software Element         Min Requirement          Check With...
+    ---------------------    ---------------------    ---------------------
+    binutils                 2.9.5                    `size --version`
+    GNU make                 3.77                     `make --version`
+    gcc                      2.91.66                  `gcc --version`
+
+
+All official stable kernel releases from 4.15 and up are supported;
+pre-release versions, such as 4.19-rc1, are not supported. The Linux kernel
+can be downloaded from http://www.kernel.org or one of its mirrors.
+
+binutils and gcc can be retrieved from http://www.gnu.org or one of its
+mirrors.
+
+Sometimes very recent X server versions are not supported immediately
+following release, but we aim to support all new versions as soon as possible.
+Support is not added for new X server versions until after the video driver
+ABI is frozen, which usually happens at the release candidate stage.
+Prerelease versions that are not release candidates, such as "1.10.99.1", are
+not supported.
+
+If you are setting up the X Window System for the first time, it is often
+easier to begin with one of the open source drivers that ships with X.Org
+(either "vga", "vesa", or "fbdev"). Once your system is operating properly
+with the open source driver, you may then switch to the NVIDIA driver.
+
+These software packages may also be available through your Linux distributor.
+
+______________________________________________________________________________
+
+Chapter 3. Selecting and Downloading the NVIDIA Packages for Your System
+______________________________________________________________________________
+
+NVIDIA drivers can be downloaded from the NVIDIA website
+(http://www.nvidia.com).
+
+The NVIDIA graphics driver uses a Unified Driver Architecture: the single
+graphics driver supports all modern NVIDIA GPUs. "Legacy" GPU support has been
+moved from the unified driver to special legacy GPU driver releases. See
+Appendix A for a list of legacy GPUs.
+
+The NVIDIA graphics driver is bundled in a self-extracting package named
+'NVIDIA-Linux-x86_64-565.77.run'. On Linux-x86_64, that file contains
+both the 64-bit driver binaries as well as 32-bit compatibility driver
+binaries; the 'NVIDIA-Linux-x86_64-565.77-no-compat32.run' file only
+contains the 64-bit driver binaries.
+
+______________________________________________________________________________
+
+Chapter 4. Installing the NVIDIA Driver
+______________________________________________________________________________
+
+This chapter provides instructions for installing the NVIDIA driver. Note that
+after installation, but prior to using the driver, you must complete the steps
+described in Chapter 6. Additional details that may be helpful for the new
+Linux user are provided in Appendix I.
+
+
+4A. BEFORE YOU BEGIN
+
+Before you begin the installation, exit the X server and terminate all OpenGL
+applications (note that it is possible that some OpenGL applications persist
+even after the X server has stopped). You should also set the default run
+level on your system such that it will boot to a VGA console, and not directly
+to X. Doing so will make it easier to recover if there is a problem during the
+installation process. See Appendix I for details.
+
+If you're installing on a system that is set up to use the Nouveau driver,
+then you should first disable it before attempting to install the NVIDIA
+driver. See Interaction with the Nouveau Driver for details.
+
+
+4B. STARTING THE INSTALLER
+
+After you have downloaded the file 'NVIDIA-Linux-x86_64-565.77.run',
+change to the directory containing the downloaded file, and as the 'root' user
+run the executable:
+
+    # cd yourdirectory
+    # sh NVIDIA-Linux-x86_64-565.77.run
+
+The '.run' file is a self-extracting archive. When executed, it extracts the
+contents of the archive and runs the contained 'nvidia-installer' utility,
+which provides an interactive interface to walk you through the installation.
+
+ 'nvidia-installer' will also install itself to '/usr/bin/nvidia-installer',
+which may be used at some later time to uninstall drivers, auto-download
+updated drivers, etc. The use of this utility is detailed later in this
+chapter.
+
+You may also supply command line options to the '.run' file. Some of the more
+common options are listed below.
+
+Common '.run' Options
+
+--info
+
+    Print embedded info about the '.run' file and exit.
+
+--check
+
+    Check integrity of the archive and exit.
+
+--extract-only
+
+    Extract the contents of './NVIDIA-Linux-x86_64-565.77.run', but do
+    not run 'nvidia-installer'.
+
+--help
+
+    Print usage information for the common commandline options and exit.
+
+--advanced-options
+
+    Print usage information for common command line options as well as the
+    advanced options, and then exit.
+
+
+
+4C. INSTALLING THE KERNEL INTERFACE
+
+The NVIDIA kernel module has a kernel interface layer that must be compiled
+specifically for each kernel. NVIDIA distributes the source code to this
+kernel interface layer.
+
+When the installer is run, it will check your system for the required kernel
+sources and compile the kernel interface. You must have the source code for
+your kernel installed for compilation to work. On most systems, this means
+that you will need to locate and install the correct kernel-source,
+kernel-headers, or kernel-devel package; on some distributions, no additional
+packages are required.
+
+After the correct kernel interface has been compiled, the kernel interface
+will be linked with the closed-source portion of the NVIDIA kernel module.
+This requires that you have a linker installed on your system. The linker,
+usually '/usr/bin/ld', is part of the binutils package. You must have a linker
+installed prior to installing the NVIDIA driver.
+
+
+4D. REGISTERING THE NVIDIA KERNEL MODULE WITH DKMS
+
+The installer will check for the presence of DKMS on your system. If DKMS is
+found, you will be given the option of registering the kernel module with
+DKMS. On most systems with DKMS, DKMS will take care of automatically
+rebuilding registered kernel modules when installing a different Linux kernel.
+This is typically done by hooks that Linux distributions set up to be
+triggered as part of the kernel installation process. If your system is not
+configured to automatically run DKMS to rebuild kernel modules after
+installing a different kernel, you may run `dkms autoinstall` to trigger the
+process manually.
+
+Note that while DKMS is useful for rebuilding the kernel modules after a minor
+kernel update, such as typical maintenance and security updates that Linux
+distributions may publish on a regular basis, a major kernel update may
+require installing a newer NVIDIA driver, as changes to the kernel APIs may
+not be compatible with the existing driver version.
+
+On systems which require signed kernel modules, newer versions of DKMS may
+assist you in generating and enrolling a Machine Owner Key (MOK), so that
+future automated DKMS builds can reuse the already trusted signing keys. This
+is more convenient than having to create a new signature every time the kernel
+modules are rebuilt; however, it is slightly less secure, as the keys will be
+stored at a well-known location in your filesystem.
+
+
+4E. SIGNING THE NVIDIA KERNEL MODULE
+
+Some kernels may require that kernel modules be cryptographically signed by a
+key trusted by the kernel in order to be loaded. In particular, many
+distributions require modules to be signed when loaded into kernels running on
+UEFI systems with Secure Boot enabled. 'nvidia-installer' includes support for
+signing the kernel module before installation, to ensure that it can be loaded
+on such systems. Note that not all UEFI systems have Secure Boot enabled, and
+not all kernels running on UEFI Secure Boot systems will require signed kernel
+modules, so if you are uncertain about whether your system requires signed
+kernel modules, you may try installing the driver without signing the kernel
+module, to see if the unsigned kernel module can be loaded.
+
+In order to sign the kernel module, you will need a private signing key, and
+an X.509 certificate for the corresponding public key. The X.509 certificate
+must be trusted by the kernel before the module can be loaded: we recommend
+ensuring that the signing key be trusted before beginning the driver
+installation, so that the newly signed module can be used immediately. If you
+do not already have a key pair suitable for module signing use, you must
+generate one. Please consult your distribution's documentation for details on
+the types of keys suitable for module signing, and how to generate them.
+'nvidia-installer' can generate a key pair for you at install time, but it is
+preferable to have a key pair already generated and trusted by the kernel
+before installation begins.
+
+Once you have a key pair ready, you can use that key pair in
+'nvidia-installer' by passing the keys to the installer on the command line
+with the --module-signing-secret-key and --module-signing-public-key options.
+As an example, it is possible to install the driver with a signed kernel
+module in silent mode (i.e., non-interactively) by running:
+
+ # sh ./NVIDIA-Linux-x86_64-565.77.run -s \
+--module-signing-secret-key=/path/to/signing.key \
+--module-signing-public-key=/path/to/signing.x509
+
+In the example above, 'signing.key' and 'signing.x509' are a private/public
+key pair, and the public key is already enrolled in one of the kernel's
+trusted module signing key sources.
+
+On UEFI systems with secure boot enabled, nvidia-installer will present a
+series of interactive prompts to guide users through the module signing
+process. As an alternative to setting the key paths on the command line, the
+paths can be provided interactively in response to the prompts. These prompts
+will also appear when building the NVIDIA kernel module against a kernel which
+has CONFIG_MODULE_SIG_FORCE enabled in its configuration, or if the installer
+is run in expert mode.
+
+
+KEY SOURCES TRUSTED BY THE KERNEL
+
+In order to load a kernel module into a kernel that requires module
+signatures, the module must be signed by a key that the kernel trusts. There
+are several sources that a kernel may draw upon to build its pool of trusted
+keys. If you have generated a key pair, but it is not yet trusted by your
+kernel, you must add a certificate for your public key to a trusted key source
+before it can be used to verify signatures of signed kernel modules. These
+trusted sources include:
+
+Certificates embedded into the kernel image
+
+    On kernels with CONFIG_MODULE_SIG set, a certificate for the public key
+    used to sign the in-tree kernel modules is embedded, along with any
+    additional module signing certificates provided at build time, into the
+    kernel image. Modules signed by the private keys that correspond to the
+    embedded public key certificates will be trusted by the kernel.
+
+    Since the keys are embedded at build time, the only way to add a new
+    public key is to build a new kernel. On UEFI systems with Secure Boot
+    enabled, the kernel image will, in turn, need to be signed by a key that
+    is trusted by the bootloader, so users building their own kernels with
+    custom embedded keys should have a plan for making sure that the
+    bootloader will load the new kernel.
+
+Certificates stored in the UEFI firmware database
+
+    On kernels with CONFIG_MODULE_SIG_UEFI, in addition to any certificates
+    embedded into the kernel image, the kernel can use certificates stored in
+    the 'db', 'KEK', or 'PK' databases of the computer's UEFI firmware to
+    verify the signatures of kernel modules, as long as they are not in the
+    UEFI 'dbx' blacklist.
+
+    Any user who holds the private key for the Secure Boot 'PK', or any of the
+    keys in the 'KEK' list should be able to add new keys that can be used by
+    a kernel with CONFIG_MODULE_SIG_UEFI, and any user with physical access to
+    the computer should be able to delete any existing Secure Boot keys, and
+    install his or her own keys instead. Please consult the documentation for
+    your UEFI-based computer system for details on how to manage the UEFI
+    Secure Boot keys.
+
+Certificates stored in a supplementary key database
+
+    Some distributions include utilities that allow for the secure storage and
+    management of cryptographic keys in a database that is separate from the
+    kernel's built-in key list, and the key lists in the UEFI firmware. A
+    prominent example is the MOK (Machine Owner Key) database used by some
+    versions of the 'shim' bootloader, and the associated management
+    utilities, 'mokutil' and 'MokManager'.
+
+    Such a system allows users to enroll additional keys without the need to
+    build a new kernel or manage the UEFI Secure Boot keys. Please consult
+    your distribution's documentation for details on whether such a
+    supplementary key database is available, and if so, how to manage its
+    keys.
+
+
+
+GENERATING SIGNING KEYS IN NVIDIA-INSTALLER
+
+'nvidia-installer' can generate keys that can be used for module signing, if
+existing keys are not readily available. Note that a module signed by a newly
+generated key cannot be loaded into a kernel that requires signed modules
+until its key is trusted, and when such a module is installed on such a
+system, the installed driver will not be immediately usable, even if the
+installation was successful.
+
+When 'nvidia-installer' generates a key pair and uses it to sign a kernel
+module, an X.509 certificate containing the public key will be installed to
+disk, so that it can be added to one of the kernel's trusted key sources.
+'nvidia-installer' will report the location of the installed certificate: make
+a note of this location, and of the certificate's SHA1 fingerprint, so that
+you will be able to enroll the certificate and verify that it is correct,
+after the installation is finished.
+
+By default, 'nvidia-installer' will attempt to securely delete the generated
+private key with 'shred -u' after the module is signed. This is to prevent the
+key from being exploited to sign a malicious kernel module, but it also means
+that the same key can't be used again to install a different driver, or even
+to install the same driver on a different kernel. 'nvidia-installer' can
+optionally install the private signing key to disk, as it does with the public
+certificate, so that the key pair can be reused in the future.
+
+If you elect to install the private key, please make sure that appropriate
+precautions are taken to ensure that it cannot be stolen. Some examples of
+precautions you may wish to take:
+
+Prevent the key from being read by anybody without physical access to the
+computer
+
+    In general, physical access is required to install Secure Boot keys,
+    including keys managed outside of the standard UEFI key databases, to
+    prevent attackers who have remotely compromised the security of the
+    operating system from installing malicious boot code. If a trusted key is
+    available to remote users, even root, then it will be possible for an
+    attacker to sign arbitrary kernel modules without first having physical
+    access, making the system less secure.
+
+    One way to ensure that the key is not available to remote users is to keep
+    it on a removable storage medium, which is disconnected from the computer
+    except when signing modules.
+
+Do not store the unencrypted private key
+
+    Encrypting the private key can add an extra layer of security: the key
+    will not be useful for signing modules unless it can be successfully
+    decrypted, first. Make sure not to store unencrypted copies of the key on
+    persistent storage: either use volatile storage (e.g. a RAM disk), or
+    securely delete any unencrypted copies of the key when not in use (e.g.
+    using 'shred' instead of 'rm'). Note that using 'shred' may not be
+    sufficient to fully purge data from some storage devices, in particular,
+    some types of solid state storage.
+
+
+
+ALTERNATIVES TO THE INSTALLER'S MODULE SIGNING SUPPORT
+
+It is possible to load the NVIDIA kernel module on a system that requires
+signed modules, without using the installer's module signing support.
+Depending on your particular use case, you may find one of these alternatives
+more suitable than signing the module with 'nvidia-installer':
+
+Disable UEFI Secure Boot, if applicable
+
+    On some kernels, a requirement for signed modules is only enforced when
+    booted on a UEFI system with Secure Boot enabled. Some users of such
+    kernels may find it more convenient to disable Secure Boot; however, note
+    that this will reduce the security of your system by making it easier for
+    malicious users to install potentially harmful boot code, kernels, or
+    kernel modules.
+
+Use a kernel that doesn't require signed modules
+
+    The kernel can be configured not to check module signatures, or to check
+    module signatures, but allow modules without a trusted signature to be
+    loaded, anyway. Installing a kernel configured in such a way will allow
+    the installation of unsigned modules. Note that on Secure Boot systems,
+    you will still need to ensure that the kernel be signed with a key trusted
+    by the bootloader and/or boot firmware, and that a kernel that doesn't
+    enforce module signature verification may be slightly less secure than one
+    that does.
+
+
+
+4F. ADDING PRECOMPILED KERNEL INTERFACES TO THE INSTALLER PACKAGE
+
+When 'nvidia-installer' runs, it searches for a pre-compiled kernel interface
+layer for the target kernel: if one is found, then the complete kernel module
+can be produced by linking the precompiled interface with 'nv-kernel.o',
+instead of needing to compile the kernel interface on the target system.
+'nvidia-installer' includes a feature which allows users to add a precompiled
+interface to the installer package. This is useful in many use cases; for
+example, an administrator of a large group of similarly configured computers
+can prepare an installer package with a precompiled interface for the kernel
+running on those computers, then deploy the customized installer, which will
+be able to install the NVIDIA kernel module without needing to have the kernel
+development headers or a compiler installed on the target systems. (A linker
+is still required.)
+
+To use this feature, simply invoke the '.run' installer package with the
+--add-this-kernel option; e.g.
+
+ # sh ./NVIDIA-Linux-x86_64-565.77.run --add-this-kernel
+
+This will unpack 'NVIDIA-Linux-x86_64-565.77.run', compile a kernel
+interface layer for the currently running kernel (use the --kernel-source-path
+and --kernel-output-path options to specify a target kernel other than the
+currently running one), and create a new installer package with the kernel
+interface layer added.
+
+Administrators of large groups of similarly configured computers that are
+configured to require trusted signatures in order to load kernel modules may
+find this feature especially useful when combined with the built-in support
+for module signing in 'nvidia-installer'. To package a .run file with a
+precompiled kernel interface layer, plus a detached module signature for the
+linked module, just use the --module-signing-secret-key and
+--module-signing-public-key options alongside the --add-this-kernel option.
+The resulting package, besides being installable without kernel headers or a
+compiler on the target system, has the added benefit of being able to produce
+a signed module without needing access to the private key on the install
+target system. Note that the detached signature will only be valid if the
+result of linking the precompiled interface with 'nv-kernel.o' on the target
+system is exactly the same as the result of linking those two files on the
+system that was used to create the custom installer. To ensure optimal
+compatibility, the linker used on both the package preparation system and the
+install target system should be the same.
+
+
+4G. OTHER FEATURES OF THE INSTALLER
+
+Without options, the '.run' file executes the installer after unpacking it.
+The installer can be run as a separate step in the process, or can be run at a
+later time to get updates, etc. Some of the more important commandline options
+of 'nvidia-installer' are:
+
+'nvidia-installer' options
+
+--uninstall
+
+    During installation, the installer will make backups of any conflicting
+    files and record the installation of new files. The uninstall option
+    undoes an install, restoring the system to its pre-install state.
+
+--ui=none
+
+    The installer uses an ncurses-based user interface if it is able to locate
+    the correct ncurses library. Otherwise, it will fall back to a simple
+    commandline user interface. This option disables the use of the ncurses
+    library.
+
+
+______________________________________________________________________________
+
+Chapter 5. Listing of Installed Components
+______________________________________________________________________________
+
+The NVIDIA Accelerated Linux Graphics Driver consists of the following
+components (filenames in parentheses are the full names of the components
+after installation). Some paths may be different on different systems (e.g., X
+modules may be installed in /usr/X11R6/ rather than /usr/lib/xorg/).
+
+   o An X driver ('/usr/lib/xorg/modules/drivers/nvidia_drv.so'); this driver
+     is needed by the X server to use your NVIDIA hardware.
+
+   o A GLX extension module for X
+     ('/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so.565.77');
+     this module is used by the X server to provide server-side GLX support.
+
+   o EGL and OpenGL ES libraries ( '/usr/lib/libEGL.so.1',
+     '/usr/lib/libGLESv1_CM.so.565.77', and
+     '/usr/lib/libGLESv2.so.565.77' ); these libraries provide the API
+     entry points for all OpenGL ES and EGL function calls. They are loaded at
+     run-time by applications.
+
+   o A Wayland EGL external platform library
+     ('/usr/lib/libnvidia-egl-wayland.so.1') and its corresponding
+     configuration file (
+     '/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json' ); this
+     library provides client-side Wayland EGL application support using either
+     dmabuf or EGLStream buffer sharing protocols, as well as server-side
+     protocol extensions enabling the client-side EGLStream-based buffer
+     sharing path. The EGLStream path can only be used in combination with an
+     EGLStream-enabled Wayland compositor, e.g:
+     https://gitlab.freedesktop.org/ekurzinger/weston.
+
+     More information can be found along with the EGL external interface and
+     Wayland library source code at
+     https://github.com/NVIDIA/eglexternalplatform and
+     https://github.com/NVIDIA/egl-wayland.
+
+   o A GBM EGL external platform library ('/usr/lib/libnvidia-egl-gbm.so.1')
+     and its corresponding configuration file (
+     '/usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json' ); this
+     library provides GBM EGL application support.
+
+     The source code for the GBM EGL external platform library can be found at
+     https://github.com/NVIDIA/egl-gbm. See Chapter 40 for more details on GBM
+     support in the NVIDIA driver.
+
+   o Vendor neutral graphics libraries provided by libglvnd
+     ('/usr/lib/libOpenGL.so.0', '/usr/lib/libGLX.so.0', and
+     '/usr/lib/libGLdispatch.so.0'); these libraries are currently used to
+     provide full OpenGL dispatching support to NVIDIA's implementation of
+     EGL.
+
+     Source code for libglvnd is available at
+     https://github.com/NVIDIA/libglvnd
+
+   o GLVND vendor implementation libraries for GLX
+     ('/usr/lib/libGLX_nvidia.so.0') and EGL ('/usr/lib/libEGL_nvidia.so.0');
+     these libraries provide NVIDIA implementations of OpenGL functionality
+     which may be accessed using the GLVND client-facing libraries.
+
+      'libGLX_nvidia.so.0' and 'libEGL_nvidia.so.0' can be used as Vulkan
+     ICDs. The Vulkan ICD configuration file included with the driver
+     references 'libGLX_nvidia.so.0', however in environments where X11 client
+     libraries are not available, 'libEGL_nvidia.so.0' should be used.
+
+     The Vulkan ICD configuration file is installed as
+     '/etc/vulkan/icd.d/nvidia_icd.json'.
+
+     An additional Vulkan layer configuration file is installed as
+     '/etc/vulkan/implicit_layer.d/nvidia_layers.json'. These layers add
+     functionality to the Vulkan loader.
+
+   o A GLVND GLX client ICD loader library ('/usr/lib/libGL.so.1'), This
+     library provides API entry points for all GLX function calls, and is
+     loaded at run-time by applications.
+
+     This library is included as a convenience to support systems that do not
+     already have an existing libglvnd installation. On systems with libglvnd
+     libraries already installed, the existing libraries should be used
+     instead.
+
+   o Various libraries that are used internally by other driver components.
+     These include '/usr/lib/libnvidia-cfg.so.565.77',
+     '/usr/lib/libnvidia-eglcore.so.565.77',
+     '/usr/lib/libnvidia-glcore.so.565.77',
+     '/usr/lib/libnvidia-glsi.so.565.77',
+     '/usr/lib/libnvidia-glvkspirv.so.565.77',
+     '/usr/lib/libnvidia-gpucomp.so.565.77',
+     '/usr/lib/libnvidia-rtcore.so.565.77', and
+     '/usr/lib/libnvidia-allocator.so.565.77'.
+
+   o A VDPAU (Video Decode and Presentation API for Unix-like systems) library
+     for the NVIDIA vendor implementation,
+     ('/usr/lib/vdpau/libvdpau_nvidia.so.565.77'); see Appendix G for
+     details.
+
+   o The CUDA library ('/usr/lib/libcuda.so.565.77') which provides
+     runtime support for CUDA (high-performance computing on the GPU)
+     applications.
+
+   o The CUDA Debugger library ('/usr/lib/libcudadebugger.so.565.77')
+     which provides support for debugging CUDA applications.
+
+   o Cryptography library wrappers,
+     ('/usr/lib/libnvidia-pkcs11.so.565.77') and
+     ('/usr/lib/libnvidia-pkcs11.openssl3.so.565.77'), which dynamically
+     link to the system's OpenSSL libraries and provide cryptography
+     operations when the GPU and driver are operating in Confidential Compute
+     mode. The driver attempts to use OpenSSL 3 first and if OpenSSL 3 is not
+     available then it will attempt to use OpenSSL 1.1.
+
+   o The PTX JIT Compiler library
+     ('/usr/lib/libnvidia-ptxjitcompiler.so.565.77') is a JIT compiler
+     which compiles PTX into GPU machine code and is used by the CUDA driver.
+
+   o The NVVM Compiler library ('/usr/lib/libnvidia-nvvm.so.4.0.0') is loaded
+     by the CUDA driver to do JIT link-time-optimization.
+
+   o Two OpenCL libraries ('/usr/lib/libOpenCL.so.1.0.0',
+     '/usr/lib/libnvidia-opencl.so.565.77'); the former is a
+     vendor-independent Installable Client Driver (ICD) loader, and the latter
+     is the NVIDIA Vendor ICD. A config file '/etc/OpenCL/vendors/nvidia.icd'
+     is also installed, to advertise the NVIDIA Vendor ICD to the ICD Loader.
+
+   o The 'nvidia-cuda-mps-control' and 'nvidia-cuda-mps-server' applications,
+     which allow MPI processes to run concurrently on a single GPU.
+
+   o A kernel module ('/lib/modules/`uname
+     -r`/kernel/drivers/video/nvidia-modeset.ko'); this kernel module is
+     responsible for programming the display engine of the GPU. User-mode
+     NVIDIA driver components such as the NVIDIA X driver, OpenGL driver, and
+     VDPAU driver communicate with nvidia-modeset.ko through the
+     /dev/nvidia-modeset device file.
+
+   o A kernel module ('/lib/modules/`uname
+     -r`/kernel/drivers/video/nvidia.ko'); this kernel module provides
+     low-level access to your NVIDIA hardware for all of the above components.
+     It is generally loaded into the kernel when the X server is started, and
+     is used by the X driver and OpenGL. nvidia.ko consists of two pieces: the
+     binary-only core, and a kernel interface that must be compiled
+     specifically for your kernel version. Note that the Linux kernel does not
+     have a consistent binary interface like the X server, so it is important
+     that this kernel interface be matched with the version of the kernel that
+     you are using. This can either be accomplished by compiling yourself, or
+     using precompiled binaries provided for the kernels shipped with some of
+     the more common Linux distributions.
+
+   o NVIDIA Unified Memory kernel module ('/lib/modules/`uname
+     -r`/kernel/drivers/video/nvidia-uvm.ko'); this kernel module provides
+     functionality for sharing memory between the CPU and GPU in CUDA
+     programs. It is generally loaded into the kernel when a CUDA program is
+     started, and is used by the CUDA driver on supported platforms.
+
+   o The nvidia-tls library ('/usr/lib/libnvidia-tls.so.565.77'); this
+     file provides thread local storage support for the NVIDIA OpenGL
+     libraries (libGLX_nvidia, libnvidia-glcore, and libglxserver_nvidia).
+
+   o The nvidia-ml library ('/usr/lib/libnvidia-ml.so.565.77'); The
+     NVIDIA Management Library provides a monitoring and management API. See
+     Chapter 28 for more information.
+
+   o The application nvidia-installer ('/usr/bin/nvidia-installer') is
+     NVIDIA's tool for installing and updating NVIDIA drivers. See Chapter 4
+     for a more thorough description.
+
+     Source code is available at
+     https://download.nvidia.com/XFree86/nvidia-installer/.
+
+   o The application nvidia-modprobe ('/usr/bin/nvidia-modprobe') is installed
+     as setuid root and is used to load the NVIDIA kernel module, create the
+     '/dev/nvidia*' device nodes and configure certain runtime settings in the
+     kernel by processes (such as CUDA applications) that don't run with
+     sufficient privileges to do those things themselves.
+
+     Source code is available at
+     https://download.nvidia.com/XFree86/nvidia-modprobe/.
+
+   o The application nvidia-xconfig ('/usr/bin/nvidia-xconfig') is NVIDIA's
+     tool for manipulating X server configuration files. See Chapter 6 for
+     more information.
+
+     Source code is available at
+     https://download.nvidia.com/XFree86/nvidia-xconfig/.
+
+   o The application nvidia-settings ('/usr/bin/nvidia-settings') is NVIDIA's
+     tool for dynamic configuration while the X server is running. See Chapter
+     25 for more information.
+
+   o The libnvidia-gtk libraries ('/usr/lib/libnvidia-gtk2.so.565.77' and
+     '/usr/lib/libnvidia-gtk3.so.565.77'); these libraries are required
+     to provide the nvidia-settings user interface.
+
+     Source code is available at
+     https://download.nvidia.com/XFree86/nvidia-settings/.
+
+   o The application nvidia-smi ('/usr/bin/nvidia-smi') is the NVIDIA System
+     Management Interface for management and monitoring functionality. See
+     Chapter 27 for more information.
+
+   o The application nvidia-debugdump ('/usr/bin/nvidia-debugdump') is
+     NVIDIA's tool for collecting internal GPU state. It is normally invoked
+     by the nvidia-bug-report.sh ('/usr/bin/nvidia-bug-report.sh') script. See
+     Chapter 29 for more information.
+
+   o The daemon nvidia-persistenced ('/usr/bin/nvidia-persistenced') is the
+     NVIDIA Persistence Daemon for allowing the NVIDIA kernel module to
+     maintain persistent state when no other NVIDIA driver components are
+     running. See Chapter 30 for more information.
+
+     Source code is available at
+     https://download.nvidia.com/XFree86/nvidia-persistenced/.
+
+   o The NVCUVID library ('/usr/lib/libnvcuvid.so.565.77'); The NVIDIA
+     CUDA Video Decoder (NVCUVID) library provides an interface to hardware
+     video decoding capabilities on NVIDIA GPUs with CUDA.
+
+   o The NvEncodeAPI library ('/usr/lib/libnvidia-encode.so.565.77'); The
+     NVENC Video Encoding library provides an interface to video encoder
+     hardware on supported NVIDIA GPUs.
+
+   o The NVAPI library ('/usr/lib/libnvidia-api.so.1;'); NVAPI provides an
+     interface for managing properties of GPUs. The NVAPI library provides
+     runtime support for NVAPI applications.
+
+   o The NvFBC library ('/usr/lib/libnvidia-fbc.so.565.77'); The NVIDIA
+     Framebuffer Capture library provides an interface to capture and
+     optionally encode the framebuffer of an X server screen.
+
+   o An X driver configuration file
+     ('/usr/share/X11/xorg.conf.d/nvidia-drm-outputclass.conf'); If the X
+     server is sufficiently new, this file will be installed to configure the
+     X server to load the 'nvidia_drv.so' driver automatically if it is
+     started after the NVIDIA DRM kernel module ('nvidia-drm.ko') is loaded.
+     This feature is supported in X.Org xserver 1.16 and higher when running
+     on Linux kernel 3.13 or higher with CONFIG_DRM enabled.
+
+   o Predefined application profile keys and documentation for those keys can
+     be found in the following files in the directory '/usr/share/nvidia/':
+     'nvidia-application-profiles-565.77-rc',
+     'nvidia-application-profiles-565.77-key-documentation'.
+
+     See Appendix J for more information.
+
+   o The OptiX library ('/usr/lib/libnvoptix.so.1'); This library implements
+     the OptiX ray tracing engine. It is loaded by the 'liboptix.so.*' library
+     bundled with applications that use the OptiX API.
+
+     OptiX also includes a data file '/usr/share/nvidia/nvoptix.bin'.
+
+   o The NVIDIA Optical Flow library
+     ('/usr/lib/libnvidia-opticalflow.so.565.77'); The NVIDIA Optical
+     Flow library can be used for hardware-accelerated computation of optical
+     flow vectors and stereo disparity values on Turing and later NVIDIA GPUs.
+     This is useful for some forms of computer vision and image analysis. The
+     Optical Flow library depends on the NVCUVID library, which in turn
+     depends on the CUDA library.
+
+   o NGX ('/usr/lib/libnvidia-ngx.so.565.77'); and the NVIDIA NGX Updater
+     ('/usr/bin/nvidia-ngx-updater'); NGX is a collection of software which
+     provides AI features to applications. On Linux this is supported only
+     with x86_64 applications. Developers interested in using NGX in their
+     applications should visit the following resources:
+     
+        o  https://developer.nvidia.com/rtx/ngx
+     
+        o  https://developer.nvidia.com/dlss
+     
+     NGX comes with nvidia-ngx-updater, a binary which updates NGX features
+     without requiring a full application update. By default this
+     functionality is disabled on Linux and needs to be enabled via a
+     configuration file; see Chapter 38 for details.
+
+   o A kernel module ('/lib/modules/`uname
+     -r`/kernel/drivers/video/nvidia-peermem.ko'); this kernel module allows
+     Mellanox HCAs access to NVIDIA GPU memory read/write buffers without
+     needing to copy data to host memory. See Chapter 42 for more information.
+
+   o NGX for Proton and Wine ('/usr/lib/nvidia/wine/nvngx.dll');
+     ('/usr/lib/nvidia/wine/_nvngx.dll');
+
+     NGX for Proton and Wine is a Microsoft Windows dynamic-link library used
+     by Microsoft Windows applications which support NVIDIA DLSS.
+
+     In addition to driver-side support, changes to third-party software are
+     required in order to support DLSS within Proton and Wine.
+
+   o Firmware ('/lib/firmware/nvidia/565.77/gsp_*.bin') which offloads
+     tasks from the CPU to the GPU. See Chapter 43 for more information.
+
+   o VulkanSC ICD ('/usr/lib/libnvidia-vksc-core.so.1'), which provides
+     NVIDIA's implementation of VulkanSC. More information about VulkanSC can
+     be found at https://www.khronos.org/vulkansc/ .
+
+     Pipeline Cache Compiler ('/usr/bin/nvidia-pcc'), which enables offline
+     shader compilation for VulkanSC.
+
+     The VulkanSC ICD configuration file is installed as
+     '/etc/vulkansc/icd.d/nvidia_icd.json'.
+
+     VulkanSC support is only provided in x86_64 driver packages. Note that
+     the VulkanSC ICD distributed in this package is intended for development
+     purposes only, and is NOT safety certified.
+
+
+Problems will arise if applications use the wrong version of a library. This
+can be the case if there are either old libGL libraries or stale symlinks left
+lying around. If you think there may be something awry in your installation,
+check that the following files are in place (these are all the files of the
+NVIDIA Accelerated Linux Graphics Driver, as well as their symlinks):
+
+    /usr/lib/xorg/modules/drivers/nvidia_drv.so
+
+    /usr/lib/xorg/modules/extensions/libglxserver_nvidia.so.565.77
+    /usr/lib/xorg/modules/extensions/libglxserver_nvidia.so ->
+libglxserver_nvidia.so.565.77
+
+    /usr/lib/libGL.so.1.0.0;
+    /usr/lib/libGL.so.1 -> libGL.so.1.0.0;
+    /usr/lib/libGL.so -> libGL.so.1
+
+    (libGL.so.1.0.0 is the name of the libglvnd client-side GLX ICD loader
+    library included with the NVIDIA Linux driver. A compatible ICD loader
+    provided by your distribution may have a slightly different filename.)
+
+    /usr/lib/libnvidia-glcore.so.565.77
+
+    /usr/lib/libcuda.so.565.77
+    /usr/lib/libcuda.so -> libcuda.so.565.77
+
+    /lib/modules/`uname -r`/video/nvidia.{o,ko}, or
+    /lib/modules/`uname -r`/kernel/drivers/video/nvidia.{o,ko}
+
+If there are other libraries whose "soname" conflicts with that of the NVIDIA
+libraries, ldconfig may create the wrong symlinks. It is recommended that you
+manually remove or rename conflicting libraries (be sure to rename clashing
+libraries to something that ldconfig will not look at -- we have found that
+prepending "XXX" to a library name generally does the trick), rerun
+'ldconfig', and check that the correct symlinks were made. An example of a
+library that often creates conflicts is "/usr/lib/mesa/libGL.so*".
+
+If the libraries appear to be correct, then verify that the application is
+using the correct libraries. For example, to check that the application
+/usr/bin/glxgears is using the libglvnd GLX libraries, run:
+
+    % ldd /usr/bin/glxgears
+    linux-vdso.so.1 (0x00007ffc8a5d4000)
+    libGL.so.1 => /usr/lib/x86_64-linux-gnu/libGL.so.1 (0x00007f6593896000)
+    libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f65934f8000)
+    libX11.so.6 => /usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007f65931c0000)
+    libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f6592dcf000)
+    libGLX.so.0 => /usr/lib/x86_64-linux-gnu/libGLX.so.0 (0x00007f6592b9e000)
+    libGLdispatch.so.0 => /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0
+(0x00007f65928e8000)
+    libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0
+(0x00007f65926c9000)
+    /lib64/ld-linux-x86-64.so.2 (0x00007f6593d28000)
+    libxcb.so.1 => /usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007f65924a1000)
+    libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f659229d000)
+    libXau.so.6 => /usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007f6592099000)
+    libXdmcp.so.6 => /usr/lib/x86_64-linux-gnu/libXdmcp.so.6
+(0x00007f6591e93000)
+    libbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x00007f6591c7e000)
+    librt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x00007f6591a76000)
+
+In the example above, the list of libraries reported by 'ldd' includes
+'libGLX.so.0' and 'libGLdispatch.so.0'. If the GLX client library is something
+other than the GLVND 'libGL.so.1', then you will need to either remove the
+library that is getting in the way or adjust your dynamic loader search path
+using the 'LD_LIBRARY_PATH' environment variable. You may want to consult the
+man pages for 'ldconfig' and 'ldd'.
+
+______________________________________________________________________________
+
+Chapter 6. Configuring X for the NVIDIA Driver
+______________________________________________________________________________
+
+The X configuration file provides a means to configure the X server. This
+section describes the settings necessary to enable the NVIDIA driver. A
+comprehensive list of parameters is provided in Appendix B.
+
+The NVIDIA Driver includes a utility called nvidia-xconfig, which is designed
+to make editing the X configuration file easy. You can also edit it by hand.
+
+
+6A. USING NVIDIA-XCONFIG TO CONFIGURE THE X SERVER
+
+nvidia-xconfig will find the X configuration file and modify it to use the
+NVIDIA X driver. In most cases, you can simply answer "Yes" when the installer
+asks if it should run it. If you need to reconfigure your X server later, you
+can run nvidia-xconfig again from a terminal. nvidia-xconfig will make a
+backup copy of your configuration file before modifying it.
+
+Note that the X server must be restarted for any changes to its configuration
+file to take effect.
+
+More information about nvidia-xconfig can be found in the nvidia-xconfig
+manual page by running.
+
+    % man nvidia-xconfig
+
+
+
+
+6B. MANUALLY EDITING THE CONFIGURATION FILE
+
+If you do not have a working X config file, there are a few different ways to
+obtain one. A sample config file is included both with the X.Org distribution
+and with the NVIDIA driver package (at '/usr/share/doc/NVIDIA_GLX-1.0/'). The
+'nvidia-xconfig' utility, provided with the NVIDIA driver package, can
+generate a new X configuration file. Additional information on the X config
+syntax can be found in the xorg.conf manual page (`man xorg.conf`).
+
+If you have a working X config file for a different driver (such as the "vesa"
+or "fbdev" driver), then simply edit the file as follows.
+
+Remove the line:
+
+      Driver "vesa"
+  (or Driver "fbdev")
+
+and replace it with the line:
+
+    Driver "nvidia"
+
+Remove the following lines:
+
+    Load "dri"
+    Load "GLCore"
+
+In the "Module" section of the file, add the line (if it does not already
+exist):
+
+    Load "glx"
+
+If the X config file does not have a "Module" section, you can safely skip the
+last step.
+
+There are numerous options that may be added to the X config file to tune the
+NVIDIA X driver. See Appendix B for a complete list of these options.
+
+Once you have completed these edits to the X config file, you may restart X
+and begin using the accelerated OpenGL libraries. After restarting X, any
+OpenGL application should automatically use the new NVIDIA libraries. (NOTE:
+If you encounter any problems, see Chapter 8 for common problem diagnoses.)
+
+
+6C. RESTORING THE X CONFIGURATION AFTER UNINSTALLING THE DRIVER
+
+If X is explicitly configured to use the NVIDIA driver, then the X config file
+should be edited to use a different X driver after uninstalling the NVIDIA
+driver. Otherwise, X may fail to start, since the driver it was configured to
+use will no longer be present on the system after uninstallation.
+
+If you edited the file manually, revert any edits you made. If you used the
+'nvidia-xconfig' utility, either by answering "Yes" when prompted to configure
+the X server by the installer, or by running it manually later on, then you
+may restore the backed-up X config file, if it exists and reflects the X
+config state that existed before the NVIDIA driver was installed.
+
+If you do not recall any manual changes that you made to the file, or do not
+have a backed-up X config file that uses a non-NVIDIA X driver, you may want
+to try simply renaming the X configuration file, to see if your X server loads
+a sensible default.
+
+______________________________________________________________________________
+
+Chapter 7. Frequently Asked Questions
+______________________________________________________________________________
+
+This section provides answers to frequently asked questions associated with
+the NVIDIA Linux x86_64 Driver and its installation. Common problem diagnoses
+can be found in Chapter 8 and tips for new users can be found in Appendix I.
+Also, detailed information for specific setups is provided in the Appendices.
+
+
+NVIDIA-INSTALLER
+
+Q. How do I extract the contents of the '.run' without actually installing the
+   driver?
+
+A. Run the installer as follows:
+   
+       # sh NVIDIA-Linux-x86_64-565.77.run --extract-only
+   
+   This will create the directory NVIDIA-Linux-x86_64-565.77, containing
+   the uncompressed contents of the '.run' file.
+
+
+Q. How can I see the source code to the kernel interface layer?
+
+A. The source files to the kernel interface layer are in the kernel directory
+   of the extracted .run file. To get to these sources, run:
+   
+       # sh NVIDIA-Linux-x86_64-565.77.run --extract-only
+       # cd NVIDIA-Linux-x86_64-565.77/kernel/
+   
+   
+
+Q. How and when are the NVIDIA device files created?
+
+A. When a user-space NVIDIA driver component needs to communicate with the
+   NVIDIA kernel module, and the NVIDIA character device files do not yet
+   exist, the user-space component will first attempt to load the kernel
+   module and create the device files itself.
+
+   Device file creation and kernel module loading generally require root
+   privileges. The X driver, running within a setuid root X server, will have
+   these privileges, but not, e.g., the CUDA driver within the environment of
+   a normal user.
+
+   If the user-space NVIDIA driver component cannot load the kernel module or
+   create the device files itself, it will attempt to invoke the setuid root
+   nvidia-modprobe utility, which will perform these operations on behalf of
+   the non-privileged driver.
+
+   See the nvidia-modprobe(1) man page, or its source code, available here:
+   https://download.nvidia.com/XFree86/nvidia-modprobe/
+
+   When possible, it is recommended to use your Linux distribution's native
+   mechanisms for managing kernel module loading and device file creation.
+   nvidia-modprobe is provided as a fallback to work out-of-the-box in a
+   distribution-independent way.
+
+   Whether a user-space NVIDIA driver component does so itself, or invokes
+   nvidia-modprobe, it will default to creating the device files with the
+   following attributes:
+   
+         UID:  0     - 'root'
+         GID:  0     - 'root'
+         Mode: 0666  - 'rw-rw-rw-'
+   
+   Existing device files are changed if their attributes don't match these
+   defaults. If you want the NVIDIA driver to create the device files with
+   different attributes, you can specify them with the "NVreg_DeviceFileUID"
+   (user), "NVreg_DeviceFileGID" (group) and "NVreg_DeviceFileMode" NVIDIA
+   Linux kernel module parameters.
+
+   For example, the NVIDIA driver can be instructed to create device files
+   with UID=0 (root), GID=44 (video) and Mode=0660 by passing the following
+   module parameters to the NVIDIA Linux kernel module:
+   
+         NVreg_DeviceFileUID=0
+         NVreg_DeviceFileGID=44
+         NVreg_DeviceFileMode=0660
+   
+   The "NVreg_ModifyDeviceFiles" NVIDIA kernel module parameter will disable
+   dynamic device file management, if set to 0.
+
+
+Q. Why does NVIDIA not provide RPMs?
+
+A. Not every Linux distribution uses RPM, and NVIDIA provides a single
+   solution that works across all Linux distributions. NVIDIA encourages Linux
+   distributions to repackage and redistribute the NVIDIA Linux driver in
+   their native package management formats. These repackaged NVIDIA drivers
+   are likely to inter-operate best with the Linux distribution's package
+   management technology. For this reason, NVIDIA encourages users to use
+   their distribution's repackaged NVIDIA driver, where available.
+
+
+Q. What is the significance of the '-no-compat32' suffix on Linux-x86_64
+   '.run' files?
+
+A. To distinguish between Linux-x86_64 driver package files that do or do not
+   also contain 32-bit compatibility libraries, "-no-compat32" is be appended
+   to the latter. 'NVIDIA-Linux-x86_64-565.77.run' contains both 64-bit
+   and 32-bit driver binaries; but
+   'NVIDIA-Linux-x86_64-565.77-no-compat32.run' omits the 32-bit
+   compatibility libraries.
+
+
+Q. Can I add my own precompiled kernel interfaces to a '.run' file?
+
+A. Yes, the --add-this-kernel  '.run' file option will unpack the '.run' file,
+   build a precompiled kernel interface for the currently running kernel, and
+   repackage the '.run' file, appending '-custom' to the filename. This may be
+   useful, for example. if you administer multiple Linux computers, each
+   running the same kernel.
+
+
+Q. Where can I find the source code for the 'nvidia-installer' utility?
+
+A. The 'nvidia-installer' utility is released under the GPL. The source code
+   for the version of nvidia-installer built with driver 565.77 is in
+   'nvidia-installer-565.77.tar.bz2' available here:
+   https://download.nvidia.com/XFree86/nvidia-installer/
+
+
+
+NVIDIA DRIVER
+
+Q. Where should I start when diagnosing display problems?
+
+A. One of the most useful tools for diagnosing problems is the X log file in
+   '/var/log'. Lines that begin with "(II)" are information, "(WW)" are
+   warnings, and "(EE)" are errors. You should make sure that the correct
+   config file (i.e. the config file you are editing) is being used; look for
+   the line that begins with:
+   
+       (==) Using config file:
+   
+   Also make sure that the NVIDIA driver is being used, rather than another
+   driver. Search for
+   
+       (II) LoadModule: "nvidia"
+   
+   Lines from the driver should begin with:
+   
+       (II) NVIDIA(0)
+   
+   
+
+Q. How can I increase the amount of data printed in the X log file?
+
+A. By default, the NVIDIA X driver prints relatively few messages to stderr
+   and the X log file. If you need to troubleshoot, then it may be helpful to
+   enable more verbose output by using the X command line options -verbose and
+   -logverbose, which can be used to set the verbosity level for the 'stderr'
+   and log file messages, respectively. The NVIDIA X driver will output more
+   messages when the verbosity level is at or above 5 (X defaults to verbosity
+   level 1 for 'stderr' and level 3 for the log file). So, to enable verbose
+   messaging from the NVIDIA X driver to both the log file and 'stderr', you
+   could start X with the verbosity level set to 5, by doing the following
+   
+       % startx -- -verbose 5 -logverbose 5
+   
+   
+
+Q. What is NVIDIA's policy towards development series Linux kernels?
+
+A. NVIDIA does not officially support development series kernels. However, all
+   the kernel module source code that interfaces with the Linux kernel is
+   available in the 'kernel/' directory of the '.run' file. NVIDIA encourages
+   members of the Linux community to develop patches to these source files to
+   support development series kernels. A web search will most likely yield
+   several community supported patches.
+
+
+Q. Where can I find the tarballs?
+
+A. Plain tarballs are not available. The '.run' file is a tarball with a shell
+   script prepended. You can execute the '.run' file with the --extract-only
+   option to unpack the tarball.
+
+
+Q. How do I tell if I have my kernel sources installed?
+
+A. If you are running on a distro that uses RPM (Red Hat, Mandriva, SuSE,
+   etc), then you can use 'rpm' to tell you. At a shell prompt, type:
+   
+       % rpm -qa | grep kernel
+   
+   and look at the output. You should see a package that corresponds to your
+   kernel (often named something like kernel-2.6.15-7) and a kernel source
+   package with the same version (often named something like
+   kernel-devel-2.6.15-7). If none of the lines seem to correspond to a source
+   package, then you will probably need to install it. If the versions listed
+   mismatch (e.g., kernel-2.6.15-7 vs. kernel-devel-2.6.15-10), then you will
+   need to update the kernel-devel package to match the installed kernel. If
+   you have multiple kernels installed, you need to install the kernel-devel
+   package that corresponds to your RUNNING kernel (or make sure your
+   installed source package matches the running kernel). You can do this by
+   looking at the output of 'uname -r' and matching versions.
+
+
+Q. What is SELinux and how does it interact with the NVIDIA driver ?
+
+A. Security-Enhanced Linux (SELinux) is a set of modifications applied to the
+   Linux kernel and utilities that implement a security policy architecture.
+   When in use it requires that the security type on all shared libraries be
+   set to 'shlib_t'. The installer detects when to set the security type, and
+   sets it on all shared libraries it installs. The option --force-selinux
+   passed to the '.run' file overrides the detection of when to set the
+   security type.
+
+
+Q. Why does X use so much memory?
+
+A. When measuring any application's memory usage, you must be careful to
+   distinguish between physical system RAM used and virtual mappings of shared
+   resources. For example, most shared libraries exist only once in physical
+   memory but are mapped into multiple processes. This memory should only be
+   counted once when computing total memory usage. In the same way, the video
+   memory on a graphics card or register memory on any device can be mapped
+   into multiple processes. These mappings do not consume normal system RAM.
+
+   This has been a frequently discussed topic on XFree86 mailing lists; see,
+   for example:
+
+    http://marc.theaimsgroup.com/?l=xfree-xpert&m=96835767116567&w=2
+
+   Additionally, the nvidia X driver reserves virtual memory ranges that will
+   never be backed by physical memory to use for addressing video memory that
+   isn't directly mapped to the CPU. The amount of virtual memory reserved for
+   this purpose will vary depending on GPU capabilities, and is printed to the
+   X log:
+   
+       [  1859.106] (II) NVIDIA: Reserving 24576.00 MB of virtual memory for
+       [  1859.106] (II) NVIDIA:     indirect memory access.
+   
+   
+   The 'pmap' utility described in the above thread is available in the
+   "procps" package shipped with most recent Linux distributions, and is a
+   useful tool in distinguishing between types of memory mappings. For
+   example, while 'top' may indicate that X is using several GB of memory, the
+   last line of output from the output of pmap (note that pmap may need to be
+   run as root):
+   
+       # pmap -d `pidof Xorg` | tail -n 1
+       mapped: 25435416K    writeable/private: 20908K    shared: 10768K
+   
+   reveals that X is really only using roughly 21MB of system RAM (the
+   "writeable/private" value).
+
+   Note, also, that X must allocate resources on behalf of X clients (the
+   window manager, your web browser, etc); the X server's memory usage will
+   increase as more clients request resources such as pixmaps, and decrease as
+   you close X applications.
+
+
+Q. Why do applications that use DGA graphics fail?
+
+A. The NVIDIA driver does not support the graphics component of the
+   XFree86-DGA (Direct Graphics Access) extension. Applications can use the
+   XDGASelectInput() function to acquire relative pointer motion, but
+   graphics-related functions such as XDGASetMode() and XDGAOpenFramebuffer()
+   will fail.
+
+   The graphics component of XFree86-DGA is not supported because it requires
+   a CPU mapping of framebuffer memory. As graphics cards ship with increasing
+   quantities of video memory, the NVIDIA X driver has had to switch to a more
+   dynamic memory mapping scheme that is incompatible with DGA. Furthermore,
+   DGA does not cooperate with other graphics rendering libraries such as Xlib
+   and OpenGL because it accesses GPU resources directly.
+
+   NVIDIA recommends that applications use OpenGL or Xlib, rather than DGA,
+   for graphics rendering. Using rendering libraries other than DGA will yield
+   better performance and improve interoperability with other X applications.
+
+
+Q. My kernel log contains messages that are prefixed with "Xid"; what do these
+   messages mean?
+
+A. "Xid" messages indicate that a general GPU error occurred, most often due
+   to the driver misprogramming the GPU or to corruption of the commands sent
+   to the GPU. These messages provide diagnostic information that can be used
+   by NVIDIA to aid in debugging reported problems.
+
+   Some information on how to interpret Xid messages is available here:
+   http://docs.nvidia.com/deploy/xid-errors/index.html
+
+
+Q. My kernel log contains the message "NVRM: Xid (...): 81, VGA Subsystem
+   Error." How can I fix this?
+
+A. In some extreme cases, the VGA console can hang if messages are printed to
+   a legacy VGA text console concurrently with applications that generate high
+   GPU memory traffic.
+
+   The solution to this problem is to not use a legacy VGA text console.
+   Instead, on capable systems, use pure UEFI mode (not Compatibility Support
+   Module (CSM)). On legacy SBIOS systems, use a framebuffer console such as
+   vesafb.
+
+
+Q. I use the Coolbits overclocking interface to adjust my graphics card's
+   clock frequencies, but the defaults are reset whenever X is restarted. How
+   do I make my changes persistent?
+
+A. Clock frequency settings are not saved/restored automatically by default to
+   avoid potential stability and other problems that may be encountered if the
+   chosen frequency settings differ from the defaults qualified by the
+   manufacturer. You can add an 'nvidia-settings' command to '~/.xinitrc' to
+   automatically apply custom clock frequency settings when the X server is
+   started. See the 'nvidia-settings(1)' manual page for more information on
+   setting clock frequency settings on the command line.
+
+
+Q. Why is the refresh rate not reported correctly by utilities that use the
+   XF86VidMode X extension and/or RandR X extension versions prior to 1.2
+   (e.g., `xrandr --q1`)?
+
+A. These extensions are not aware of multiple display devices on a single X
+   screen; they only see the MetaMode bounding box, which may contain one or
+   more actual modes. This means that if multiple MetaModes have the same
+   bounding box, these extensions will not be able to distinguish between
+   them. In order to support dynamic display configuration, the NVIDIA X
+   driver must make each MetaMode appear to be unique and accomplishes this by
+   using the refresh rate as a unique identifier.
+
+   You can use `nvidia-settings -q RefreshRate` to query the actual refresh
+   rate on each display device.
+
+
+Q. Why does starting certain applications result in Xlib error messages
+   indicating extensions like "XFree86-VidModeExtension" or "SHAPE" are
+   missing?
+
+A. If your X config file has a "Module" section that does not list the
+   "extmod" module, some X server extensions may be missing, resulting in
+   error messages of the form:
+   
+   Xlib: extension "SHAPE" missing on display ":0.0"
+   Xlib: extension "XFree86-VidModeExtension" missing on display ":0.0"
+   Xlib: extension "XFree86-DGA" missing on display ":0.0"
+   
+   You can solve this problem by adding the line below to your X config file's
+   "Module" section:
+   
+       Load "extmod"
+   
+   
+
+Q. Where can I find older driver versions?
+
+A. Please visit https://download.nvidia.com/XFree86/Linux-x86_64/
+
+
+Q. What is the format of a PCI Bus ID?
+
+A. Different tools have different formats for the PCI Bus ID of a PCI device.
+
+   The X server's "BusID" X configuration file option interprets the BusID
+   string in the format "bus@domain:device:function" (the "@domain" portion is
+   only needed if the PCI domain is non-zero), in decimal. More specifically,
+   
+   "%d@%d:%d:%d", bus, domain, device, function
+   
+   in printf(3) syntax. NVIDIA X driver logging, nvidia-xconfig, and
+   nvidia-settings match the X configuration file BusID convention.
+
+   The lspci(8) utility, in contrast, reports the PCI BusID of a PCI device in
+   the format "domain:bus:device.function", printing the values in
+   hexadecimal. More specifically,
+   
+   "%04x:%02x:%02x.%x", domain, bus, device, function
+   
+   in printf(3) syntax. The "Bus Location" reported in the information file
+   matches the lspci format. Also, the name of per-GPU directory in
+   /proc/driver/nvidia/gpus is the same as the corresponding GPU's PCI BusID
+   in lspci format.
+
+   On systems where both an integrated GPU and a PCI slot are present, setting
+   the "BusID" option to "AXI" selects the integrated GPU. By default, not
+   specifying this option or setting it to an empty string selects a discrete
+   GPU if available, the integrated GPU otherwise.
+
+
+Q. Why doesn't the NVIDIA X driver make more display resolutions and refresh
+   rates available via RandR?
+
+A. Prior to the 302.* driver series, the list of modes reported to
+   applications by the NVIDIA X driver was not limited to the list of modes
+   natively supported by a display device. In order to expose the largest
+   possible set of modes on digital flat panel displays, which typically do
+   not accept arbitrary mode timings, the driver maintained separate sets of
+   "front-end" and "back-end" mode timings, and scaled between them to
+   simulate the availability of more modes than would otherwise be supported.
+
+   Front-end timings were the values reported to applications, and back-end
+   timings were what was actually sent to the display. Both sets of timings
+   went through the full mode validation process, with the back-end timings
+   having the additional constraint that they must be provided by the
+   display's EDID, as only EDID-provided modes can be safely assumed to be
+   supported by the display hardware. Applications could request any available
+   front-end timings, which the driver would implicitly scale to either the
+   "best fit" or "native" mode timings. For example, an application might
+   request an 800x600 @ 60 Hz mode and the driver would provide it, but the
+   real mode sent to the display would be 1920x1080 @ 30 Hz. While the
+   availability of modes beyond those natively supported by a display was
+   convenient for some uses, it created several problems. For example:
+   
+      o The complete front-end timings were reported to applications, but
+        only the width and height were actually used. This could cause
+        confusion because in many cases, changing the front-end timings did
+        not change the back-end timings. This was especially confusing when
+        trying to change the refresh rate, because the refresh rate in the
+        front-end timings was ignored, but was still reported to
+        applications.
+   
+      o The front-end timings reported to the user could be different from
+        the backend timings reported in the display device's on screen
+        display, leading to user confusion. Finding out the back-end timings
+        (e.g. to find the real refresh rate) required using the
+        NVIDIA-specific NV-CONTROL X extension.
+   
+      o The process by which back-end timings were selected for use with any
+        given front-end timings was not transparent to users, and this
+        process could only be explicitly configured with NVIDIA-specific
+        xorg.conf options or the NV-CONTROL X extension. Confusion over how
+        changing front-end timings could affect the back-end timings was
+        especially problematic in use cases that were sensitive to the
+        timings the display device receives, such as NVIDIA 3D Vision.
+   
+      o User-specified modes underwent normal mode validation, even though
+        the timings in those modes were not used. For example, a 1920x1080 @
+        100 Hz mode might fail the VertRefresh check, even though the
+        back-end timings might actually be 1920x1080 @ 30 Hz.
+   
+   
+   Version 1.2 of the X Resize and Rotate extension (henceforth referred to as
+   "RandR 1.2") allows configuration of display scaling in a much more
+   flexible and standardized way. The protocol allows applications to choose
+   exactly which (back-end) mode timing is used, and exactly how the screen is
+   scaled to fill that mode. It also allows explicit control over which
+   displays are enabled, and which portions of the screen they display. This
+   also provides much-needed transparency: the mode timings reported by RandR
+   1.2 are the actual mode timings being sent to the display. However, this
+   means that only modes actually supported by the display are reported in the
+   RandR 1.2 mode list. Scaling configurations, such as the 800x600 to
+   1920x1080 example above, need to be configured via the RandR 1.2 transform
+   feature. Adding implicitly scaled modes to the mode list would conflict
+   with the transform configuration options and reintroduce the same problems
+   that the previous front-end/back-end timing system had.
+
+   With the introduction of RandR 1.2 support to the 302.* driver series, the
+   front-end/back-end timing system was abandoned, and the list of mode
+   timings exposed by the NVIDIA X driver was simplified to include only those
+   modes which would actually be driven by the hardware. Although it remained
+   possible to manually configure all of the scaling configurations that were
+   previously possible, and many scaling configurations which were previously
+   impossible, this change resulted in some inconvenient losses of
+   functionality:
+   
+      o Applications which used RandR 1.1 or earlier or XF86VidMode to set
+        modes no longer had the implicitly scaled front-end timings available
+        to them. Many displays have EDIDs which advertise only the display's
+        native resolution, or a list of resolutions that is otherwise small,
+        compared to the list that would previously have been exposed as
+        front-end timings, preventing these applications from setting modes
+        that were possible with previous versions of the NVIDIA driver.
+   
+      o The 'nvidia-settings' control panel, which formerly listed all
+        available front-end modes for displays in its X Server Display
+        Configuration page, only listed the actual back-end modes.
+   
+   
+   Subsequent driver releases restored some of this functionality without
+   reverting to the front-end/back-end system:
+   
+      o The NVIDIA X driver now builds a list of "Implicit MetaModes", which
+        implicitly scale many common resolutions to a mode that is supported
+        by the display. These modes are exposed to applications which use
+        RandR 1.1 and XF86VidMode, as neither supports the scaling or other
+        transform capabilities of RandR 1.2.
+   
+      o The resolution list in the 'nvidia-settings' X Server Display
+        Configuration page now includes explicitly scaled modes for many
+        common resolutions which are not directly supported by the display.
+        To reduce confusion, the scaled modes are identified as being scaled,
+        and it is not possible to set a refresh rate for any of the scaled
+        modes.
+   
+   
+   As mentioned previously, the RandR 1.2 mode list contains only modes which
+   are supported by the display. Modern applications that wish to set modes
+   other than those available in the RandR 1.2 mode list are encouraged to use
+   RandR 1.2 transformations to program any required scaling operations. For
+   example, the 'xrandr' utility can program RandR scaling transformations,
+   and the following command can scale a 1280x720 mode to a display connected
+   to output DVI-I-0 that does not support the desired mode, but does support
+   1920x1080:
+   
+   xrandr --output DVI-I-0 --mode 1920x1080 --scale-from 1280x720
+   
+   
+
+______________________________________________________________________________
+
+Chapter 8. Common Problems
+______________________________________________________________________________
+
+This section provides solutions to common problems associated with the NVIDIA
+Linux x86_64 Driver.
+
+Q. My X server fails to start, and my X log file contains the error:
+   
+   (EE) NVIDIA(0): The NVIDIA kernel module does not appear to
+   (EE) NVIDIA(0):      be receiving interrupts generated by the NVIDIA
+   graphics
+   (EE) NVIDIA(0):      device PCI:x:x:x. Please see the COMMON PROBLEMS
+   (EE) NVIDIA(0):      section in the README for additional information.
+   
+   
+A. This can be caused by a variety of problems, such as PCI IRQ routing
+   errors, I/O APIC problems, conflicts with other devices sharing the IRQ (or
+   their drivers), or MSI compatibility problems.
+
+   If possible, configure your system such that your graphics card does not
+   share its IRQ with other devices (try moving the graphics card to another
+   slot if applicable, unload/disable the driver(s) for the device(s) sharing
+   the card's IRQ, or remove/disable the device(s)).
+
+   Depending on the nature of the problem, one of (or a combination of) these
+   kernel parameters might also help:
+   
+       Parameter         Behavior
+       --------------    ---------------------------------------------------
+       pci=noacpi        don't use ACPI for PCI IRQ routing
+       pci=biosirq       use PCI BIOS calls to retrieve the IRQ routing
+                         table
+       noapic            don't use I/O APICs present in the system
+       acpi=off          disable ACPI
+   
+   
+   The problem may also be caused by MSI compatibility problems. See "MSI
+   Interrupts" for details.
+
+
+Q. X starts for me, but OpenGL applications terminate immediately.
+
+A. If X starts but you have trouble with OpenGL, you most likely have a
+   problem with other libraries in the way, or there are stale symlinks. See
+   Chapter 5 for details. Sometimes, all it takes is to rerun 'ldconfig'.
+
+   You should also check that the correct extensions are present;
+   
+       % xdpyinfo
+   
+   should show the "GLX" and "NV-GLX" extensions present. If these two
+   extensions are not present, then there is most likely a problem loading the
+   glx module, or it is unable to implicitly load GLcore. Check your X config
+   file and make sure that you are loading glx (see Chapter 6). If your X
+   config file is correct, then check the X log file for warnings/errors
+   pertaining to GLX. Also check that all of the necessary symlinks are in
+   place (refer to Chapter 5).
+
+
+Q. When Xinerama is enabled, my stereo glasses are shuttering only when the
+   stereo application is displayed on one specific X screen. When the
+   application is displayed on the other X screens, the stereo glasses stop
+   shuttering.
+
+A. This problem occurs with DDC and "blue line" stereo glasses, that get the
+   stereo signal from one video port of the graphics card. When a X screen
+   does not display any stereo drawable the stereo signal is disabled on the
+   associated video port.
+
+   Forcing stereo flipping allows the stereo glasses to shutter continuously.
+   This can be done by enabling the OpenGL control "Force Stereo Flipping" in
+   nvidia-settings, or by setting the X configuration option
+   "ForceStereoFlipping" to "1".
+
+
+Q. Stereo is not in sync across multiple displays.
+
+A. There are two cases where this may occur. If the displays are attached to
+   the same GPU, and one of them is out of sync with the stereo glasses, you
+   will need to reconfigure your monitors to drive identical mode timings; see
+   Chapter 18 for details.
+
+   If the displays are attached to different GPUs, the only way to synchronize
+   stereo across the displays is with a Quadro Sync device, which is only
+   supported by certain NVIDIA RTX/Quadro cards. See Chapter 32 for details.
+
+
+Q. I just upgraded my kernel, and now the NVIDIA kernel module will not load.
+
+A. The kernel interface layer of the NVIDIA kernel module must be compiled
+   specifically for the configuration and version of your kernel. If you
+   upgrade your kernel, then the simplest solution is to reinstall the driver.
+
+   ADVANCED: You can install the NVIDIA kernel module for a non running kernel
+   (for example: in the situation where you just built and installed a new
+   kernel, but have not rebooted yet) with a command line such as this:
+   
+       # sh NVIDIA-Linux-x86_64-565.77.run --kernel-name='KERNEL_NAME'
+   
+   
+   Where 'KERNEL_NAME' is what 'uname -r' would report if the target kernel
+   were running.
+
+
+Q. Installing the driver fails with:
+   
+   Unable to load the kernel module 'nvidia.ko'.
+   
+   
+   My X server fails to start, and my X log file contains the error:
+   
+   (EE) NVIDIA(0): Failed to load the NVIDIA kernel module!
+   
+   
+A.  `nvidia-installer` attempts to load the NVIDIA kernel module before
+   installing the driver, and will abort if this test load fails. Similarly,
+   if the kernel module fails to load when starting the an X server with the
+   NVIDIA X driver, the X server will fail to start.
+
+   If the NVIDIA kernel module fails to load, you should check the output of
+   `dmesg` for kernel error messages and/or attempt to load the kernel module
+   explicitly with `modprobe nvidia`. There are a number of common failure
+   cases:
+   
+      o Some symbols that the kernel module depends on failed to be resolved.
+        If this happens, then the kernel module was most likely built against
+        a Linux kernel source tree (or kernel headers) for a kernel revision
+        or configuration that doesn't match the running kernel.
+   
+        In some cases, the NVIDIA kernel module may fail to resolve symbols
+        due to those symbols being provided by modules that were built as
+        part of the configuration of the currently running kernel, but which
+        are not installed. For example, some distributions, such as Ubuntu
+        14.04, provide the DRM kernel module in an optionally installed
+        package (in the case of Ubuntu 14.04, linux-image-extra), but the
+        kernel headers will reflect the availability of DRM regardless of
+        whether the module that provides it is actually installed. The NVIDIA
+        kernel module build will detect the availability of DRM when
+        building, but will fail at load time with messages such as:
+        
+        nvidia: Unknown symbol drm_open (err 0)
+        
+        
+        If any of the NVIDIA kernel modules fail to load due to unresolved
+        symbols, and you are certain that the modules were built against the
+        correct kernel source tree (or headers), check to see if there are
+        any optionally installable modules that might provide these symbols
+        which are not currently installed. If you believe that you might not
+        be using the correct kernel sources/headers, you can specify their
+        location when you install the NVIDIA driver using the
+        --kernel-source-path command line option (see `sh
+        NVIDIA-Linux-x86_64-565.77.run --advanced-options` for details).
+   
+      o Nouveau, or another driver, is already using the GPU. See Interaction
+        with the Nouveau Driver for more information on Nouveau and how to
+        disable it.
+   
+      o The kernel requires that kernel modules carry a valid signature from
+        a trusted key, and the NVIDIA kernel module is unsigned, or has an
+        invalid or untrusted signature. This may happen, for example, on some
+        systems with UEFI Secure Boot enabled. See "Signing the NVIDIA Kernel
+        Module" in Chapter 4 for more information about signing the kernel
+        module.
+   
+      o No supported GPU is detected, either because no NVIDIA GPUs are
+        detected in the system, or because none of the NVIDIA GPUs which are
+        present are supported by this version of the NVIDIA kernel module.
+        See Appendix A for information on which GPUs are supported by which
+        driver versions.
+   
+   
+
+Q. Installing the NVIDIA kernel module gives an error message like:
+   
+   #error Modules should never use kernel-headers system headers
+   #error but headers from an appropriate kernel-source
+   
+   
+A. You need to install the source for the Linux kernel. In most situations you
+   can fix this problem by installing the kernel-source or kernel-devel
+   package for your distribution
+
+
+Q. OpenGL applications crash and print out the following warning:
+   
+   WARNING: Your system is running with a buggy dynamic loader.
+   This may cause crashes in certain applications.  If you
+   experience crashes you can try setting the environment
+   variable __GL_SINGLE_THREADED to 1.  For more information,
+   consult the FREQUENTLY ASKED QUESTIONS section in
+   the file /usr/share/doc/NVIDIA_GLX-1.0/README.txt.
+   
+   
+A. The dynamic loader on your system has a bug which will cause applications
+   linked with pthreads, and that dlopen() libGL multiple times, to crash.
+   This bug is present in older versions of the dynamic loader. Distributions
+   that shipped with this loader include but are not limited to Red Hat Linux
+   6.2 and Mandrake Linux 7.1. Version 2.2 and later of the dynamic loader are
+   known to work properly. If the crashing application is single threaded then
+   setting the environment variable '__GL_SINGLE_THREADED' to "1" will prevent
+   the crash. In the bash shell you would enter:
+   
+       % export __GL_SINGLE_THREADED=1
+   
+   and in csh and derivatives use:
+   
+       % setenv __GL_SINGLE_THREADED 1
+   
+   Previous releases of the NVIDIA Accelerated Linux Graphics Driver attempted
+   to work around this problem. Unfortunately, the workaround caused problems
+   with other applications and was removed after version 1.0-1541.
+
+
+Q. Quake3 crashes when changing video modes.
+
+A. You are probably experiencing a problem described above. Please check the
+   text output for the "WARNING" message described in the previous hint.
+   Setting '__GL_SINGLE_THREADED' to "1" as will fix the problem.
+
+
+Q. I cannot build the NVIDIA kernel module, or, I can build the NVIDIA kernel
+   module, but modprobe/insmod fails to load the module into my kernel.
+
+A. These problems are generally caused by the build using the wrong kernel
+   header files (i.e. header files for a different kernel version than the one
+   you are running). The convention used to be that kernel header files should
+   be stored in '/usr/include/linux/', but that is deprecated in favor of
+   '/lib/modules/RELEASE/build/include' (where RELEASE is the result of 'uname
+   -r'. The 'nvidia-installer' should be able to determine the location on
+   your system; however, if you encounter a problem you can force the build to
+   use certain header files by using the --kernel-include-dir option. For this
+   to work you will of course need the appropriate kernel header files
+   installed on your system. Consult the documentation that came with your
+   distribution; some distributions do not install the kernel header files by
+   default, or they install headers that do not coincide properly with the
+   kernel you are running.
+
+
+Q. Compiling the NVIDIA kernel module gives this error:
+   
+   You appear to be compiling the NVIDIA kernel module with
+   a compiler different from the one that was used to compile
+   the running kernel. This may be perfectly fine, but there
+   are cases where this can lead to unexpected behavior and
+   system crashes.
+   
+   If you know what you are doing and want to override this
+   check, you can do so by setting IGNORE_CC_MISMATCH.
+   
+   In any other case, set the CC environment variable to the
+   name of the compiler that was used to compile the kernel.
+   
+   
+A. You should compile the NVIDIA kernel module with the same compiler version
+   that was used to compile your kernel. Some Linux kernel data structures are
+   dependent on the version of gcc used to compile it; for example, in
+   'include/linux/spinlock.h':
+   
+           ...
+           * Most gcc versions have a nasty bug with empty initializers.
+           */
+           #if (__GNUC__ > 2)
+             typedef struct { } rwlock_t;
+             #define RW_LOCK_UNLOCKED (rwlock_t) { }
+           #else
+             typedef struct { int gcc_is_buggy; } rwlock_t;
+             #define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
+           #endif
+   
+   If the kernel is compiled with gcc 2.x, but gcc 3.x is used when the kernel
+   interface is compiled (or vice versa), the size of rwlock_t will vary, and
+   things like ioremap will fail. To check what version of gcc was used to
+   compile your kernel, you can examine the output of:
+   
+       % cat /proc/version
+   
+   To check what version of gcc is currently in your '$PATH', you can examine
+   the output of:
+   
+       % gcc -v
+   
+   
+
+Q. I recently updated various libraries on my system using my Linux
+   distributor's update utility, and the NVIDIA graphics driver no longer
+   works.
+
+A. Conflicting libraries may have been installed by your distribution's update
+   utility; see Chapter 5 for details on how to diagnose this.
+
+
+Q. I have rebuilt the NVIDIA kernel module, but when I try to insert it, I get
+   a message telling me I have unresolved symbols.
+
+A. Unresolved symbols are most often caused by a mismatch between your kernel
+   sources and your running kernel. They must match for the NVIDIA kernel
+   module to build correctly. Make sure your kernel sources are installed and
+   configured to match your running kernel.
+
+
+Q. OpenGL applications leak significant amounts of memory on my system!
+
+A. If your kernel is making use of the -rmap VM, the system may be leaking
+   memory due to a memory management optimization introduced in -rmap14a. The
+   -rmap VM has been adopted by several popular distributions, the memory leak
+   is known to be present in some of the distribution kernels; it has been
+   fixed in -rmap15e.
+
+   If you suspect that your system is affected, try upgrading your kernel or
+   contact your distribution's vendor for assistance.
+
+
+Q. When I try to install the driver, the installer claims that X is running,
+   even though I have exited X.
+
+A. The installer detects the presence of an X server by checking for the X
+   server's lock files: '/tmp/.Xn-lock', where 'n' is the number of the X
+   Display (the installer checks for X Displays 0-7). If you have exited X,
+   but one of these files has been left behind, then you will need to manually
+   delete the lock file. DO NOT remove this file if X is still running!
+
+
+Q. Why does the VBIOS fail to load on my Optimus system?
+
+A. On some notebooks with Optimus graphics, the NVIDIA driver may not be able
+   to retrieve the Video BIOS due to interactions between the System BIOS and
+   the Linux kernel's ACPI subsystem. On affected notebooks, applications that
+   require the GPU will fail, and messages like the following may appear in
+   the system log:
+   
+   
+   NVRM: failed to copy vbios to system memory.
+   NVRM: RmInitAdapter failed! (0x30:0xffffffff:858)
+   NVRM: rm_init_adapter(0) failed
+   
+   
+   Such problems are typically beyond the control of the NVIDIA driver, which
+   relies on proper cooperation of ACPI and the System BIOS to retrieve
+   important information about the GPU, including the Video BIOS.
+
+
+Q. OpenGL applications do not work with driver version 364.xx and later, which
+   worked with previous driver versions
+
+A. Release 361 of the NVIDIA Linux driver introduced OpenGL libraries built
+   upon the libglvnd (GL Vendor Neutral Dispatch) architecture, to allow for
+   the coexistence of multiple OpenGL implementations on the same system.
+   Beginning with release 364, the GLVND libraries are installed by default.
+
+   By design, GLVND conforms with the Linux OpenGL ABI version 1.0 as defined
+   at https://www.opengl.org/registry/ABI/ and exposes all required entry
+   points; however, applications which depend upon specifics of the NVIDIA
+   OpenGL implementation which fall outside of the OpenGL ABI may be
+   incompatible with a GLVND-based OpenGL implementation.
+
+   If you encounter an application which is incompatible with GLVND, please
+   contact the application vendor to inform them that their application will
+   need to be updated to ensure compatibility with GLVND.
+
+
+Q. Vulkan applications crash when entering or leaving fullscreen, or when
+   resized
+
+A. Resizing a Vulkan application generates events that trigger an out-of-date
+   swapchain.
+
+   Fullscreen Vulkan applications are optimized for performance by the driver.
+   This optimization also generates events that trigger an out-of-date
+   swapchain upon entering or leaving fullscreen mode. This is commonly
+   encountered when using the alt-tab key combination, for example.
+
+   Applications that do not properly respond to the VK_ERROR_OUT_OF_DATE_KHR
+   return code may not function properly when these events occur. The expected
+   behavior is documented in section 30.8 of the Vulkan specification.
+
+
+Q. The Vulkan ICD has dependencies on X libraries
+
+A. By default, nvidia-installer creates a /etc/vulkan/icd.d/nvidia_icd.json
+   that points to libGLX_nvidia.so.0. This DSO has dependencies on X
+   libraries.
+
+   It is possible to avoid those dependencies by hand editing that file to
+   point to libEGL_nvidia.so.0 instead. However in that case, an application
+   will only be able to create non-X swapchains if it wants to present frames.
+
+
+Q. Vulkan applications show up as a blank window
+
+A. The Vulkan application may be choosing your iGPU instead of your NVIDIA
+   dGPU. Starting with the 435 driver series, you can set the following
+   environment variable to force the Vulkan loader to list NVIDIA GPUs before
+   other devices:
+   
+   __NV_PRIME_RENDER_OFFLOAD=1
+   
+   
+   This can be used even if the system is not otherwise configured to use
+   PRIME Render Offload.
+
+   In order to prefer discrete GPUs over integrated GPUs, application
+   developers can check the VkPhysicalDeviceProperties::deviceType field when
+   querying available physical devices.
+
+
+Q. OpenGL applications are running slowly
+
+A. The application is probably using a different library that still remains on
+   your system, rather than the NVIDIA supplied OpenGL library. See Chapter 5
+   for details.
+
+
+Q. Fonts are incorrectly sized after installing the NVIDIA driver.
+
+A. Incorrectly sized fonts are generally caused by incorrect DPI (Dots Per
+   Inch) information. You can check what X thinks the physical size of your
+   monitor is, by running:
+   
+    % xdpyinfo | grep dimensions
+   
+   This will report the size in pixels, and in millimeters.
+
+   If these numbers are wrong, you can correct them by modifying the X
+   server's DPI setting. See Appendix E for details.
+
+
+Q. OpenGL applications don't work, and my X log file contains the error:
+   
+   (EE) NVIDIA(0): Unable to map device node /dev/zero with read and write
+   (EE) NVIDIA(0):     privileges.  The GLX extension will be disabled on this
+   
+   (EE) NVIDIA(0):     X screen.  Please see the COMMON PROBLEMS section in
+   the 
+   (EE) NVIDIA(0):     README for more information.
+   
+   
+A. The NVIDIA OpenGL driver must be able to map anonymous memory with read and
+   write execute privileges in order to function correctly. The driver needs
+   this ability to allocate aligned memory, which is used for certain
+   optimizations. Currently, GLX cannot run without these optimizations.
+
+
+Q. My log file contains a message like the following:
+   
+   
+   (WW) NVIDIA(GPU-0): Unable to enter interactive mode, because
+   non-interactive
+   (WW) NVIDIA(GPU-0): mode has been previously requested.  The most common
+   (WW) NVIDIA(GPU-0): cause is that a GPU compute application is currently
+   (WW) NVIDIA(GPU-0): running. Please see the README for details.
+   
+   
+   
+A. This indicates that the X driver was not able to put the GPU in interactive
+   mode, because another program has requested non-interactive mode. The GPU
+   watchdog will not run, and long-running GPU compute programs may cause the
+   X server and OpenGL programs to hang. If you intend to run long-running GPU
+   compute programs, set the "Interactive" option to "off" to disable
+   interactive mode.
+
+
+Q. I see a blank screen or an error message instead of a login screen or
+   desktop session
+
+A. Installation or configuration problems may prevent the X server, a
+   login/session manager, or a desktop environment from starting correctly. If
+   your system is failing to display a login screen, or failing to start a
+   desktop session, try the following troubleshooting steps:
+   
+      o Make sure that you are using the correct X driver for your
+        configuration. Recent X servers will be able to automatically select
+        the correct X driver in many cases, but if your X server does not
+        automatically select the correct driver, you may need to manually
+        configure it. For example, systems with multiple GPUs will likely
+        require a PCI BusID in the "Device" section of the X configuration
+        file, in order to specify which GPU is to be used.
+   
+        If you are planning to use NVIDIA GPUs for graphics, you can run the
+        'nvidia-xconfig' utility to automatically generate a simple X
+        configuration file that uses the NVIDIA X driver. If you are not
+        using NVIDIA GPUs for graphics (e.g. on a server system where
+        displays are driven by an onboard graphics controller, and NVIDIA
+        GPUs are used for non-graphical computational purposes only), DO NOT
+        run 'nvidia-xconfig'.
+   
+      o Some recent desktop environments (e.g. GNOME 3, Unity), window
+        managers (e.g. mutter, compiz), and session managers (e.g. gdm3)
+        require a working OpenGL driver in order to function correctly. In
+        addition to making sure that the X server is configured to use the
+        correct X driver for your configuration, please ensure that you are
+        using the correct OpenGL driver to match your X driver.
+   
+        If you are not using NVIDIA GPUs for graphical purposes, try
+        installing the driver with the --no-opengl-files option on the
+        installer's command line to prevent the installer from overwriting
+        any existing OpenGL installation, which may be needed for proper
+        OpenGL functionality on whichever graphics controller is to be used
+        on the system.
+   
+      o Some desktop environments (e.g. GNOME 3, Unity) and window managers
+        (e.g. mutter) do not properly support multiple X screens, leaving you
+        with a blank screen displaying only a cursor on the non-primary X
+        screen. If you encounter such a problem, try configuring X with a
+        single X screen, or switching to a different desktop environment or
+        window manager.
+   
+      o Desktop environments, window managers, and session managers that
+        require OpenGL typically also require the X Composite extension. If
+        you have disabled the Composite extension, either explicitly, or by
+        enabling a feature that is not compatible with it, try re-enabling
+        the extension (possibly by disabling any incompatible features). If
+        you are unable to satisfy your desired use case with the Composite
+        extension enabled, try switching to a different desktop environment,
+        window manager, and/or session manager that does not require
+        Composite.
+   
+      o Check the X log (e.g. '/var/log/Xorg.0.log') for additional errors
+        not covered above. Warning or error messages in the log may highlight
+        a specific problem that can be fixed with a configuration adjustment.
+   
+   
+
+Q. The display settings I configured in 'nvidia-settings' do not persist.
+
+A. Depending on the type of configuration being performed, 'nvidia-settings'
+   will save configuration changes to one of several places:
+   
+      o Static X server configuration changes are saved to the X
+        configuration file (e.g. '/etc/X11/xorg.conf'). These settings are
+        loaded by the X server when it starts, and cannot be changed without
+        restarting X.
+   
+      o Dynamic, user-specific configuration changes are saved to
+        '~/.nvidia-settings-rc'. 'nvidia-settings' loads this file and
+        applies any settings contained within. These settings can be changed
+        without restarting the X server, and can typically be configured
+        through the 'nvidia-settings' command line interface as well, or via
+        the RandR and/or NV-CONTROL APIs.
+   
+      o User-specific application profiles edited in 'nvidia-settings' are
+        saved to '~/.nv/nvidia-application-profiles-rc'. This file is loaded
+        along with the other files in the application profile search path by
+        the NVIDIA OpenGL driver when it is loaded by an OpenGL application.
+        The driver evaluates the application profiles to determine which
+        settings apply to the application. Changes made to this configuration
+        file while an application is already running will be applied when the
+        application is next restarted. See Appendix J for more information
+        about application profiles.
+   
+   
+   Settings in '~/.nvidia-settings-rc' only take effect when processed by
+   'nvidia-settings', and therefore will not be loaded by default when
+   starting a new X session. To load settings from '~/.nvidia-settings-rc'
+   without actually opening the 'nvidia-settings' control panel, use the
+   --load-config-only option on the 'nvidia-settings' command line.
+   'nvidia-settings --load-config-only' can be added to your login scripts to
+   ensure that your settings are restored when starting a new desktop session.
+
+   Even after 'nvidia-settings' has been run to restore any settings set in
+   '~/.nvidia-settings-rc', some desktop environments (e.g. GNOME, KDE, Unity,
+   Xfce) include advanced display configuration tools that may override
+   settings that were configured via 'nvidia-settings'. These tools may
+   attempt to restore their own display configuration when starting a new
+   desktop session, or when events such as display hotplugs, resolution
+   changes, or VT switches occur.
+
+   These tools may also override some types of settings that are stored in and
+   loaded from the X configuration file, such as any MetaMode strings that may
+   specify the initial display layouts of NVIDIA X screens. Although the
+   configuration of the initial MetaMode is static, it is possible to
+   dynamically switch to a different MetaMode after X has started. This can
+   have the effect of making the set of active displays, their resolutions,
+   and layout positions as configured in the 'nvidia-settings' control panel
+   appear to be ineffective, when in reality, this configuration was active
+   when starting X and then overridden later by the desktop environment.
+
+   If you believe that your desktop environment is overriding settings that
+   you configured in 'nvidia-settings', some possible solutions are:
+   
+      o Use the display configuration tools provided as part of the desktop
+        environment (e.g. 'gnome-control-center display',
+        'gnome-display-properties', 'kcmshell4 display',
+        'unity-control-center display', 'xfce4-display-settings') to
+        configure your displays, instead of the 'nvidia-settings' control
+        panel or the 'xrandr' command line tool. Setting your desired
+        configuration using the desktop environment's tools should cause that
+        configuration to be the one which is restored when the desktop
+        environment overrides the existing configuration from
+        'nvidia-settings'. If you are not sure which tools your desktop
+        environment uses for display configuration, you may be able to
+        discover them by navigating any available system menus for "Display"
+        or "Monitor" control panels.
+   
+      o For settings loaded from '~/.nvidia-settings-rc' which have been
+        overridden, run 'nvidia-settings --load-config-only' as needed to
+        reload the settings from '~/.nvidia-settings-rc'.
+   
+      o Disable any features your desktop environment may have for managing
+        displays. (Note: this may disable other features, such as display
+        configuration tools that are integrated into the desktop.)
+   
+      o Use a different desktop environment which does not actively manage
+        display configuration, or do not use any desktop environment at all.
+   
+   
+   Some systems may have multiple different display configuration utilities,
+   each with its own way of managing settings. In addition to conflicting with
+   'nvidia-settings', such tools may conflict with each other. If your system
+   uses more than one tool for configuring displays, make sure to check the
+   configuration of each tool when attempting to determine the source of any
+   unexpected display settings.
+
+
+Q. My displays are reconfigured in unexpected ways when I plug in or unplug a
+   display, or power a display off and then power it on again.
+
+A. This is a special case of the issues described in "Q. The display settings
+   I configured in nvidia-settings do not persist." in Chapter 8. Some desktop
+   environments which include advanced display configuration tools will
+   automatically configure the display layout in response to detected
+   configuration changes. For example, when a new display is plugged in, such
+   a desktop environment may attempt to restore the previous layout that was
+   used with the set of currently connected displays, or may configure a
+   default layout based upon its own policy.
+
+   On X servers with support for RandR 1.2 or later, the NVIDIA X driver
+   reports display hotplug events to the X server via RandR when displays are
+   connected and disconnected. These hotplug events may trigger a desktop
+   environment with advanced display management capabilities to change the
+   display configuration. These changes may affect settings such as the set of
+   active displays, their resolutions and positioning relative to each other,
+   per-display color correction settings, and more.
+
+   In addition to hotplug events generated by connecting or disconnecting
+   displays, DisplayPort displays will generate a hot unplug event when they
+   power off, and a hotplug event when they power on, even if no physical
+   plugging in or unplugging takes place. This can lead to hotplug-induced
+   display configuration changes without any actual hotplug action taking
+   place.
+
+   Upon suspend, the NVIDIA X driver will incur an implicit VT switch. If a
+   DisplayPort monitor is powered off when a VT switch or modeset occurs,
+   RandR will forget the configuration of that monitor. As a result, the
+   display will be left without a mode once powered back on. In the absence of
+   an RandR-aware window manager, bringing back the display will require
+   manually configuring it with RandR.
+
+   If display hotplug events are resulting in undesired configuration changes,
+   try the solutions and workarounds listed in "Q. The display settings I
+   configured in nvidia-settings do not persist." in Chapter 8. Another
+   workaround would be to disable the NVIDIA X driver's reporting of hotplug
+   events with the "UseHotplugEvents" X configuration option. Note that this
+   option will have no effect on DisplayPort devices, which must report all
+   hotplug events to ensure proper functionality.
+
+
+Q. My remote desktop software doesn't work when no displays are attached.
+
+A. Some desktop environments or window managers might not function correctly
+   if no displays are exposed via the RandR API. When the NVIDIA X driver is
+   configured for headless operation, either with 'Option
+   "AllowEmptyInitialConfiguration"' and no connected displays, with 'Option
+   "MetaModes" "NULL"', or with 'Option "UseDisplayDevice" "none"', it will
+   not expose any displays via RandR.
+
+   To work around software that requires RandR displays on a machine that is
+   only intended to be used remotely, you can connect a physical display, or
+   configure the X driver to behave as if a physical display were connected
+   using the "ConnectedMonitor" option. See Appendix B for additional
+   information about the "ConnectedMonitor" option.
+
+
+
+INTERACTION WITH THE NOUVEAU DRIVER
+
+Q. What is Nouveau, and why do I need to disable it?
+
+A. Nouveau is a display driver for NVIDIA GPUs, developed as an open-source
+   project through reverse-engineering of the NVIDIA driver. It ships with
+   many current Linux distributions as the default display driver for NVIDIA
+   hardware. It is not developed or supported by NVIDIA, and is not related to
+   the NVIDIA driver, other than the fact that both Nouveau and the NVIDIA
+   driver are capable of driving NVIDIA GPUs. Only one driver can control a
+   GPU at a time, so if a GPU is being driven by the Nouveau driver, Nouveau
+   must be disabled before installing the NVIDIA driver.
+
+   Nouveau performs modesets in the kernel. This can make disabling Nouveau
+   difficult, as the kernel modeset is used to display a framebuffer console,
+   which means that Nouveau will be in use even if X is not running. As long
+   as Nouveau is in use, its kernel module cannot be unloaded, which will
+   prevent the NVIDIA kernel module from loading. It is therefore important to
+   make sure that Nouveau's kernel modesetting is disabled before installing
+   the NVIDIA driver.
+
+
+Q. How do I prevent Nouveau from loading and performing a kernel modeset?
+
+A. A simple way to prevent Nouveau from loading and performing a kernel
+   modeset is to add configuration directives for the module loader to a file
+   in one of the system's module loader configuration directories: for
+   example, '/etc/modprobe.d/' or '/usr/local/modprobe.d'. These configuration
+   directives can technically be added to any file in these directories, but
+   many of the existing files in these directories are provided and maintained
+   by your distributor, which may from time to time provide updated
+   configuration files which could conflict with your changes. Therefore, it
+   is recommended to create a new file, for example,
+   '/etc/modprobe.d/disable-nouveau.conf', rather than editing one of the
+   existing files, such as the popular '/etc/modprobe.d/blacklist.conf'. Note
+   that some module loaders will only look for configuration directives in
+   files whose names end with '.conf', so if you are creating a new file, make
+   sure its name ends with '.conf'.
+
+   Whether you choose to create a new file or edit an existing one, the
+   following two lines will need to be added:
+   
+   blacklist nouveau
+   options nouveau modeset=0
+   
+   The first line will prevent Nouveau's kernel module from loading
+   automatically at boot. It will not prevent manual loading of the module,
+   and it will not prevent the X server from loading the kernel module; see
+   "How do I prevent the X server from loading Nouveau?" below. The second
+   line will prevent Nouveau from doing a kernel modeset. Without the kernel
+   modeset, it is possible to unload Nouveau's kernel module, in the event
+   that it is accidentally or intentionally loaded.
+
+   You will need to reboot your system after adding these configuration
+   directives in order for them to take effect.
+
+   If nvidia-installer detects Nouveau is in use by the system, it will offer
+   to create such a modprobe configuration file to disable Nouveau.
+
+Q. What if my initial ramdisk image contains Nouveau?
+
+A. Some distributions include Nouveau in an initial ramdisk image (henceforth
+   referred to as "initrd" in this document, and sometimes also known as
+   "initramfs"), so that Nouveau's kernel modeset can take place as early as
+   possible in the boot process. This poses an additional challenge to those
+   who wish to prevent the modeset from occurring, as the modeset will occur
+   while the system is executing within the initrd, before any directives in
+   the module loader configuration files are processed.
+
+   If you have an initrd which loads the Nouveau driver, you will additionally
+   need to ensure that Nouveau is disabled in the initrd. In most cases,
+   rebuilding the initrd will pick up the module loader configuration files,
+   including any which may disable Nouveau. Please consult your distribution's
+   documentation on how to rebuild the initrd, as different distributions have
+   different tools for building and modifying the initrd. Some popular distro
+   initrd tools include: 'dracut', 'mkinitrd', and 'update-initramfs'.
+
+   Some initrds understand the rdblacklist parameter. On these initrds, as an
+   alternative to rebuilding the initrd, you can add the option
+   rdblacklist=nouveau to your kernel's boot parameters. On initrds that do
+   not support rdblacklist, it is possible to prevent Nouveau from performing
+   a kernel modeset by adding the option nouveau.modeset=0 to your kernel's
+   boot parameters. Note that nouveau.modeset=0 will prevent a kernel modeset,
+   but it may not prevent Nouveau from being loaded, so rebuilding the initrd
+   or using rdblacklist may be more effective than using nouveau.modeset=0.
+
+   Any changes to the default kernel boot parameters should be made in your
+   bootloader's configuration file(s), so that the options get passed to your
+   kernel every time the system is booted. Please consult your distribution's
+   documentation on how to configure your bootloader, as different
+   distributions use different bootloaders and configuration files.
+
+
+Q. How do I prevent the X server from loading Nouveau?
+
+A. Blacklisting Nouveau will only prevent it from being loaded automatically
+   at boot. If an X server is started as part of the normal boot process, and
+   that X server uses the Nouveau X driver, then the Nouveau kernel module
+   will still be loaded. Should this happen, you will be able to unload
+   Nouveau with `modprobe -r nouveau` after stopping the X server, as long as
+   you have taken care to prevent it from doing a kernel modeset; however, it
+   is probably better to just make sure that X does not load Nouveau in the
+   first place.
+
+   If your system is not configured to start an X server at boot, then you can
+   simply run the NVIDIA driver installer after rebooting. Otherwise, the
+   easiest thing to do is to edit your X server's configuration file so that
+   your X server uses a non-modesetting driver that is compatible with your
+   card, such as the 'vesa' driver. You can then stop X and install the driver
+   as usual. Please consult your X server's documentation to determine where
+   your X server configuration file is located.
+
+
+
+______________________________________________________________________________
+
+Chapter 9. Known Issues
+______________________________________________________________________________
+
+The following problems still exist in this release and are in the process of
+being resolved.
+
+Known Issues
+
+Cache Aliasing
+
+    Cache aliasing occurs when multiple mappings to a physical page of memory
+    have conflicting caching states, such as cached and uncached. Due to these
+    conflicting states, data in that physical page may become corrupted when
+    the processor's cache is flushed. If that page is being used for DMA by a
+    driver such as NVIDIA's graphics driver, this can lead to hardware
+    stability problems and system lockups.
+
+    NVIDIA has encountered bugs with some Linux kernel versions that lead to
+    cache aliasing. Although some systems will run perfectly fine when cache
+    aliasing occurs, other systems will experience severe stability problems,
+    including random lockups. Users experiencing stability problems due to
+    cache aliasing will benefit from updating to a kernel that does not cause
+    cache aliasing to occur.
+
+Valgrind
+
+    The NVIDIA OpenGL implementation makes use of self modifying code. To
+    force Valgrind to retranslate this code after a modification you must run
+    using the Valgrind command line option:
+    
+    --smc-check=all
+    
+    Without this option Valgrind may execute incorrect code causing incorrect
+    behavior and reports of the form:
+    
+    ==30313== Invalid write of size 4
+    
+    
+Driver fails to initialize when MSI interrupts are enabled
+
+    The Linux NVIDIA driver uses Message Signaled Interrupts (MSI) by default.
+    This provides compatibility and scalability benefits, mainly due to the
+    avoidance of IRQ sharing.
+
+    Some systems have been seen to have problems supporting MSI, while working
+    fine with virtual wire interrupts. These problems manifest as an inability
+    to start X with the NVIDIA driver, or CUDA initialization failures. The
+    NVIDIA driver will then report an error indicating that the NVIDIA kernel
+    module does not appear to be receiving interrupts generated by the GPU.
+
+    Problems have also been seen with suspend/resume while MSI is enabled. All
+    known problems have been fixed, but if you observe problems with
+    suspend/resume that you did not see with previous drivers, disabling MSI
+    may help you.
+
+    NVIDIA is working on a long-term solution to improve the driver's out of
+    the box compatibility with system configurations that do not fully support
+    MSI.
+
+    MSI interrupts can be disabled via the NVIDIA kernel module parameter
+    "NVreg_EnableMSI=0". This can be set on the command line when loading the
+    module, or more appropriately via your distribution's kernel module
+    configuration files (such as those under /etc/modprobe.d/).
+
+Console restore behavior
+
+    The Linux NVIDIA driver uses the nvidia-modeset module for console restore
+    whenever it can. Currently, the improved console restore mechanism is used
+    on systems that boot with the UEFI Graphics Output Protocol driver, and on
+    systems that use supported VESA linear graphical modes. Note that VGA
+    text, color index, planar, banked, and some linear modes cannot be
+    supported, and will use the older console restore method instead.
+
+    When the new console restore mechanism is in use and the nvidia-modeset
+    module is initialized (e.g. because an X server is running on a different
+    VT, nvidia-persistenced is running, or the nvidia_drm module is loaded
+    with the "modeset=1" parameter), then nvidia-modeset will respond to hot
+    plug events by displaying the console on as many displays as it can. Note
+    that to save power, it may not display the console on all connected
+    displays.
+
+Vulkan and device enumeration
+
+    Starting with the X.Org X server version 1.20.7, it is possible to
+    enumerate all the NVIDIA devices in the system if the application is able
+    to open a connection to the X server. However, such applications will only
+    be able to create an Xlib or XCB swapchain on the device driving the X
+    screen. Such a device can be identified by using the
+    vkGetPhysicalDeviceSurfaceSupportKHR() API.
+
+    Prior to the X.Org X server version 1.20.7, it is not possible to
+    enumerate multiple devices if one of them will be used to present to an
+    X11 swapchain. It is still possible to enumerate multiple devices even if
+    one of them is driving an X screen, if the devices will be used for Vulkan
+    offscreen rendering or presenting to a display swapchain. For that, make
+    sure that the application cannot open a display connection to an X server
+    by, for example, unsetting the DISPLAY environment variable.
+
+Restricting access to GPU performance counters
+
+    NVIDIA Developer Tools allow developers to debug, profile, and develop
+    software for NVIDIA GPUs. GPU performance counters are integral to these
+    tools. By default, access to the GPU performance counters is restricted to
+    root, and other users with the CAP_SYS_ADMIN capability, for security
+    reasons. If developers require access to the NVIDIA Developer Tools, a
+    system administrator can accept the security risk and allow access to
+    users without the CAP_SYS_ADMIN capability.
+
+    Wider access to GPU performance counters can be granted by setting the
+    kernel module parameter "NVreg_RestrictProfilingToAdminUsers=0" in the
+    nvidia.ko kernel module. This can be set on the command line when loading
+    the module, or more appropriately via your distribution's kernel module
+    configuration files (such as those under /etc/modprobe.d/).
+
+Driver fails to initialize with some versions of RHEL 8
+
+    Some versions of Red Hat Enterprise Linux 8 kernels have a bug that causes
+    driver initialization to fail with an error such as:
+    
+    
+        NVRM: Xid (PCI:0000:09:00): 79, pid=2172, GPU has fallen off the bus.
+        NVRM: GPU 0000:09:00.0: GPU has fallen off the bus.
+        NVRM: GPU 0000:09:00.0: RmInitAdapter failed! (0x26:0x65:1239)
+        NVRM: GPU 0000:09:00.0: rm_init_adapter failed, device minor number 0
+    
+    
+    
+    See the Red Hat knowledge base article
+    https://access.redhat.com/solutions/5825061 to find the specific affected
+    and fixed kernel versions.
+
+Driver fails to load on Linux kernel versions 5.18 through 5.18.19 with
+CONFIG_X86_KERNEL_IBT enabled
+
+    The NVIDIA driver fails to load on IBT (Indirect Branch Tracking)
+    supported CPUs running Linux kernel versions 5.18 to 5.18.19, when IBT is
+    enabled, with the following error:
+    
+    
+    	error "traps: Missing ENDBR:"
+    
+    
+    
+    This issue is not seen with Linux kernels having the following commit:
+    
+    
+    	 commit 3c6f9f77e618 (objtool: Rework ibt and extricate from stack
+    validation)
+    
+    
+    The aforementioned commit is available in Linux kernel versions 5.19 and
+    later. The NVIDIA driver's IBT support works with Linux kernels containing
+    commit 3c6f9f77e618 (5.19 and later). Please use the kernel boot parameter
+    "ibt=off" as a workaround on kernels without that commit.
+
+Notebooks
+
+    If you are using a notebook see the "Known Notebook Issues" in Chapter 16.
+
+Texture seams in Quake 3 engine
+
+    Many games based on the Quake 3 engine set their textures to use the
+    "GL_CLAMP" clamping mode when they should be using "GL_CLAMP_TO_EDGE".
+    This was an oversight made by the developers because some legacy NVIDIA
+    GPUs treat the two modes as equivalent. The result is seams at the edges
+    of textures in these games. To mitigate this, older versions of the NVIDIA
+    display driver remap "GL_CLAMP" to "GL_CLAMP_TO_EDGE" internally to
+    emulate the behavior of the older GPUs, but this workaround has been
+    disabled by default. To re-enable it, uncheck the "Use Conformant Texture
+    Clamping" checkbox in nvidia-settings before starting any affected
+    applications.
+
+FSAA
+
+    When FSAA is enabled (the __GL_FSAA_MODE environment variable is set to a
+    value that enables FSAA and a multisample visual is chosen), the rendering
+    may be corrupted when resizing the window.
+
+libGL DSO finalizer and pthreads
+
+    When a multithreaded OpenGL application exits, it is possible for libGL's
+    DSO finalizer (also known as the destructor, or "_fini") to be called
+    while other threads are executing OpenGL code. The finalizer needs to free
+    resources allocated by libGL. This can cause problems for threads that are
+    still using these resources. Setting the environment variable
+    "__GL_NO_DSO_FINALIZER" to "1" will work around this problem by forcing
+    libGL's finalizer to leave its resources in place. These resources will
+    still be reclaimed by the operating system when the process exits. Note
+    that the finalizer is also executed as part of dlclose(3), so if you have
+    an application that dlopens(3) and dlcloses(3) libGL repeatedly,
+    "__GL_NO_DSO_FINALIZER" will cause libGL to leak resources until the
+    process exits. Using this option can improve stability in some
+    multithreaded applications, including Java3D applications.
+
+Thread cancellation
+
+    Canceling a thread (see pthread_cancel(3)) while it is executing in the
+    OpenGL driver causes undefined behavior. For applications that wish to use
+    thread cancellation, it is recommended that threads disable cancellation
+    using pthread_setcancelstate(3) while executing OpenGL or GLX commands.
+
+This section describes problems that will not be fixed. Usually, the source of
+the problem is beyond the control of NVIDIA. Following is the list of
+problems:
+
+Problems that Will Not Be Fixed
+
+NV-CONTROL versions 1.8 and 1.9
+
+    Version 1.8 of the NV-CONTROL X Extension introduced target types for
+    setting and querying attributes as well as receiving event notification on
+    targets. Targets are objects like X Screens, GPUs and Quadro Sync devices.
+    Previously, all attributes were described relative to an X Screen. These
+    new bits of information (target type and target id) were packed in a
+    non-compatible way in the protocol stream such that addressing X Screen 1
+    or higher would generate an X protocol error when mixing NV-CONTROL client
+    and server versions.
+
+    This packing problem has been fixed in the NV-CONTROL 1.10 protocol,
+    making it possible for the older (1.7 and prior) clients to communicate
+    with NV-CONTROL 1.10 servers. Furthermore, the NV-CONTROL 1.10 client
+    library has been updated to accommodate the target protocol packing bug
+    when communicating with a 1.8 or 1.9 NV-CONTROL server. This means that
+    the NV-CONTROL 1.10 client library should be able to communicate with any
+    version of the NV-CONTROL server.
+
+    NVIDIA recommends that NV-CONTROL client applications relink with version
+    1.10 or later of the NV-CONTROL client library (libXNVCtrl.a, in the
+    nvidia-settings-565.77.tar.bz2 tarball). The version of the client
+    library can be determined by checking the NV_CONTROL_MAJOR and
+    NV_CONTROL_MINOR definitions in the accompanying nv_control.h.
+
+    The only web released NVIDIA Linux driver that is affected by this problem
+    (i.e., the only driver to use either version 1.8 or 1.9 of the NV-CONTROL
+    X extension) is 1.0-8756.
+
+CPU throttling reducing memory bandwidth on IGP systems
+
+    For some models of CPU, the CPU throttling technology may affect not only
+    CPU core frequency, but also memory frequency/bandwidth. On systems using
+    integrated graphics, any reduction in memory bandwidth will affect the GPU
+    as well as the CPU. This can negatively affect applications that use
+    significant memory bandwidth, such as video decoding using VDPAU, or
+    certain OpenGL operations. This may cause such applications to run with
+    lower performance than desired.
+
+    To work around this problem, NVIDIA recommends configuring your CPU
+    throttling implementation to avoid reducing memory bandwidth. This may be
+    as simple as setting a certain minimum frequency for the CPU.
+
+    Depending on your operating system and/or distribution, this may be as
+    simple as writing to a configuration file in the /sys or /proc
+    filesystems, or other system configuration file. Please read, or search
+    the Internet for, documentation regarding CPU throttling on your operating
+    system.
+
+VDPAU initialization failures on supported GPUs
+
+    If VDPAU gives the VDP_STATUS_NO_IMPLEMENTATION error message on a GPU
+    which was labeled or specified as supporting PureVideo or PureVideo HD,
+    one possible reason is a hardware defect. After ruling out any other
+    software problems, NVIDIA recommends returning the GPU to the manufacturer
+    for a replacement.
+
+Some applications, such as Quake 3, crash after querying the OpenGL extension
+string
+
+    Some applications have bugs that are triggered when the extension string
+    is longer than a certain size. As more features are added to the driver,
+    the length of this string increases and can trigger these sorts of bugs.
+
+    You can limit the extensions listed in the OpenGL extension string to the
+    ones that appeared in a particular version of the driver by setting the
+    "__GL_ExtensionStringVersion" environment variable to a particular version
+    number. For example,
+    
+    __GL_ExtensionStringVersion=17700 quake3
+    
+    will run Quake 3 with the extension string that appeared in the 177.*
+    driver series. Limiting the size of the extension string can work around
+    this sort of application bug.
+
+gnome-shell doesn't update until a window is moved
+
+    Versions of libcogl prior to 1.10.x have a bug which causes
+    glBlitFramebuffer() calls used to update the window to be clipped by a 0x0
+    scissor (see https://bugzilla.gnome.org/show_bug.cgi?id=690451 for more
+    details). To work around this bug, the scissor test can be disabled by
+    setting the "__GL_ConformantBlitFramebufferScissor" environment variable
+    to 0. Note this version of the NVIDIA driver comes with an application
+    profile which automatically disables this test if libcogl is detected in
+    the process.
+
+Some X servers ignore the RandR transform filter during a modeset request
+
+    The RandR layer of the X server attempts to ignore redundant
+    RRSetCrtcConfig requests. If the only property changed by an
+    RRSetCrtcConfig request is the transform filter, some X servers will
+    ignore the request as redundant. This can be worked around by also
+    changing other properties, such as the mode, transformation matrix, etc.
+
+
+______________________________________________________________________________
+
+Chapter 10. Allocating DMA Buffers on 64-bit Platforms
+______________________________________________________________________________
+
+NVIDIA GPUs have limits on how much physical memory they can address. This
+directly impacts DMA buffers, as a DMA buffer allocated in physical memory
+that is unaddressable by the NVIDIA GPU cannot be used (or may be truncated,
+resulting in bad memory accesses). See Chapter 41 for details on the
+addressing limitations of specific GPUs.
+
+When an NVIDIA GPU has an addressing limit less than the maximum possible
+physical system memory address, the NVIDIA Linux driver will use the
+__GFP_DMA32 flag to limit system memory allocations to the lowest 4 GB of
+physical memory in order to guarantee accessibility. This restriction applies
+even if there is hardware capable of remapping physical memory into an
+accessible range present, such as an IOMMU, because the NVIDIA Linux driver
+cannot determine at the time of memory allocation whether the memory can be
+remapped. This limitation can significantly reduce the amount of physical
+memory available to the NVIDIA GPU in some configurations.
+
+The Linux kernel requires that device drivers use the DMA remapping APIs to
+make physical memory accessible to devices, even when no remapping hardware is
+present. The NVIDIA Linux driver generally adheres to this requirement, except
+when it detects that the remapping is implemented using the SWIOTLB, which is
+not supported by the NVIDIA Linux driver. When the NVIDIA Linux driver detects
+that the SWIOTLB is in use, it will instead calculate the correct bus address
+needed to access a physical allocation instead of calling the kernel DMA
+remapping APIs to do so, as SWIOTLB space is very limited and exhaustion can
+result in a kernel panic.
+
+The NVIDIA Linux driver does not generally limit its usage of the Linux kernel
+DMA remapping APIs, and this can result in IOMMU space exhaustion when large
+amounts of physical memory are remapped for use by the NVIDIA GPU. Most modern
+IOMMU drivers generally fail gracefully when IOMMU space is exhausted, but
+NVIDIA recommends configuring the IOMMU in such a way to avoid resource
+exhaustion if possible, either by increasing the size of the IOMMU or
+disabling the IOMMU.
+
+On AMD's AMD64 platform, the size of the IOMMU can be configured in the system
+BIOS or, if no IOMMU BIOS option is available, using the 'iommu=memaper'
+kernel parameter. This kernel parameter expects an order and instructs the
+Linux kernel to create an IOMMU of size 32 MB^order overlapping physical
+memory. If the system's default IOMMU is smaller than 64 MB, the Linux kernel
+automatically replaces it with a 64 MB IOMMU.
+
+______________________________________________________________________________
+
+Chapter 11. Specifying OpenGL Environment Variable Settings
+______________________________________________________________________________
+
+
+11A. FULL SCENE ANTIALIASING
+
+Antialiasing is a technique used to smooth the edges of objects in a scene to
+reduce the jagged "stairstep" effect that sometimes appears. By setting the
+appropriate environment variable, you can enable full-scene antialiasing in
+any OpenGL application on these GPUs.
+
+Several antialiasing methods are available and you can select between them by
+setting the __GL_FSAA_MODE environment variable appropriately. Note that
+increasing the number of samples taken during FSAA rendering may decrease
+performance.
+
+To see the available values for __GL_FSAA_MODE along with their descriptions,
+run:
+
+    nvidia-settings --query=fsaa --verbose
+
+The __GL_FSAA_MODE environment variable uses the same integer values that are
+used to configure FSAA through nvidia-settings and the NV-CONTROL X extension.
+In other words, these two commands are equivalent:
+
+    export __GL_FSAA_MODE=5
+
+    nvidia-settings --assign FSAA=5
+
+Note that there are three FSAA related configuration attributes (FSAA,
+FSAAAppControlled and FSAAAppEnhanced) which together determine how a GL
+application will behave. If FSAAAppControlled is 1, the FSAA specified through
+nvidia-settings will be ignored, in favor of what the application requests
+through FBConfig selection. If FSAAAppControlled is 0 but FSAAAppEnhanced is
+1, then the FSAA value specified through nvidia-settings will only be applied
+if the application selected a multisample FBConfig.
+
+Therefore, to be completely correct, the nvidia-settings command line to
+unconditionally assign FSAA should be:
+
+    nvidia-settings --assign FSAA=5 --assign FSAAAppControlled=0 --assign
+FSAAAppEnhanced=0
+
+
+The driver may not be able to support a particular FSAA mode for a given
+application due to video or system memory limitations. In that case, the
+driver will silently fall back to a less demanding FSAA mode.
+
+
+11B. FAST APPROXIMATE ANTIALIASING (FXAA)
+
+Fast approximate antialiasing is an antialiasing mode supported by the NVIDIA
+graphics driver that offers advantages over traditional multisampling and
+supersampling methods. This mode is incompatible with UBB, triple buffering,
+and other antialiasing methods. To enable this mode, run:
+
+ nvidia-settings --assign FXAA=1
+
+nvidia-settings will automatically disable incompatible features when this
+command is run. Users may wish to disable use of FXAA for individual
+applications when FXAA is globally enabled. This can be done by setting the
+environment variable __GL_ALLOW_FXAA_USAGE to 0. __GL_ALLOW_FXAA_USAGE has no
+effect when FXAA is globally disabled.
+
+
+11C. ANISOTROPIC TEXTURE FILTERING
+
+Automatic anisotropic texture filtering can be enabled by setting the
+environment variable __GL_LOG_MAX_ANISO. The possible values are:
+
+    __GL_LOG_MAX_ANISO                    Filtering Type
+    ----------------------------------    ----------------------------------
+    0                                     No anisotropic filtering
+    1                                     2x anisotropic filtering
+    2                                     4x anisotropic filtering
+    3                                     8x anisotropic filtering
+    4                                     16x anisotropic filtering
+
+
+
+11D. VBLANK SYNCING
+
+The __GL_SYNC_TO_VBLANK (boolean) environment variable can be used to control
+whether swaps are synchronized to a display device's vertical refresh.
+
+   o Setting __GL_SYNC_TO_VBLANK=0 allows glXSwapBuffers to swap without
+     waiting for vblank.
+
+   o Setting __GL_SYNC_TO_VBLANK=1 forces glXSwapBuffers to synchronize with
+     the vertical blanking period. This is the default behavior.
+
+
+When sync to vblank is enabled with TwinView, OpenGL can only sync to one of
+the display devices; this may cause tearing corruption on the display device
+to which OpenGL is not syncing. You can use the environment variable
+__GL_SYNC_DISPLAY_DEVICE to specify which display device should be
+synchronized to for OpenGL or Vulkan. You should set this environment variable
+to the name of a display device; for example "CRT-1". Look for the line
+"Connected display device(s):" in your X log file for a list of the display
+devices present and their names. You may also find it useful to review Chapter
+12 "Configuring Twinview" and the section on Ensuring Identical Mode Timings
+in Chapter 18. This environment variable is only applicable to Vulkan while
+using either VK_PRESENT_MODE_FIFO_KHR or VK_PRESENT_MODE_FIFO_RELAXED_KHR.
+
+If a display device is being provided by a synchronized RandR 1.4 Output Sink,
+it will not be listed under "Connected display device(s):", but can still be
+used with __GL_SYNC_DISPLAY_DEVICE. The names of these display devices can be
+found using the "xrandr" command line tool. See Synchronized RandR 1.4 Outputs
+for information on synchronized RandR 1.4 Output Sinks.
+
+
+11E. CONTROLLING THE SORTING OF OPENGL FBCONFIGS
+
+The NVIDIA GLX implementation sorts FBConfigs returned by glXChooseFBConfig()
+as described in the GLX specification. To disable this behavior set
+__GL_SORT_FBCONFIGS to 0 (zero), then FBConfigs will be returned in the order
+they were received from the X server. To examine the order in which FBConfigs
+are returned by the X server run:
+
+nvidia-settings --glxinfo
+
+This option may be be useful to work around problems in which applications
+pick an unexpected FBConfig.
+
+
+11F. OPENGL YIELD BEHAVIOR
+
+There are several cases where the NVIDIA OpenGL driver needs to wait for
+external state to change before continuing. To avoid consuming too much CPU
+time in these cases, the driver will sometimes yield so the kernel can
+schedule other processes to run while the driver waits. For example, when
+waiting for free space in a command buffer, if the free space has not become
+available after a certain number of iterations, the driver will yield before
+it continues to loop.
+
+By default, the driver calls sched_yield() to do this. However, this can cause
+the calling process to be scheduled out for a relatively long period of time
+if there are other, same-priority processes competing for time on the CPU. One
+example of this is when an OpenGL-based composite manager is moving and
+repainting a window and the X server is trying to update the window as it
+moves, which are both CPU-intensive operations.
+
+You can use the __GL_YIELD environment variable to work around these
+scheduling problems. This variable allows the user to specify what the driver
+should do when it wants to yield. The possible values are:
+
+    __GL_YIELD         Behavior
+    ---------------    ------------------------------------------------------
+    <unset>            By default, OpenGL will call sched_yield() to yield.
+    "NOTHING"          OpenGL will never yield.
+    "USLEEP"           OpenGL will call usleep(0) to yield.
+
+
+
+11G. CONTROLLING WHICH OPENGL FBCONFIGS ARE AVAILABLE
+
+The NVIDIA GLX implementation will hide FBConfigs that are associated with a
+32-bit ARGB visual when the XLIB_SKIP_ARGB_VISUALS environment variable is
+defined. This matches the behavior of libX11, which will hide those visuals
+from XGetVisualInfo and XMatchVisualInfo. This environment variable is useful
+when applications are confused by the presence of these FBConfigs.
+
+
+11H. USING UNOFFICIAL GLX PROTOCOL
+
+By default, the NVIDIA GLX implementation will not expose GLX protocol for GL
+commands if the protocol is not considered complete. Protocol could be
+considered incomplete for a number of reasons. The implementation could still
+be under development and contain known bugs, or the protocol specification
+itself could be under development or going through review. If users would like
+to test the client-side portion of such protocol when using indirect
+rendering, they can set the __GL_ALLOW_UNOFFICIAL_PROTOCOL environment
+variable to a non-zero value before starting their GLX application. When an
+NVIDIA GLX server is used, the related X Config option
+"AllowUnofficialGLXProtocol" will need to be set as well to enable support in
+the server.
+
+
+11I. OVERRIDING DRIVER DETECTION OF SELINUX POLICY BOOLEANS
+
+On Linux, the NVIDIA GLX implementation will attempt to detect whether SELinux
+is enabled and modify its behavior to respect SELinux policy. By default, the
+driver adheres to SELinux policy boolean settings at the beginning of a client
+process's execution; due to shared library limitations, these settings remain
+fixed throughout the lifetime of the driver instance. Additionally, the driver
+will adhere to policy boolean settings regardless of whether SELinux is
+running in permissive mode or enforcing mode. The __GL_SELINUX_BOOLEANS
+environment variable allows the user to override driver detection of specified
+SELinux booleans so the driver acts as if these booleans were set or unset.
+This allows the user, for example, to run the driver under a more restrictive
+policy than specified by SELinux, or to work around problems when running the
+driver under SELinux while operating in permissive mode.
+
+__GL_SELINUX_BOOLEANS should be set to a comma-separated list of key/value
+pairs:
+
+ __GL_SELINUX_BOOLEANS="key1=val1,key2=val2,key3=val3,..."
+
+Valid keys are any SELinux booleans specified by "getsebool -a", and valid
+values are 1, true, yes, or on to enable the boolean, and 0, false, no, or off
+to disable it. There should be no whitespace between any key, value, or
+delimiter. If this environment variable is set, the driver assumes that
+SELinux is enabled on the system. Currently, the driver only uses the
+"allow_execmem" and "deny_execmem" booleans to determine whether it can apply
+optimizations that use writable, executable memory. Users can explicitly
+request that these optimizations be turned off by using the
+__GL_WRITE_TEXT_SECTION environment variable (see "Disabling executable memory
+    optimizations" below). By default, if the driver cannot detect the value
+of one or both of these booleans, it assumes the most permissive setting (i.e.
+executable memory is allowed).
+
+
+11J. LIMITING HEAP ALLOCATIONS IN THE OPENGL DRIVER
+
+The NVIDIA OpenGL implementation normally does not enforce limits on dynamic
+system memory allocations (i.e., memory allocated by the driver from the C
+library via the malloc(3) memory allocation package). The
+__GL_HEAP_ALLOC_LIMIT environment variable enables the user to specify a
+per-process heap allocation limit for as long as libGL is loaded in the
+application.
+
+__GL_HEAP_ALLOC_LIMIT is specified in the form BYTES SUFFIX, where BYTES is a
+nonnegative integer and SUFFIX is an optional multiplicative suffix: kB =
+1000, k = 1024, MB = 1000*1000, M = 1024*1024, GB = 1000*1000*1000, and G =
+1024*1024*1024. SUFFIX is not case-sensitive. For example, to specify a heap
+allocation limit of 20 megabytes:
+
+__GL_HEAP_ALLOC_LIMIT="20 MB"
+
+If SUFFIX is not specified, the limit is assumed to be given in bytes. The
+minimum heap allocation limit is 12 MB. If a lower limit is specified, the
+limit is clamped to the minimum.
+
+The GNU C library provides several hooks that may be used by applications to
+modify the behavior of malloc(3), realloc(3), and free(3). In addition, an
+application or library may specify allocation symbols that the driver will use
+in place of those exported by libc. Heap allocation tracking is incompatible
+with these features, and the driver will disable the heap allocation limit if
+it detects that they are in use.
+
+WARNING: Enforcing a limit on heap allocations may cause unintended behavior
+and lead to application crashes, data corruption, and system instability.
+ENABLE AT YOUR OWN RISK.
+
+
+11K. OPENGL SHADER DISK CACHE
+
+The NVIDIA OpenGL driver utilizes a shader disk cache. This optimization
+benefits some applications, by reusing shader binaries instead of compiling
+them repeatedly. The related environment variables __GL_SHADER_DISK_CACHE,
+__GL_SHADER_DISK_CACHE_PATH, and __GL_SHADER_DISK_CACHE_SIZE as well as the
+GLShaderDiskCache X configuration option, allow fine-grained configuration of
+the shader cache behavior. The shader disk cache:
+
+
+  1. is always disabled for indirect rendering
+
+  2. is always disabled for setuid and setgid binaries
+
+  3. by default, is disabled for direct rendering when the OpenGL application
+     is run as the root user
+
+  4. by default, is enabled for direct rendering when the OpenGL application
+     is run as a non-root user
+
+
+The GLShaderDiskCache X configuration option forcibly enables or disables the
+shader disk cache, for direct rendering as a non-root user.
+
+The following environment variables configure shader disk cache behavior, and
+override the GLShaderDiskCache configuration option:
+
+    Environment Variable                  Description
+    ----------------------------------    ----------------------------------
+    __GL_SHADER_DISK_CACHE (boolean)      Enables or disables the shader
+                                          cache for direct rendering.
+    __GL_SHADER_DISK_CACHE_PATH           Enables configuration of where
+    (string)                              shader caches are stored on disk.
+    __GL_SHADER_DISK_CACHE_SIZE (integer)
+
+
+If __GL_SHADER_DISK_CACHE_PATH is unset, caches will be stored in
+$XDG_CACHE_HOME/nvidia/GLCache/ if XDG_CACHE_HOME is set, or in
+$HOME/.cache/nvidia/GLCache/ if HOME is set. If none of the environment
+variables __GL_SHADER_DISK_CACHE_PATH, XDG_CACHE_HOME, or HOME is set, the
+shader cache will be disabled. Caches are persistent across runs of an
+application. Cached shader binaries are specific to each driver version;
+changing driver versions will cause binaries to be recompiled.
+
+Note that earlier driver versions kept the default caches in
+$XDG_CACHE_HOME/.nv/GLCache/ or $HOME/.nv/GLCache/ instead of
+$XDG_CACHE_HOME/nvidia/GLCache/ or $HOME/.cache/nvidia/GLCache/, respectively.
+If these earlier locations exist they will be reused instead. It is safe to
+remove any .nv/GLCache/ directory, after which the driver will populate a
+fresh cache in the new locations as described in the previous paragraph.
+
+If the default cache is used and __GL_SHADER_DISK_CACHE_SIZE is set locally:
+any applications that subsequently run without setting it will revert the
+cache to the default size and cause the cache to be wiped if it now goes over.
+To increase the cache size globally, __GL_SHADER_DISK_CACHE_SIZE can be set in
+e.g. ~/.bashrc or ~/.profile.
+
+
+11L. THREADED OPTIMIZATIONS
+
+The NVIDIA OpenGL driver supports offloading its CPU computation to a worker
+thread. These optimizations typically benefit CPU-intensive applications, but
+might cause a decrease of performance in applications that heavily rely on
+synchronous OpenGL calls such as glGet*. Because of this, they are currently
+disabled by default.
+
+Setting the __GL_THREADED_OPTIMIZATIONS environment variable to "1" before
+loading the NVIDIA OpenGL driver library will enable these optimizations for
+the lifetime of the application.
+
+Please note that these optimizations will only work if the target application
+dynamically links against pthreads. If this isn't the case, the dynamic loader
+can be instructed to do so at runtime by setting the LD_PRELOAD environment
+variable to include the pthreads library.
+
+Additionally, these optimizations require Xlib to function in thread-safe
+mode. The NVIDIA OpenGL driver cannot reliably enable Xlib thread-safe mode
+itself, therefore the application needs to call XInitThreads() before making
+any other Xlib call. Otherwise, the threaded optimizations in the NVIDIA
+driver will not be enabled.
+
+
+11M. CONFORMANT GLBLITFRAMEBUFFER() SCISSOR TEST BEHAVIOR
+
+This option enables the glBlitFramebuffer() scissor test, which must be
+enabled for glBlitFramebuffer() to behave in a conformant manner. Setting the
+__GL_ConformantBlitFramebufferScissor environment variable to 0 disables the
+glBlitFramebuffer() scissor test, and setting it to 1 enables it. By default,
+the glBlitFramebuffer() scissor test is enabled.
+
+Some applications have bugs which cause them to not display properly with a
+conformant glBlitFramebuffer(). See Chapter 9 for more details.
+
+
+11N. G-SYNC
+
+When a G-SYNC or G-SYNC Compatible monitor is attached, and G-SYNC or G-SYNC
+Compatible mode was allowed when the mode was set, this option controls
+whether these "variable refresh rate", or VRR, features can be used. Setting
+the __GL_VRR_ALLOWED environment variable to 0 disables VRR flipping for the
+application on any G-SYNC or G-SYNC Compatible monitors. Setting the
+__GL_VRR_ALLOWED environment variable to 1 has no effect on non-VRR monitors,
+or monitors that disallowed G-SYNC or G-SYNC Compatible mode when the mode was
+set.
+
+When G-SYNC is active on a G-SYNC or G-SYNC Compatible display and
+__GL_SYNC_TO_VBLANK is disabled, applications rendering faster than the
+maximum refresh rate will tear. This eliminates tearing for frame rates below
+the monitor's maximum refresh rate while minimizing latency for frame rates
+above it. When __GL_SYNC_TO_VBLANK is enabled, the frame rate is limited to
+the monitor's maximum refresh rate to eliminate tearing completely. When a
+G-SYNC Compatible display is in use, applications rendering slower than the
+minimum refresh rate may tear when __GL_SYNC_TO_VBLANK is disabled, and their
+swaps may not complete until the next vblank when __GL_SYNC_TO_VBLANK is
+enabled.
+
+G-SYNC and G-SYNC Compatible mode cannot be used when workstation stereo or
+workstation overlays are enabled, or when there is more than one X screen.
+
+
+11O. DISABLING EXECUTABLE MEMORY OPTIMIZATIONS
+
+By default, the NVIDIA driver will attempt to use optimizations which rely on
+being able to write to executable memory. This may cause problems in certain
+system configurations (e.g., on SELinux when the "allow_execmem" boolean is
+disabled or "deny_execmem" boolean is enabled, and on grsecurity kernels
+configured with CONFIG_PAX_MPROTECT). When possible, the driver will attempt
+to detect when it is running on an unsupported configuration and disable these
+optimizations automatically. If the __GL_WRITE_TEXT_SECTION environment
+variable is set to 0, the driver will unconditionally disable these
+optimizations.
+
+
+11P. IGNORING GLSL (OPENGL SHADING LANGUAGE) EXTENSION CHECKS
+
+Some applications may use GLSL shaders that reference global variables defined
+only in an OpenGL extension without including a corresponding #extension
+directive in their source code. Additionally, some applications may use GLSL
+shaders version 150 or greater that reference global variables defined in a
+compatibility profile, without specifying that a compatibility profile should
+be used in their #version directive. Setting the __GL_IGNORE_GLSL_EXT_REQS
+environment variable to 1 will cause the driver to ignore this class of
+errors, which may allow these shaders to successfully compile.
+
+
+11Q. SHOWING THE GRAPHICS API VISUAL INDICATOR
+
+The __GL_SHOW_GRAPHICS_OSD (boolean) environment variable can be used to
+control whether the graphics API visual indicator is rendered on top of OpenGL
+and Vulkan applications.
+
+This indicator displays various information such as the graphics API in use,
+instantaneous frame rate, whether the application is synced to vblank, and
+whether the application is blitting or flipping.
+
+
+11R. IMAGE SHARPENING
+
+The __GL_SHARPEN_ENABLE environment variable can be used to enable image
+sharpening for OpenGL and Vulkan applications. Setting __GL_SHARPEN_ENABLE=1
+enables image sharpening, while setting __GL_SHARPEN_ENABLE=0 (default)
+disables image sharpening. The amount of sharpening can be controlled by
+setting the __GL_SHARPEN_VALUE environment variable to a value between 0 and
+100, with 0 being no sharpening, 100 being maximum sharpening, and 50 being
+the default. The amount of denoising done on the sharpened image can be
+controlled with the __GL_SHARPEN_IGNORE_FILM_GRAIN environment variable, with
+0 being no denoising, 100 being maximum denoising, and 17 being the default.
+
+______________________________________________________________________________
+
+Chapter 12. Configuring Multiple Display Devices on One X Screen
+______________________________________________________________________________
+
+Multiple display devices (digital flat panels, CRTs, and TVs) can display the
+contents of a single X screen in any arbitrary configuration. Configuring
+multiple display devices on a single X screen has several distinct advantages
+over other techniques (such as Xinerama):
+
+
+   o A single X screen is used. The NVIDIA driver conceals all information
+     about multiple display devices from the X server; as far as X is
+     concerned, there is only one screen.
+
+   o Both display devices share one frame buffer. Thus, all the functionality
+     present on a single display (e.g., accelerated OpenGL) is available with
+     multiple display devices.
+
+   o No additional overhead is needed to emulate having a single desktop.
+
+
+If you are interested in using each display device as a separate X screen, see
+Chapter 14.
+
+
+12A. RELEVANT X CONFIGURATION OPTIONS
+
+When the NVIDIA X driver starts, by default it will enable as many display
+devices as are connected and as the GPU supports driving simultaneously. Most
+NVIDIA GPUs support driving up to four display devices simultaneously.
+
+If multiple X screens are configured on the GPU, the NVIDIA X driver will
+attempt to reserve display devices and GPU resources for those other X screens
+(honoring the "UseDisplayDevice" and "MetaModes" X configuration options of
+each X screen) and then allocate all remaining resources to the first X screen
+configured on the GPU.
+
+There are several X configuration options that influence how multiple display
+devices are used by an X screen:
+
+    Option "MetaModes"                "<list of MetaModes>"
+
+    Option "HorizSync"                "<hsync range(s)>"
+    Option "VertRefresh"              "<vrefresh range(s)>"
+
+    Option "MetaModeOrientation"      "<relationship of head 1 to head 0>"
+    Option "ConnectedMonitor"         "<list of connected display devices>"
+
+See detailed descriptions of each option below.
+
+
+12B. DETAILED DESCRIPTION OF OPTIONS
+
+
+HorizSync
+VertRefresh
+
+    With these options, you can specify a semicolon-separated list of
+    frequency ranges, each optionally prepended with a display device name. In
+    addition, if SLI Mosaic mode is enabled, a GPU specifier can be used. For
+    example:
+    
+        Option "HorizSync"   "CRT-0: 50-110; DFP-0: 40-70"
+        Option "VertRefresh" "CRT-0: 60-120; GPU-0.DFP-0: 60"
+    
+    See Appendix C on Display Device Names for more information.
+
+    These options are normally not needed: by default, the NVIDIA X driver
+    retrieves the valid frequency ranges from the display device's EDID (see
+    the UseEdidFreqs option). The "HorizSync" and "VertRefresh" options
+    override any frequency ranges retrieved from the EDID.
+
+MetaModes
+
+    MetaModes are "containers" that store information about what mode should
+    be used on each display device.
+
+    Multiple MetaModes list the combinations of modes and the sequence in
+    which they should be used. In MetaMode syntax, modes within a MetaMode are
+    comma separated, and multiple MetaModes are separated by semicolons. For
+    example:
+    
+        "<mode name 0>, <mode name 1>; <mode name 2>, <mode name 3>"
+    
+    Where <mode name 0> is the name of the mode to be used on display device 0
+    concurrently with <mode name 1> used on display device 1. A mode switch
+    will then cause <mode name 2> to be used on display device 0 and <mode
+    name 3> to be used on display device 1. Here is an example MetaMode:
+    
+        Option "MetaModes" "1280x1024,1280x1024; 1024x768,1024x768"
+    
+    If you want a display device to not be active for a certain MetaMode, you
+    can use the mode name "NULL", or simply omit the mode name entirely:
+    
+        "1600x1200, NULL; NULL, 1024x768"
+    
+    or
+    
+        "1600x1200; , 1024x768"
+    
+    Optionally, mode names can be followed by offset information to control
+    the positioning of the display devices within the virtual screen space;
+    e.g.,
+    
+        "1600x1200 +0+0, 1024x768 +1600+0; ..."
+    
+    Offset descriptions follow the conventions used in the X "-geometry"
+    command line option; i.e., both positive and negative offsets are valid,
+    though negative offsets are only allowed when a virtual screen size is
+    explicitly given in the X config file.
+
+    When no offsets are given for a MetaMode, the offsets will be computed
+    following the value of the MetaModeOrientation option (see below). Note
+    that if offsets are given for any one of the modes in a single MetaMode,
+    then offsets will be expected for all modes within that single MetaMode;
+    in such a case offsets will be assumed to be +0+0 when not given.
+
+    When not explicitly given, the virtual screen size will be computed as the
+    bounding box of all MetaMode bounding boxes. MetaModes with a bounding box
+    larger than an explicitly given virtual screen size will be discarded.
+
+    A MetaMode string can be further modified with a "Panning Domain"
+    specification; e.g.,
+    
+        "1024x768 @1600x1200, 800x600 @1600x1200"
+    
+    A panning domain is the area in which a display device's viewport will be
+    panned to follow the mouse. Panning actually happens on two levels with
+    MetaModes: first, an individual display device's viewport will be panned
+    within its panning domain, as long as the viewport is contained by the
+    bounding box of the MetaMode. Once the mouse leaves the bounding box of
+    the MetaMode, the entire MetaMode (i.e., all display devices) will be
+    panned to follow the mouse within the virtual screen, unless the
+    "PanAllDisplays" X configuration option is disabled. Note that individual
+    display devices' panning domains default to being clamped to the position
+    of the display devices' viewports, thus the default behavior is just that
+    viewports remain "locked" together and only perform the second type of
+    panning.
+
+    The most beneficial use of panning domains is probably to eliminate dead
+    areas -- regions of the virtual screen that are inaccessible due to
+    display devices with different resolutions. For example:
+    
+        "1600x1200, 1024x768"
+    
+    produces an inaccessible region below the 1024x768 display. Specifying a
+    panning domain for the second display device:
+    
+        "1600x1200, 1024x768 @1024x1200"
+    
+    provides access to that dead area by allowing you to pan the 1024x768
+    viewport up and down in the 1024x1200 panning domain.
+
+    Offsets can be used in conjunction with panning domains to position the
+    panning domains in the virtual screen space (note that the offset
+    describes the panning domain, and only affects the viewport in that the
+    viewport must be contained within the panning domain). For example, the
+    following describes two modes, each with a panning domain width of 1900
+    pixels, and the second display is positioned below the first:
+    
+        "1600x1200 @1900x1200 +0+0, 1024x768 @1900x768 +0+1200"
+    
+    Because it is often unclear which mode within a MetaMode will be used on
+    each display device, mode descriptions within a MetaMode can be prepended
+    with a display device name. For example:
+    
+        "CRT-0: 1600x1200,  DFP-0: 1024x768"
+    
+    If no MetaMode string is specified, then the X driver uses the modes
+    listed in the relevant "Display" subsection, attempting to place matching
+    modes on each display device.
+
+    Each mode of the MetaMode may also have extra attributes associated with
+    it, specified as a comma-separated list of token=value pairs inside curly
+    brackets. The value for each token can optionally be enclosed in
+    parentheses, to prevent commas within the value from being interpreted as
+    token=value pair separators. Currently, the only token that requires a
+    parentheses-enclosed value is "Transform".
+
+    The possible tokens within the curly bracket list are:
+
+
+   o "Stereo": possible values are "PassiveLeft" or "PassiveRight". When used
+     in conjunction with stereo mode "4", this allows each display to be
+     configured independently to show any stereo eye. For example:
+     
+         "CRT-0: 1600x1200 +0+0 { Stereo = PassiveLeft }, CRT-1: 1600x1200
+     +1600+0 { Stereo=PassiveRight }"
+     
+     If the X screen is not configured for stereo mode "4", these options are
+     ignored. See the Stereo X configuration option for more details about
+     stereo configurations.
+
+   o "Rotation": this rotates the content of an individual display device.
+     Possible values are "0" (with synonyms "no", "off" and "normal"), "90"
+     (with synonyms "left" and "CCW"), "180" (with synonyms "invert" and
+     "inverted") and "270" (with synonyms "right" and "CW"). For example:
+     
+         "DFP-0: nvidia-auto-select { Rotation=left }, DFP-1:
+     nvidia-auto-select { Rotation=right }"
+     
+     Independent rotation configurability of each display device is also
+     possible through RandR. See Chapter 15 for details.
+
+   o "Reflection": this reflects the content of an individual display device
+     about either the X axis, the Y axis, or both the X and Y axes. Possible
+     values are "X", "Y" and "XY". For example:
+     
+         "DFP-0: nvidia-auto-select { Reflection=X }, DFP-1:
+     nvidia-auto-select"
+     
+     Independent reflection configurability of each display device is also
+     possible through RandR. See Chapter 15 for details.
+
+   o "Transform": this is a 3x3 matrix of floating point values that defines a
+     transformation from the ViewPortOut for a display device to a region
+     within the X screen. This is equivalent to the transformation matrix
+     specified through the RandR 1.3 RRSetCrtcTransform request. As in RandR,
+     the transform is applied before any specified rotation and reflection
+     values to compute the complete transform.
+
+     The 3x3 matrix is represented in the MetaMode syntax as a comma-separated
+     list of nine floating point values, stored in row-major order. This is
+     the same as the value passed to the xrandr(1) '--transform' command line
+     option.
+
+     Note that the transform value must be enclosed in parentheses, so that
+     the commas separating the nine floating point values are interpreted
+     correctly.
+
+     For example:
+     
+         "DFP-0: nvidia-auto-select { Transform=(43.864288330078125,
+     21.333328247070312, -16384, 0, 43.864288330078125, 0, 0,
+     0.0321197509765625, 19.190628051757812) }"
+     
+     
+   o "PixelShiftMode": This allows a display to be configured in pixel shift
+     mode, in which a display overlays multiple downscaled images to simulate
+     a higher effective resolution. This is used in certain JVC e-shift
+     projectors. All pixel shift modes require an NVIDIA RTX/Quadro GPU.
+     Possible values are "4kTopLeft", "4kBottomRight", and "8k".
+
+     In 4K pixel shift mode, two cloned displays are configured in pixel shift
+     mode, and either display is configured to display either the top left or
+     bottom right pixels of every pixel quad. Note that the mode timings used
+     by each display are one quarter of the resolution read from the X screen
+     and one quarter of the effective resolution displayed (e.g., "1920x1080"
+     rather than "3840x2160").
+
+     For example, here is the configuration of a 4K pixel shift mode, with an
+     effective desktop resolution of 3840x2160:
+     
+         "DFP-0: 1920x1080 +0+0 { PixelShiftMode = 4kTopLeft, ViewPortIn =
+     3840x2160 }, DFP-1: 1920x1080 +0+0 { PixelShiftMode = 4kBottomRight,
+     ViewPortIn = 3840x2160 }"
+     
+     
+     In 8K pixel shift mode, the image is downscaled from the ViewPortIn
+     resolution to the mode timing resolution, to produce two different
+     images: one for the top left pixel of every pixel quad and one for the
+     bottom right of every pixel quad. The display alternates between the two
+     images each vblank. This requires an NVIDIA RTX/Quadro graphics card with
+     a 3-pin DIN stereo connector.
+
+     For example, here is the configuration for an 8K pixel shift mode, with
+     an effective desktop resolution and refresh rate of 8192x4800 @30Hz,
+     split across 4 1024x2400@60Hz displays. Note that the panning offsets of
+     each display are in X screen (ViewPortIn) coordinates:
+     
+         "DFP-0: 1024x2400 +0+0 { PixelShiftMode=8k, ViewPortIn = 2048x4800 },
+     DFP-1: 1024x2400 +2048+0 { PixelShiftMode=8k, ViewPortIn = 2048x4800 },
+     DFP-2: 1024x2400 +4096+0 { PixelShiftMode=8k, ViewPortIn = 2048x4800 },
+     DFP-4: 1024x2400 +6144+0 { PixelShiftMode=8k, ViewPortIn = 2048x4800 }"
+     
+     
+     In both examples above, the ViewPortIn is provided here for illustrative
+     purposes only. When PixelShiftMode is used, the ViewPortIn and
+     ViewPortOut are always inferred from the mode timings: the ViewPortOut
+     will match the mode timing resolution, which is half the intended
+     resolution. The ViewPortIn will be twice the ViewPortOut, in order to
+     achieve the pixel shift effect.
+
+   o "ViewPortOut": this specifies the region within the mode sent to the
+     display device that will display pixels from the X screen. The region of
+     the mode outside the ViewPortOut will contain black. The format is "WIDTH
+     x HEIGHT +X +Y".
+
+     This is useful, for example, for configuring overscan compensation. E.g.,
+     if the mode sent to the display device is 1920x1080, to configure a 10
+     pixel border on all four sides:
+     
+         "DFP-0: 1920x1080 { ViewPortOut=1900x1060+10+10 }"
+     
+     Or, to only display an image in the lower right quarter of the 1920x1080
+     mode:
+     
+         "DFP-0: 1920x1080 { ViewPortOut=960x540+960+540 }"
+     
+     
+     When not specified, the ViewPortOut defaults to the size of the mode.
+
+   o "ViewPortIn": this defines the size of the region of the X screen which
+     will be displayed within the ViewPortOut. The format is "WIDTH x HEIGHT".
+
+     ViewPortIn is useful for configuring scaling between the X screen and the
+     display device. For example, to display an 800x600 region from the X
+     screen on a 1920x1200 mode:
+     
+         "DFP-0: 1920x1200 { ViewPortIn=800x600 }"
+     
+     Or, to display a 2560x1600 region from the X screen on a 1920x1200 mode:
+     
+         "DFP-0: 1920x1200 { ViewPortIn=2560x1600 }"
+     
+     Or, in conjunction with ViewPortOut, to scale an 800x600 region of the X
+     screen within a 1920x1200 mode while preserving the aspect ratio:
+     
+         "DFP-0: 1920x1200 { ViewPortIn=800x600, ViewPortOut=1600x1200+160+0
+     }"
+     
+     
+     Scaling from ViewPortIn to ViewPortOut is also expressible through the
+     "Transform" attribute. In fact, ViewPortIn is just a shortcut for
+     populating the transformation matrix. If both ViewPortIn and Transform
+     are specified in the MetaMode for a display device, ViewPortIn is
+     ignored.
+
+     ViewPortIn is also ignored if PixelShiftMode is enabled, as
+     PixelShiftMode implies a transformation of double width and height.
+
+   o "PanningTrackingArea": this defines the region of the MetaMode inside
+     which cursor movement will influence panning of the display device. The
+     format is "WIDTH x HEIGHT + X + Y", to describe the size and offset of
+     the region within the X screen. E.g.,
+     
+         "DFP-0: 1920x1200 +0+0 { PanningTrackingArea = 1920x1200 +0+0 }"
+     
+     
+     If not specified in the MetaMode, this will default to the entire X
+     screen. If the "PanAllDisplays" X configuration option is explicitly set
+     to False, then PanningTrackingArea will default to the panning domain of
+     the display device.
+
+     This is equivalent to the panning tracking_area region in the
+     RRSetPanning RandR 1.3 protocol request.
+
+   o "PanningBorder": this defines the distances from the edges of the
+     ViewPortIn that will activate panning if the pointer hits them. If the
+     borders are 0, the display device will pan when the pointer hits the edge
+     of the ViewPortIn (the default). If the borders are positive, the display
+     device will pan when the pointer gets close to the edge of the
+     ViewPortIn. If the borders are negative, the display device will pan when
+     the pointer is beyond the edge of the ViewPortIn.
+
+     The format is "LeftBorder/TopBorder/RightBorder/BottomBorder". E.g.,
+     
+         "DFP-0: 1920x1200 +0+0 { PanningBorder = 10/10/10/10 }"
+     
+     
+     This is equivalent to the panning border in the RRSetPanning RandR 1.3
+     protocol request.
+
+   o "ForceCompositionPipeline": possible values are "On" or "Off". The NVIDIA
+     X driver can use a composition pipeline to apply X screen transformations
+     and rotations. "ForceCompositionPipeline" can be used to force the use of
+     this pipeline, even when no transformations or rotations are applied to
+     the screen.
+
+   o "ForceFullCompositionPipeline": possible values are "On" or "Off". This
+     option implicitly enables "ForceCompositionPipeline" and additionally
+     makes use of the composition pipeline to apply ViewPortOut scaling.
+
+   o "WarpMesh", "BlendTexture", "OffsetTexture": these string attributes
+     control the operation of Warp and Blend, an advanced transformation
+     feature available on select NVIDIA RTX/Quadro GPUs. Warp and Blend can
+     adjust a display's geometry (warp) with a greater level of control than a
+     simple matrix transformation: for example, to facilitate projecting an
+     image onto a non-planar surface, and its intensity (blend) per pixel: for
+     example, to seamlessly combine images from multiple overlapping
+     projectors into a single large image. Each of the "WarpMesh",
+     "BlendTexture", and "OffsetTexture" MetaMode tokens can be set to the
+     name of a pixmap which has already been bound to a name via the
+     XNVCtrlBindWarpPixmapName() NV_CONTROL call. See the
+     'nv-control-warpblend' sample application distributed with the
+     'nvidia-settings' source code for a more detailed description of the
+     functionality of each of these pixmaps, how to lay data out into the
+     pixmaps, and an example implementation of an X application that loads and
+     binds pixmaps so that they are ready to use in a MetaMode.
+
+     If driving the current mode in the RGB 4:4:4 color space would require a
+     pixel clock that exceeds the display's or GPU's capabilities, and the
+     display and GPU are capable of driving that mode in the YCbCr 4:2:0 color
+     space, then the color space will be overridden to YCbCr 4:2:0. In this
+     case, if a Turing or earlier GPU is in use, or if a DisplayPort display
+     device is in use regardless of GPU, then Warp and Blend will be disabled.
+
+     Warp and Blend is not yet supported with the GLX_NV_swap_group OpenGL
+     extension.
+
+   o "BlendOrder": Controls the order of warping and blending when using Warp
+     and Blend. By default, warping is performed first, followed by blending;
+     setting the "BlendOrder" MetaMode token to "BlendAfterWarp" will reverse
+     the default order.
+
+   o "ResamplingMethod": Controls the filtering method used to smooth the
+     display image when scaling screen transformations (such as a WarpMesh or
+     scaling ViewPortOut) are in use. Possible values are "Bilinear"
+     (default), "BicubicTriangular", "BicubicBellShaped", "BicubicBspline",
+     "BicubicAdaptiveTriangular", "BicubicAdaptiveBellShaped",
+     "BicubicAdaptiveBspline", and "Nearest".
+
+     Bicubic resampling is only available on NVIDIA RTX/Quadro GPUs. If a mode
+     requiring a YCbCr 4:2:0 color space is in use on a DisplayPort display
+     device or a Turing or earlier GPU, then bicubic resampling is
+     unavailable. Bicubic resampling is not supported with the
+     GLX_NV_swap_group OpenGL extension.
+
+   o "AllowGSYNC" or "AllowGSYNCCompatible": Controls whether capable monitors
+     are put into G-SYNC or G-SYNC Compatible mode or left in continuous
+     refresh mode.
+
+     By default, G-SYNC monitors are put into G-SYNC mode when a mode is set,
+     and transition into and out of variable refresh mode seamlessly. However,
+     this prevents certain other features, such as Ultra Low Motion Blur and
+     Frame Lock, from working. Set this to "Off" to use continuous refresh
+     rates that are compatible with these features.
+
+     In addition, G-SYNC Compatible monitors are supported via DisplayPort on
+     Pascal and newer GPUs, and via HDMI on Turing and newer GPUs. Supported
+     monitors will enable variable refresh mode by default. This behavior may
+     be overridden by setting the AllowGSYNCCompatible=Off MetaMode attribute.
+     Pascal GPUs only support G-SYNC Compatible monitors in systems containing
+     no more than one monitor in variable refresh mode. Monitors that have not
+     been validated as G-SYNC Compatible have G-SYNC Compatible mode disabled
+     by default, and can be forced into G-SYNC Compatible mode by setting the
+     AllowGSYNCCompatible=On MetaMode attribute. A list of supported G-SYNC
+     and G-SYNC Compatible monitors can be found at
+     https://www.nvidia.com/en-us/geforce/products/g-sync-monitors/specs/
+
+     Note: Vulkan direct-to-display applications may allow or disallow G-SYNC
+     or G-SYNC Compatible at modeset time using the VKDirectGSYNCAllowed and
+     VKDirectGSYNCCompatibleAllowed environment variables.
+     VKDirectGSYNCAllowed is set to true by default (allowing VRR on all
+     G-SYNC monitors) and VKDirectGSYNCCompatibleAllowed may be set to 0
+     (disallowing VRR on all G-SYNC Compatible monitors), 1 (default, allowing
+     VRR only on monitors validated as G-SYNC Compatible), or 2 (allowing VRR
+     regardless of whether a monitor has been validated as G-SYNC Compatible).
+
+   o "VRRMinRefreshRate": Overrides a G-SYNC Compatible monitor's minimum
+     refresh rate. Some monitors that have not been validated as G-SYNC
+     Compatible may flicker when applications are swapping close to the
+     monitor's minimum refresh rate, and this MetaMode flag may be used to
+     compensate for this. This MetaMode flag has no effect on G-SYNC monitors.
+
+
+    Note that the current MetaMode can also be configured through the
+    NV-CONTROL X extension and the nvidia-settings utility. For example:
+    
+        nvidia-settings --assign CurrentMetaMode="DFP-0: 1920x1200 {
+    ViewPortIn=800x600, ViewPortOut=1600x1200+160+0 }"
+    
+    
+MetaModeOrientation
+
+    This option controls the positioning of the display devices within the
+    virtual X screen, when offsets are not explicitly given in the MetaModes.
+    The possible values are:
+    
+        "RightOf"  (the default)
+        "LeftOf"
+        "Above"
+        "Below"
+        "SamePositionAs"
+    
+    When "SamePositionAs" is specified, all display devices will be assigned
+    an offset of 0,0. For backwards compatibility, "Clone" is a synonym for
+    "SamePositionAs".
+
+    Because it is often unclear which display device relates to which,
+    MetaModeOrientation can be confusing. You can further clarify the
+    MetaModeOrientation with display device names to indicate which display
+    device is positioned relative to which display device. For example:
+    
+        "CRT-0 LeftOf DFP-0"
+    
+    
+ConnectedMonitor
+
+    With this option you can override what the NVIDIA kernel module detects is
+    connected to your graphics card. This may be useful, for example, if any
+    of your display devices do not support detection using Display Data
+    Channel (DDC) protocols. Valid values are a comma-separated list of
+    display device names; for example:
+    
+        "CRT-0, CRT-1"
+        "CRT"
+        "CRT-1, DFP-0"
+    
+    WARNING: this option overrides what display devices are detected by the
+    NVIDIA kernel module, and is very seldom needed. You really only need this
+    if a display device is not detected, either because it does not provide
+    DDC information, or because it is on the other side of a KVM
+    (Keyboard-Video-Mouse) switch. In most other cases, it is best not to
+    specify this option.
+
+
+Just as in all X config entries, spaces are ignored and all entries are case
+insensitive.
+
+
+FREQUENTLY ASKED TWINVIEW QUESTIONS
+
+Q. Nothing gets displayed on my second monitor; what is wrong?
+
+A. Monitors that do not support monitor detection using Display Data Channel
+   (DDC) protocols (this includes most older monitors) are not detectable by
+   your NVIDIA card. You need to explicitly tell the NVIDIA X driver what you
+   have connected using the "ConnectedMonitor" option; e.g.,
+   
+       Option "ConnectedMonitor" "CRT, CRT"
+   
+   
+
+Q. Will window managers be able to appropriately place windows (e.g., avoiding
+   placing windows across both display devices, or in inaccessible regions of
+   the virtual desktop)?
+
+A. Yes. Window managers can query the layout of display devices through either
+   RandR 1.2 or Xinerama.
+
+   The NVIDIA X driver provides a Xinerama extension that X clients (such as
+   window managers) can use to discover the current layout of display devices.
+   Note that the Xinerama protocol provides no way to notify clients when a
+   configuration change occurs, so if you modeswitch to a different MetaMode,
+   your window manager may still think you have the previous configuration.
+   Using RandR 1.2, or the Xinerama extension in conjunction with the
+   XF86VidMode extension to get modeswitch events, window managers should be
+   able to determine the display device configuration at any given time.
+
+   Unfortunately, the data provided by XineramaQueryScreens() appears to
+   confuse some window managers; to work around such broken window managers,
+   you can disable communication of the display device layout with the
+   nvidiaXineramaInfo X configuration option.
+
+   The order that display devices are reported in via the NVIDIA Xinerama
+   information can be configured with the nvidiaXineramaInfoOrder X
+   configuration option.
+
+   Be aware that the NVIDIA driver cannot provide the Xinerama extension if
+   the X server's own Xinerama extension is being used. Explicitly specifying
+   Xinerama in the X config file or on the X server commandline will prohibit
+   NVIDIA's Xinerama extension from installing, so make sure that the X
+   server's log file does not contain:
+   
+       (++) Xinerama: enabled
+   
+   if you want the NVIDIA driver to be able to provide the Xinerama extension
+   while in TwinView.
+
+   Another solution is to use panning domains to eliminate inaccessible
+   regions of the virtual screen (see the MetaMode description above).
+
+   A third solution is to use two separate X screens, rather than use
+   TwinView. See Chapter 14.
+
+
+Q. How are virtual screen dimensions determined in TwinView?
+
+A. After all requested modes have been validated, and the offsets for each
+   MetaMode's viewports have been computed, the NVIDIA driver computes the
+   bounding box of the panning domains for each MetaMode. The maximum bounding
+   box width and height is then found.
+
+   Note that one side effect of this is that the virtual width and virtual
+   height may come from different MetaModes. Given the following MetaMode
+   string:
+   
+       "1600x1200,NULL; 1024x768+0+0, 1024x768+0+768"
+   
+   the resulting virtual screen size will be 1600 x 1536.
+
+
+Q. Can I play full screen games across both display devices?
+
+A. Yes. While the details of configuration will vary from game to game, the
+   basic idea is that a MetaMode presents X with a mode whose resolution is
+   the bounding box of the viewports for that MetaMode. For example, the
+   following:
+   
+       Option "MetaModes" "1024x768,1024x768; 800x600,800x600"
+       Option "MetaModeOrientation" "RightOf"
+   
+   produce two modes: one whose resolution is 2048x768, and another whose
+   resolution is 1600x600. Games such as Quake 3 Arena use the VidMode
+   extension to discover the resolutions of the modes currently available. To
+   configure Quake 3 Arena to use the above MetaMode string, add the following
+   to your q3config.cfg file:
+   
+       seta r_customaspect "1"
+       seta r_customheight "600"
+       seta r_customwidth  "1600"
+       seta r_fullscreen   "1"
+       seta r_mode         "-1"
+   
+   Note that, given the above configuration, there is no mode with a
+   resolution of 800x600 (remember that the MetaMode "800x600, 800x600" has a
+   resolution of 1600x600"), so if you change Quake 3 Arena to use a
+   resolution of 800x600, it will display in the lower left corner of your
+   screen, with the rest of the screen grayed out. To have single head modes
+   available as well, an appropriate MetaMode string might be something like:
+   
+       "800x600,800x600; 1024x768,NULL; 800x600,NULL; 640x480,NULL"
+   
+   More precise configuration information for specific games is beyond the
+   scope of this document, but the above examples coupled with numerous online
+   sources should be enough to point you in the right direction.
+
+
+______________________________________________________________________________
+
+Chapter 13. Configuring GLX in Xinerama
+______________________________________________________________________________
+
+The NVIDIA Linux Driver supports GLX when Xinerama is enabled on similar GPUs.
+The Xinerama extension takes multiple physical X screens (possibly spanning
+multiple GPUs), and binds them into one logical X screen. This allows windows
+to be dragged between GPUs and to span across multiple GPUs. The NVIDIA driver
+supports hardware accelerated OpenGL rendering across all NVIDIA GPUs when
+Xinerama is enabled.
+
+To configure Xinerama
+
+  1. Configure multiple X screens (refer to the xorg.conf man page for
+     details).
+
+  2. Enable Xinerama by adding the line
+     
+         Option "Xinerama" "True"
+     
+     to the "ServerFlags" section of your X config file.
+
+
+Requirements:
+
+   o Using identical GPUs is recommended. Some combinations of non-identical,
+     but similar, GPUs are supported. If a GPU is incompatible with the rest
+     of a Xinerama desktop then no OpenGL rendering will appear on the screens
+     driven by that GPU. Rendering will still appear normally on screens
+     connected to other supported GPUs. In this situation the X log file will
+     include a message of the form:
+
+
+
+(WW) NVIDIA(2): The GPU driving screen 2 is incompatible with the rest of
+(WW) NVIDIA(2):      the GPUs composing the desktop.  OpenGL rendering will
+(WW) NVIDIA(2):      be disabled on screen 2.
+
+
+
+   o NVIDIA's GLX implementation only supports Xinerama when physical X screen
+     0 is driven by the NVIDIA X driver. This is because the X.Org X server
+     bases the visuals of the logical Xinerama X screen on the visuals of
+     physical X screen 0.
+
+     When physical X screen 0 is not being driven by the NVIDIA X driver and
+     Xinerama is enabled, then GLX will be disabled. If physical X screens
+     other than screen 0 are not being driven by the NVIDIA X driver, OpenGL
+     rendering will be disabled on them.
+
+   o Only the intersection of capabilities across all GPUs will be advertised.
+
+     The maximum OpenGL viewport size is 16384x16384 pixels. If an OpenGL
+     window is larger than the maximum viewport, regions beyond the viewport
+     will be blank.
+
+   o X configuration options that affect GLX operation (e.g.: stereo,
+     overlays) should be set consistently across all X screens in the X
+     server.
+
+
+______________________________________________________________________________
+
+Chapter 14. Configuring Multiple X Screens on One Card
+______________________________________________________________________________
+
+GPUs that support TwinView (Chapter 12) can also be configured to treat each
+connected display device as a separate X screen.
+
+While there are several disadvantages to this approach as compared to TwinView
+(e.g.: windows cannot be dragged between X screens, hardware accelerated
+OpenGL cannot span the two X screens), it does offer one advantage over
+TwinView: If each display device is a separate X screen, then properties that
+may vary between X screens may vary between displays (e.g.: depth, root window
+size, etc).
+
+To configure two separate X screens to share one graphics card, here is what
+you will need to do:
+
+First, create two separate Device sections, each listing the BusID of the
+graphics card to be shared and listing the driver as "nvidia", and assign each
+a separate screen:
+
+    Section "Device"
+        Identifier  "nvidia0"
+        Driver      "nvidia"
+        # Edit the BusID with the location of your graphics card
+        BusID       "PCI:2:0:0"
+        Screen      0
+    EndSection
+
+    Section "Device"
+        Identifier  "nvidia1"
+        Driver      "nvidia"
+        # Edit the BusID with the location of your graphics card
+        BusId       "PCI:2:0:0"
+        Screen      1
+    EndSection
+
+Then, create two Screen sections, each using one of the Device sections:
+
+    Section "Screen"
+        Identifier  "Screen0"
+        Device      "nvidia0"
+        Monitor     "Monitor0"
+        DefaultDepth 24
+        Subsection "Display"
+            Depth       24
+            Modes       "1600x1200" "1024x768" "800x600" "640x480" 
+        EndSubsection
+    EndSection
+
+    Section "Screen"
+        Identifier  "Screen1"
+        Device      "nvidia1"
+        Monitor     "Monitor1"
+        DefaultDepth 24
+        Subsection "Display"
+            Depth       24
+            Modes       "1600x1200" "1024x768" "800x600" "640x480" 
+        EndSubsection
+    EndSection
+
+(Note: You'll also need to create a second Monitor section) Finally, update
+the ServerLayout section to use and position both Screen sections:
+
+    Section "ServerLayout"
+        ...
+        Screen         0 "Screen0" 
+        Screen         1 "Screen1" leftOf "Screen0"
+        ...
+    EndSection
+
+For further details, refer to the xorg.conf man page.
+
+______________________________________________________________________________
+
+Chapter 15. Support for the X Resize and Rotate Extension
+______________________________________________________________________________
+
+This NVIDIA driver release contains support for the X Resize and Rotate
+(RandR) Extension versions 1.1, 1.2, and 1.3. The version of the RandR
+extension advertised to X clients is controlled by the X server: the RandR
+extension and protocol are provided by the X server, which routes protocol
+requests to the NVIDIA X driver. Run `xrandr --version` to check the version
+of RandR provided by the X server.
+
+
+15A. RANDR SUPPORT
+
+Specific supported features include:
+
+   o Modes can be set per-screen, and the X screen can be resized through the
+     RRSetScreenConfig request (e.g., with xrandr(1)'s '--size' and '--rate'
+     command line options).
+
+   o The X screen can be resized with the RandR 1.2 RRSetScreenSize request
+     (e.g., with xrandr(1)'s '--fb' command line option).
+
+   o The state of the display hardware can be queried with the RandR 1.2 and
+     1.3 RRGetScreenResources, RRGetScreenResourcesCurrent, RRGetOutputInfo,
+     and RRGetCrtcInfo requests (e.g., with xrandr(1)'s '--query' command line
+     option).
+
+   o Modes can be set with RandR CRTC granularity with the RandR 1.2
+     RRSetCrtcConfig request. E.g., `xrandr --output DVI-I-2 --mode
+     1920x1200`.
+
+   o Rotation can be set with RandR CRTC granularity with the RandR 1.2
+     RRSetCrtcConfig request. E.g., `xrandr --output DVI-I-2 --mode 1920x1200
+     --rotation left`.
+
+   o Per-CRTC transformations can be manipulated with the RandR 1.3
+     RRSetCrtcTransform and RRGetCrtcTransform requests. E.g., `xrandr
+     --output DVI-I-3 --mode 1920x1200 --transform
+     43.864288330078125,21.333328247070312,-16384,0,43.864288330078125,0,0,0.0321197509765625,19.190628051757812`.    
+
+   o The RandR 1.0/1.1 requests RRGetScreenInfo and RRSetScreenConfig
+     manipulate MetaModes. The MetaModes that the X driver uses (either
+     user-requested or implicitly generated) are reported through the
+     RRGetScreenInfo request (e.g., `xrandr --query --q1`) and chosen through
+     the RRSetScreenConfig request (e.g., `xrandr --size 1920x1200
+     --orientation left`).
+
+
+The configurability exposed through RandR is also available through the
+MetaMode syntax, independent of X server version. See Chapter 12 for more
+details. As an example, these two commands are equivalent:
+
+
+  xrandr --output DVI-I-2 --mode 1280x1024 --pos 0x0 --rotate left \
+    --output DVI-I-3 --mode 1920x1200 --pos 0x0
+
+  nvidia-settings --assign CurrentMetaMode="DVI-I-2: 1280x1024 +0+0 \
+    { Rotation=left }, DVI-I-3: 1920x1200 +0+0"
+
+
+
+15B. RANDR 1.1 ROTATION BEHAVIOR
+
+On X servers that support RandR 1.2 or later, when an RandR 1.1 rotation
+request is received (e.g., `xrandr --orientation left`), the NVIDIA X driver
+will apply that request to an entire MetaMode. E.g., if you configure multiple
+monitors, either through a MetaMode or through RandR 1.2:
+
+
+  xrandr --output DVI-I-2 --mode 1280x1024 --pos 0x0 \
+    --output DVI-I-3 --mode 1920x1200 --pos 1280x0
+
+  nvidia-settings --assign CurrentMetaMode="DVI-I-2: 1280x1024 +0+0, \
+    DVI-I-3: 1920x1200 +1280+0"
+
+Requesting RandR 1.1 rotation through `xrandr --orientation left`, will rotate
+the entire MetaMode, producing the equivalent of either:
+
+
+  xrandr --output DVI-I-2 --mode 1280x1024 --pos 176x0 --rotate left \
+    --output DVI-I-3 --mode 1920x1200 --rotate left --pos 0x1280
+
+  nvidia-settings --assign CurrentMetaMode="DVI-I-2: 1280x1024 +176+0, \
+    { Rotation=left }, DVI-I-3: 1920x1200 +0+1280 { Rotation=left }"
+
+
+On X servers that do not support RandR 1.2 or later, the NVIDIA X driver does
+not advertise RandR rotation support. On such X servers, it is recommended to
+configure rotation through MetaModes, instead.
+
+
+15C. OUTPUT PROPERTIES
+
+The NVIDIA Linux driver supports a number of output device properties.
+
+
+OFFICIAL PROPERTIES
+
+Properties that do not start with an underscore are officially documented in
+the file "randrproto.txt" in X.Org's randrproto package. See that file for a
+full description of these properties.
+
+
+   o "ConnectorNumber"
+
+     This property groups RandR outputs by their physical connectors. For
+     example, DVI-I ports have both an analog and a digital output, which is
+     represented in RandR by two different output objects. One DVI-I port may
+     be represented by RandR outputs "DVI-I-0" with "SignalFormat"  "TMDS"
+     (transition-minimized differential signaling, a digital signal format)
+     and "DVI-I-1" with "SignalFormat"  "VGA", representing the analog part.
+     In this case, both RandR outputs would have the same value of
+     "ConnectorNumber".
+
+   o "ConnectorType"
+
+     This property lists the physical type of the connector. For example, in
+     the DVI-I example above, both "DVI-I-0" and "DVI-I-1" would have a
+     "ConnectorType" of "DVI-I".
+
+   o "EDID"
+
+     This property contains the raw bytes of the display's extended display
+     identification data. This data is intended for applications to use to
+     glean information about the monitor connected.
+
+   o "SignalFormat"
+
+     This property describes the type of signaling used to send image data to
+     the display device. For example, an analog device connected to a DVI-I
+     port might use VGA as its signaling format.
+
+   o "Border"
+
+     This property is a list of integers specifying adjustments for the edges
+     of the displayed image. How this property is applied depends on the
+     number of elements in the list:
+     
+        o 0 = No border is applied.
+     
+        o 1 = A border of Border[0] is applied to all four sides of the image.
+     
+        o 2 = A border of Border[0] is applied to the left and right sides of
+          the image, and a border of Border[1] is applied to the top and
+          bottom.
+     
+        o 4 = The border dimensions are as follows: Border[0]: left,
+          Border[1]: top, Border[2]: right, Border[3]: bottom
+     
+     This property is functionally equivalent to the ViewPortOut MetaMode
+     token.
+
+   o "BorderDimensions"
+
+     This property lists how many Border adjustment parameters can actually be
+     used. The NVIDIA implementation supports independently configuring all
+     four Border values.
+
+   o "GUID"
+
+     DisplayPort 1.2 specifies that all devices must have a globally-unique
+     identifier, referred to as a GUID. When a GUID is available, the "GUID"
+     property contains its raw bytes.
+
+   o "CscMatrix"
+
+     This property controls the color-space conversion matrix applied to the
+     pixels being displayed. The matrix is 3 rows and 4 columns, stored in
+     row-major order. Each entry is a 32-bit fixed-point number with 3 integer
+     bits and 16 fractional bits. Each entry in the X colormap is treated as a
+     4-component column vector C = [ R, G, B, 1 ]. The resulting components of
+     the color vector [ R', G', B' ] = CscMatrix * C are used as indices into
+     the gamma ramp.
+
+     For example, using xrandr version 1.5.0 or higher, you can exchange the
+     red channel with the green channel using this command:
+     
+     
+       xrandr --output DP-6 --set CscMatrix \
+         0,0x10000,0,0,0x10000,0,0,0,0,0,0x10000,0
+     
+     
+     To return to the default identity matrix, use
+     
+     
+       xrandr --output DP-6 --set CscMatrix \
+         0x10000,0,0,0,0,0x10000,0,0,0,0,0x10000,0
+     
+     
+     
+
+
+UNOFFICIAL PROPERTIES
+
+Properties whose names begin with an underscore are not specified by X.Org.
+They may be removed or modified in future driver releases. The NVIDIA Linux
+driver supports the following unofficial properties:
+
+
+   o "_ConnectorLocation"
+
+     This property describes the physical location of the connector. On add-in
+     graphics boards, connector location 0 should generally be the position
+     closest to the motherboard, with increasing location numbers indicating
+     connectors progressively farther away.
+
+     
+     
+         Type                                INTEGER
+         Format                              32
+         # Items                             1
+         Flags                               Immutable, Static
+         Range                               0-
+     
+     
+
+
+15D. DISPLAYPORT 1.2
+
+When display devices are connected via DisplayPort 1.2 branch devices,
+additional RandR outputs will be created, one for each connected display
+device. These dynamic outputs will remain as long as the display device is
+connected or used in a MetaMode, even if they are not named in the current
+MetaMode. They will be deleted automatically when the display is disconnected
+and no MetaModes use them.
+
+See Appendix C for a description of how the names of these outputs are
+generated.
+
+If you are developing applications that use the RandR extension, please be
+aware that outputs can be created and destroyed dynamically. You should be
+sure to use the XRRSelectInput function to watch for events that indicate when
+this happens.
+
+
+15E. MONITOR CONFIGURATION OPTIONS
+
+This NVIDIA Linux driver honors the "Enable", "Ignore", "Primary", and
+"Rotate" options in the Monitor section of the X configuration file. These
+options will apply to a monitor if the Identifier of the Monitor section
+matches one of the display device's names (see Appendix C for a description of
+how a display's names are generated). For example, a Monitor section with
+
+  Identifier "DFP"
+
+will apply to all digitally-connected displays, while a Monitor section with
+
+  Identifier "DPY-EDID-ee6cecc0-fa46-0c33-94e0-274313f9e7eb"
+
+will apply only to a display device with a specific EDID-based identification
+hash. You can also specify the name of the Monitor section to use in the
+Screen section:
+
+  Option "Monitor-<dpyname>" "<Monitor name>"
+
+
+See the xorg.conf(5) man page for a description of these options.
+
+
+15F. KNOWN ISSUES
+
+
+   o Rotation and Transformations (configured either through RandR or
+     MetaModes) are not yet supported with the GLX_NV_swap_group OpenGL
+     extension.
+
+   o Some of the RandR 1.2 X configuration options provided by the XFree86 DDX
+     implementation and documented in xorg.conf(5) are not yet supported.
+
+   o Transformations (configured either through RandR or MetaModes) are not
+     yet correctly clipped.
+
+
+______________________________________________________________________________
+
+Chapter 16. Configuring a Notebook
+______________________________________________________________________________
+
+
+16A. INSTALLATION AND CONFIGURATION
+
+Installation and configuration of the NVIDIA Linux Driver Set on a notebook is
+the same as for any desktop environment, with a few additions, as described
+below.
+
+
+16B. POWER MANAGEMENT
+
+All notebook NVIDIA GPUs support power management, both S3 (also known as
+"Standby" or "Suspend to RAM") and S4 (also known as "Hibernate", "Suspend to
+Disk" or "SWSUSP"). Power management is system-specific and is dependent upon
+all the components in the system; some systems may be more problematic than
+other systems.
+
+Most recent notebook NVIDIA GPUs also support PowerMizer, which monitors
+application work load to adjust system parameters to deliver the optimal
+balance of performance and battery life. However, PowerMizer is only enabled
+by default on some notebooks. Please see the known issues below for more
+details.
+
+
+16C. HOTKEY SWITCHING OF DISPLAY DEVICES
+
+Most laptops generate keyboard events when the display change hotkey is
+pressed. On some laptops, these are simply normal keyboard keys. On others,
+they generate ACPI events that may be translated into keyboard events by other
+system components.
+
+The NVIDIA driver does not handle ACPI display change hotkeys itself. Instead,
+it is expected for desktop environments to listen for these key-press events
+and respond by reconfiguring the display devices as necessary.
+
+
+16D. DOCKING EVENTS
+
+All notebook NVIDIA GPUs support docking, however support may be limited by
+the OS or system. There are three types of notebook docking (hot, warm, and
+cold), which refer to the state of the system when the docking event occurs.
+hot refers to a powered on system with a live desktop, warm refers to a system
+that has entered a suspended power management state, and cold refers to a
+system that has been powered off. Only warm and cold docking are supported by
+the NVIDIA driver.
+
+
+16E. KNOWN NOTEBOOK ISSUES
+
+There are a few known issues associated with notebooks:
+
+   o In many cases, suspending and/or resuming will fail. As mentioned above,
+     this functionality is very system-specific. There are still many cases
+     that are problematic. Here are some tips that may help:
+     
+        o In some cases, hibernation can have bad interactions with the PCI
+          Express bus clocks, which can lead to system hangs when entering
+          hibernation. This issue is still being investigated, but a known
+          workaround is to leave an OpenGL application running when
+          hibernating.
+     
+        o On notebooks with relatively little system memory, repetitive
+          hibernation attempts may fail due to insufficient free memory. This
+          problem can be avoided by running `echo 0 > /sys/power/image_size`,
+          which reduces the image size to be stored during hibernation.
+     
+        o Some distributions use a tool called vbetool to save and restore VGA
+          adapter state. This tool is incompatible with NVIDIA GPUs' Video
+          BIOSes and is likely to lead to problems restoring the GPU and its
+          state. Disabling calls to this tool in your distribution's init
+          scripts may improve power management reliability.
+     
+     
+   o On some notebooks, PowerMizer is not enabled by default. This issue is
+     being investigated, and there is no known workaround.
+
+   o When available, the NVIDIA driver installs a backlight handler that
+     allows access to the driver's backlight controller through
+     /sys/class/backlight/nvidia_0. This option can be disabled by passing the
+     
+     NVreg_EnableBacklightHandler=0
+     
+     parameter to the nvidia kernel module.
+
+
+______________________________________________________________________________
+
+Chapter 17. Using the NVIDIA Driver with Optimus Laptops
+______________________________________________________________________________
+
+Some laptops with NVIDIA GPUs make use of Optimus technology to allow
+switching between an integrated GPU and a discrete NVIDIA GPU. The NVIDIA
+Linux driver can be used on these systems.
+
+
+17A. INSTALLING THE NVIDIA DRIVER ON AN OPTIMUS LAPTOP
+
+The driver may be installed normally on Optimus systems, but the NVIDIA X
+driver and the NVIDIA OpenGL driver may not be able to display to the laptop's
+internal display panel unless a means to connect the panel to the NVIDIA GPU
+(for example, a hardware multiplexer, or "mux", often controllable by a BIOS
+setting) is available. On systems without a mux, the NVIDIA GPU can still be
+useful for offscreen rendering, PRIME render offload, running CUDA
+applications, and other uses that don't require driving a display.
+
+On muxless Optimus laptops, or on laptops where a mux is present, but not set
+to drive the internal display from the NVIDIA GPU, the internal display is
+driven by the integrated GPU. On these systems, it's important that the X
+server not be configured to use the NVIDIA X driver after the driver is
+installed. Instead, the correct driver for the integrated GPU should be used.
+Often, this can be determined automatically by the X server, and no explicit
+configuration is required, especially on newer X server versions. If your X
+server autoselects the NVIDIA X driver after installation, you may need to
+explicitly select the driver for your integrated GPU.
+
+As an alternative to using only the integrated graphics device, support for
+the display output source functionality provided by the X Resize and Rotate
+extension version 1.4 is available. This functionality allows for graphics to
+be rendered on the NVIDIA GPU and displayed on the integrated graphics device.
+For information on how to use this functionality, see Chapter 34.
+
+A second alternative is to use PRIME render offload, such that the integrated
+graphics device is used to drive the X screen, but the NVIDIA GPU is used on a
+per-application basis to accelerate rendering of specific applications. For
+details, see Chapter 35.
+
+
+17B. LOADING THE KERNEL MODULE AND CREATING THE DEVICE FILES WITHOUT X
+
+In order for programs that use the NVIDIA driver to work correctly (e.g.: X,
+OpenGL, and CUDA applications), the kernel module must be loaded, and the
+device files '/dev/nvidiactl' and '/dev/nvidia[0-9]+' must exist with read and
+write permissions for any users of such applications. If the setuid root
+nvidia-modprobe(1) utility is installed (the default when the driver is
+installed from .run file), this should be handled automatically. Otherwise,
+the kernel module will need to be loaded, and the device files created,
+through your Linux distribution's mechanisms.
+
+See "Q. How and when are the NVIDIA device files created?" in Chapter 7 for
+more information.
+
+Note that on some Optimus notebooks the driver may fail to initialize the GPU
+due to system-specific ACPI interaction problems: see "Q. Why does the VBIOS
+fail to load on my Optimus system?" in Chapter 8 for more information.
+
+______________________________________________________________________________
+
+Chapter 18. Programming Modes
+______________________________________________________________________________
+
+The NVIDIA Accelerated Linux Graphics Driver supports all standard VGA and
+VESA modes, as well as most user-written custom mode lines.
+
+To request one or more standard modes for use in X, you can simply add a
+"Modes" line such as:
+
+    Modes "1600x1200" "1024x768" "640x480"
+
+in the appropriate Display subsection of your X config file (see the xorg.conf
+man page for details). Or, the nvidia-xconfig(1) utility can be used to
+request additional modes; for example:
+
+    nvidia-xconfig --mode 1600x1200
+
+See the nvidia-xconfig(1) man page for details.
+
+
+18A. DEPTH, BITS PER PIXEL, AND PITCH
+
+While not directly a concern when programming modes, the bits used per pixel
+is an issue when considering the maximum programmable resolution; for this
+reason, it is worthwhile to address the confusion surrounding the terms
+"depth" and "bits per pixel". Depth is how many bits of data are stored per
+pixel. Supported depths are 8, 15, 16, 24, and 30. Most video hardware,
+however, stores pixel data in sizes of 8, 16, or 32 bits; this is the amount
+of memory allocated per pixel. When you specify your depth, X selects the bits
+per pixel (bpp) size in which to store the data. Below is a table of what bpp
+is used for each possible depth:
+
+    Depth                                 BPP
+    ----------------------------------    ----------------------------------
+    8                                     8
+    15                                    16
+    16                                    16
+    24                                    32
+    30                                    32
+
+Lastly, the "pitch" is how many bytes in the linear frame buffer there are
+between one pixel's data, and the data of the pixel immediately below. You can
+think of this as the horizontal resolution multiplied by the bytes per pixel
+(bits per pixel divided by 8). In practice, the pitch may be more than this
+product due to alignment constraints.
+
+
+18B. MAXIMUM RESOLUTIONS
+
+The NVIDIA Accelerated Linux Graphics Driver and NVIDIA GPU-based graphics
+cards support resolutions up to 32767x32767 pixels for Pascal and newer GPUs,
+and up to 16384x16384 pixels for older GPUs, though the maximum resolution
+your system can support is also limited by the amount of video memory (see
+Useful Formulas for details) and the maximum supported resolution of your
+display device (monitor/flat panel/television). Also note that while use of a
+video overlay does not limit the maximum resolution or refresh rate, video
+memory bandwidth used by a programmed mode does affect the overlay quality.
+
+Using HDMI 2.0 4K@60Hz modes in the RGB 4:4:4 color space requires a high
+single-link pixel clock that is only available on GM20x or later GPUs. In
+addition, using a mode requiring the YCbCr 4:2:0 color space over a
+DisplayPort connection requires a GP10x or later GPU. If driving the current
+mode in the RGB 4:4:4 color space would require a pixel clock that exceeds the
+display's or GPU's capabilities, and the display and GPU are capable of
+driving that mode in the YCbCr 4:2:0 color space, then the color space will be
+overridden to YCbCr 4:2:0. On all Turing and earlier GPUs, and on all
+DisplayPort display devices regardless of GPU, YCbCr 4:2:0 mode is not
+supported on depth 8 X screens, and is not currently supported with stereo or
+the GLX_NV_swap_group OpenGL extension.
+
+
+18C. USEFUL FORMULAS
+
+The maximum resolution is a function both of the amount of video memory and
+the bits per pixel you elect to use:
+
+HR * VR * (bpp/8) = Video Memory Used
+
+In other words, the amount of video memory used is equal to the horizontal
+resolution (HR) multiplied by the vertical resolution (VR) multiplied by the
+bytes per pixel (bits per pixel divided by eight). Technically, the video
+memory used is actually the pitch times the vertical resolution, and the pitch
+may be slightly greater than (HR * (bpp/8)) to accommodate the hardware
+requirement that the pitch be a multiple of some value.
+
+Note that this is just memory usage for the frame buffer; video memory is also
+used by other things, such as OpenGL and pixmap caching.
+
+Another important relationship is that between the resolution, the pixel clock
+(also known as the dot clock) and the vertical refresh rate:
+
+RR = PCLK / (HFL * VFL)
+
+In other words, the refresh rate (RR) is equal to the pixel clock (PCLK)
+divided by the total number of pixels: the horizontal frame length (HFL)
+multiplied by the vertical frame length (VFL) (note that these are the frame
+lengths, and not just the visible resolutions). As described in the XFree86
+Video Timings HOWTO, the above formula can be rewritten as:
+
+PCLK = RR * HFL * VFL
+
+Given a maximum pixel clock, you can adjust the RR, HFL and VFL as desired, as
+long as the product of the three is consistent. The pixel clock is reported in
+the log file. Your X log should contain a line like this:
+
+    (--) NVIDIA(0): ViewSonic VPD150 (DFP-1): 165 MHz maximum pixel clock
+
+which indicates the maximum pixel clock for that display device.
+
+
+18D. HOW MODES ARE VALIDATED
+
+In traditional XFree86/X.Org mode validation, the X server takes as a starting
+point the X server's internal list of VESA standard modes, plus any modes
+specified with special ModeLines in the X configuration file's Monitor
+section. These modes are validated against criteria such as the valid
+HorizSync/VertRefresh frequency ranges for the user's monitor (as specified in
+the Monitor section of the X configuration file), as well as the maximum pixel
+clock of the GPU.
+
+Once the X server has determined the set of valid modes, it takes the list of
+user requested modes (i.e., the set of modes named in the "Modes" line in the
+Display subsection of the Screen section of X configuration file), and finds
+the "best" validated mode with the requested name.
+
+The NVIDIA X driver uses a variation on the above approach to perform mode
+validation. During X server initialization, the NVIDIA X driver builds a pool
+of valid modes for each display device. It gathers all possible modes from
+several sources:
+
+   o The display device's EDID
+
+   o The X server's built-in list
+
+   o Any user-specified ModeLines in the X configuration file
+
+   o The VESA standard modes
+
+For every possible mode, the mode is run through mode validation. The core of
+mode validation is still performed similarly to traditional XFree86/X.Org mode
+validation: the mode timings are checked against things such as the valid
+HorizSync and VertRefresh ranges and the maximum pixelclock. Note that each
+individual stage of mode validation can be independently controlled through
+the "ModeValidation" X configuration option.
+
+Note that when validating interlaced mode timings, VertRefresh specifies the
+field rate, rather than the frame rate. For example, the following modeline
+has a vertical refresh rate of 87 Hz:
+
+
+ # 1024x768i @ 87Hz (industry standard)
+ ModeLine "1024x768"  44.9  1024 1032 1208 1264  768 768 776 817 +hsync +vsync
+Interlace
+
+
+Invalid modes are discarded; valid modes are inserted into the mode pool. See
+MODE VALIDATION REPORTING for how to get more details on mode validation
+results for each considered mode.
+
+Valid modes are given a unique name that is guaranteed to be unique across the
+whole mode pool for this display device. This mode name is constructed
+approximately like this:
+
+    <width>x<height>_<refreshrate>
+
+(e.g., "1600x1200_85")
+
+The name may also be prepended with another number to ensure the mode is
+unique; e.g., "1600x1200_85_0".
+
+As validated modes are inserted into the mode pool, duplicate modes are
+removed, and the mode pool is sorted, such that the "best" modes are at the
+beginning of the mode pool. The sorting is based roughly on:
+
+   o Resolution
+
+   o Source (EDID-provided modes are prioritized higher than VESA-provided
+     modes, which are prioritized higher than modes that were in the X
+     server's built-in list)
+
+   o Refresh rate
+
+Once modes from all mode sources are validated and the mode pool is
+constructed, all modes with the same resolution are compared; the best mode
+with that resolution is added to the mode pool a second time, using just the
+resolution as its unique modename (e.g., "1600x1200"). In this way, when you
+request a mode using the traditional names (e.g., "1600x1200"), you still get
+what you got before (the 'best' 1600x1200 mode); the added benefit is that all
+modes in the mode pool can be addressed by a unique name.
+
+When verbose logging is enabled (see "Q. How can I increase the amount of data
+printed in the X log file?" in Chapter 7), the mode pool for each display
+device is printed to the X log file.
+
+After the mode pool is built for all display devices, the requested modes (as
+specified in the X configuration file), are looked up from the mode pool. Each
+requested mode that can be matched against a mode in the mode pool is then
+advertised to the X server and is available to the user through the X server's
+mode switching hotkeys (ctrl-alt-plus/minus) and the XRandR and XF86VidMode X
+extensions.
+
+Additionally, all modes in the mode pool of the primary display device are
+implicitly made available to the X server. See the IncludeImplicitMetaModes X
+configuration option for details.
+
+
+18E. THE NVIDIA-AUTO-SELECT MODE
+
+You can request a special mode by name in the X config file, named
+"nvidia-auto-select". When the X driver builds the mode pool for a display
+device, it selects one of the modes as the "nvidia-auto-select" mode; a new
+entry is made in the mode pool, and "nvidia-auto-select" is used as the unique
+name for the mode.
+
+The "nvidia-auto-select" mode is intended to be a reasonable mode for the
+display device in question. For example, the "nvidia-auto-select" mode is
+normally the native resolution for flat panels, as reported by the flat
+panel's EDID, or one of the detailed timings from the EDID. The
+"nvidia-auto-select" mode is guaranteed to always be present, and to always be
+defined as something considered valid by the X driver for this display device.
+
+Note that the "nvidia-auto-select" mode is not necessarily the largest
+possible resolution, nor is it necessarily the mode with the highest refresh
+rate. Rather, the "nvidia-auto-select" mode is selected such that it is a
+reasonable default. The selection process is roughly:
+
+
+   o If the EDID for the display device reported a preferred mode timing, and
+     that mode timing is considered a valid mode, then that mode is used as
+     the "nvidia-auto-select" mode. You can check if the EDID reported a
+     preferred timing by starting X with logverbosity greater than or equal to
+     5 (see "Q. How can I increase the amount of data printed in the X log
+     file?" in Chapter 7), and looking at the EDID printout; if the EDID
+     contains a line:
+     
+         Prefer first detailed timing : Yes
+     
+     Then the first mode listed under the "Detailed Timings" in the EDID will
+     be used.
+
+   o If the EDID did not provide a preferred timing, the best detailed timing
+     from the EDID is used as the "nvidia-auto-select" mode.
+
+   o If the EDID did not provide any detailed timings (or there was no EDID at
+     all), the best valid mode not larger than 1024x768 is used as the
+     "nvidia-auto-select" mode. The 1024x768 limit is imposed here to restrict
+     use of modes that may have been validated, but may be too large to be
+     considered a reasonable default, such as 2048x1536.
+
+   o If all else fails, the X driver will use a built-in 800 x 600 60Hz mode
+     as the "nvidia-auto-select" mode.
+
+
+If no modes are requested in the X configuration file, or none of the
+requested modes can be found in the mode pool, then the X driver falls back to
+the "nvidia-auto-select" mode, so that X can always start. Appropriate warning
+messages will be printed to the X log file in these fallback scenarios.
+
+You can add the "nvidia-auto-select" mode to your X configuration file by
+running the command
+
+    nvidia-xconfig --mode nvidia-auto-select
+
+and restarting your X server.
+
+The X driver can generally do a much better job of selecting the
+"nvidia-auto-select" mode if the display device's EDID is available. This is
+one reason why it is recommended to only use the "UseEDID" X configuration
+option sparingly. Note that, rather than globally disable all uses of the EDID
+with the "UseEDID" option, you can individually disable each particular use of
+the EDID using the "UseEDIDFreqs", "UseEDIDDpi", and/or the "NoEDIDModes"
+argument in the "ModeValidation" X configuration option.
+
+
+18F. MODE VALIDATION REPORTING
+
+When log verbosity is set to 6 or higher (see "Q. How can I increase the
+amount of data printed in the X log file?" in Chapter 7), the X log will
+record every mode that is considered for each display device's mode pool, and
+report whether the mode passed or failed. For modes that were considered
+invalid, the log will report why the mode was considered invalid.
+
+
+18G. ENSURING IDENTICAL MODE TIMINGS
+
+Some functionality, such as Active Stereo with TwinView, requires control over
+exactly which mode timings are used. For explicit control over which mode
+timings are used on each display device, you can specify the ModeLine you want
+to use (using one of the ModeLine generators available), and using a unique
+name. For example, if you wanted to use 1024x768 at 120 Hz on each monitor in
+TwinView with active stereo, you might add something like this to the monitor
+section of your X configuration file:
+
+    # 1024x768 @ 120.00 Hz (GTF) hsync: 98.76 kHz; pclk: 139.05 MHz
+    Modeline "1024x768_120"  139.05  1024 1104 1216 1408  768 769 772 823
+-HSync +Vsync
+
+Then, in the Screen section of your X config file, specify a MetaMode like
+this:
+
+    Option "MetaModes" "1024x768_120, 1024x768_120"
+
+
+______________________________________________________________________________
+
+Chapter 19. Configuring Flipping and UBB
+______________________________________________________________________________
+
+The NVIDIA Accelerated Linux Graphics Driver supports Unified Back Buffer
+(UBB) and OpenGL Flipping. These features can provide performance gains in
+certain situations.
+
+   o Unified Back Buffer (UBB): UBB is available only on NVIDIA RTX/Quadro
+     GPUs (Quadro NVS GPUs excluded) and is enabled by default when there is
+     sufficient video memory available. This can be disabled with the UBB X
+     config option. When UBB is enabled, all windows share the same back,
+     stencil and depth buffers. When there are many windows, the back, stencil
+     and depth usage will never exceed the size of that used by a full screen
+     window. However, even for a single small window, the back, stencil, and
+     depth video memory usage is that of a full screen window. In that case
+     video memory may be used less efficiently than in the non-UBB case.
+
+   o Flipping: When OpenGL flipping is enabled, OpenGL can perform buffer
+     swaps by changing which buffer is scanned out rather than copying the
+     back buffer contents to the front buffer; this is generally a higher
+     performance mechanism and allows tearless swapping during the vertical
+     retrace (when __GL_SYNC_TO_VBLANK is set).
+
+
+______________________________________________________________________________
+
+Chapter 20. Using the "/proc" File System Interface
+______________________________________________________________________________
+
+The NVIDIA '/proc' file system interface can be used to obtain run-time
+information about the NVIDIA kernel driver and about the NVIDIA GPUs present
+in the system. It can also be used to control some aspects of the NVIDIA
+driver's operation.
+
+This information is contained in several files in '/proc/driver/nvidia':
+
+
+'/proc/driver/nvidia/version'
+
+    Lists the installed driver revision and the version of the GNU C compiler
+    used to build the Linux kernel module.
+
+'/proc/driver/nvidia/warnings'
+
+    The NVIDIA graphics driver tries to detect potential problems with the
+    host system's kernel and warns about them using the kernel's "printk()"
+    mechanism, typically logged by the system to '/var/log/messages'.
+
+    Important NVIDIA warning messages are also logged to dedicated text files
+    in this '/proc' directory.
+
+'/proc/driver/nvidia/gpus/domain:bus:device.function/information'
+
+    Provide information about each of the installed NVIDIA GPUs (model name,
+    IRQ, BIOS version, etc.). Note that some of the information is only
+    available when the GPUs have been initialized.
+
+'/proc/driver/nvidia/gpus/domain:bus:device.function/power'
+
+    Provide information about the runtime D3 (RTD3) Power Management status of
+    each of the installed NVIDIA GPUs. Note that some of the information is
+    only available when the GPUs have been initialized. Please see Chapter 22
+    for the detailed description of this '/proc' interface.
+
+'/proc/driver/nvidia/suspend'
+
+    Notify the NVIDIA kernel drivers of system power management events, such
+    as suspend and hibernate. Please see Chapter 21 for a detailed description
+    of this '/proc' interface.
+
+
+______________________________________________________________________________
+
+Chapter 21. Configuring Power Management Support
+______________________________________________________________________________
+
+
+21A. BACKGROUND
+
+The NVIDIA Linux driver includes support for the suspend (suspend-to-RAM) and
+hibernate (suspend-to-disk) system power management operations, such as ACPI
+S3 and S4 on the x86_64 platform. When the system suspends or hibernates, the
+NVIDIA kernel drivers prepare in-use GPUs for the sleep cycle, saving state
+required to return these GPUs to normal operation when the system is later
+resumed. The NVIDIA Linux driver also supports S0ix-based s2idle system
+suspend (suspend-to-idle), if both the platform and the NVIDIA GPU support it.
+
+The GPU state saved by the NVIDIA kernel drivers includes allocations made in
+video memory. However, these allocations are collectively large, and typically
+cannot be evicted. Since the amount of system memory available to drivers at
+suspend time is often insufficient to accommodate large portions of video
+memory, the NVIDIA kernel drivers are designed to act conservatively, and
+normally only save essential video memory allocations.
+
+The resulting loss of video memory contents is partially compensated for by
+the user-space NVIDIA drivers, and by some applications, but can lead to
+failures such as rendering corruption and application crashes upon exit from
+power management cycles.
+
+To better support power management with these types of applications, the
+NVIDIA Linux driver provides a custom power management interface intended for
+integration with system management tools like 'systemd'. This interface is
+still considered experimental. It is not used by default, but can be taken
+advantage of by configuring the system as described in this chapter.
+
+
+21B. OVERVIEW
+
+The NVIDIA Linux driver supports the suspend and hibernate power management
+operations via two different mechanisms. In this section, each is summarized
+briefly with its capabilities and requirements:
+
+
+Kernel driver callback
+
+    When this mechanism is used, the NVIDIA kernel driver receives callbacks
+    from the Linux kernel to suspend, hibernate, and to resume each GPU for
+    which a Linux PCI driver was registered. This is the default mechanism: it
+    is enabled and used without explicit configuration.
+
+    While this mechanism has no special requirements, yields good results with
+    many workloads, and has been supported by the NVIDIA kernel driver in
+    similar form for years, it suffers from a few limitations. Notably, it can
+    only preserve a relatively small amount of video memory reliably, and it
+    cannot support power management when advanced CUDA features are being
+    used.
+
+/proc/driver/nvidia/suspend
+
+    Instead of callbacks from the Linux kernel, this mechanism, when used,
+    relies on a system management tool, such as 'systemd', to issue suspend,
+    hibernate, and resume commands to the NVIDIA kernel driver via the
+    "/proc/driver/nvidia/suspend" interface. It is still considered
+    experimental, and requires explicit configuration to use.
+
+    If configured correctly, this mechanism is designed to remove the
+    limitations of the kernel driver callback mechanism. It supports power
+    management with advanced CUDA features (such as UVM), and it is capable of
+    saving and restoring all video memory allocations.
+
+
+
+21C. PRESERVE ALL VIDEO MEMORY ALLOCATIONS
+
+To save potentially large portions of video memory, the NVIDIA driver supports
+the following two methods:
+
+
+Save allocations in an unnamed temporary file
+
+    The NVIDIA driver uses an unnamed temporary file to save potentially large
+    portions of video memory. By default, this file is created in '/tmp'
+    during system suspend. This location can be changed with the
+    "NVreg_TemporaryFilePath" nvidia.ko kernel module parameter, e.g.
+    "NVreg_TemporaryFilePath=/run". The destination file system needs to
+    support unnamed temporary files, and it needs to be large enough to
+    accommodate all the utilized video memory copies for the duration of the
+    power management cycle.
+
+    When determining a suitable size for the video memory backing store, it is
+    recommended to start with the overall amount of video memory supported by
+    the GPUs installed in the system. For example: "nvidia-smi -q -d MEMORY
+    |grep 'FB Memory Usage' -A1". Each "Total" line returned by this command
+    reflects one GPU's video memory capacity, in MiB. The sum of these
+    numbers, plus 5% of margin, is a conservative starting point for the size
+    of the video memory backing store.
+
+    Please note that file systems such as '/tmp' and '/run' are often of the
+    type "tmpfs", and potentially relatively small. Most commonly, the size of
+    the type of the file system used is controlled by 'systemd'. For more
+    information, see
+    https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems. To
+    achieve the best performance, file system types other than "tmpfs" are
+    recommended at this time.
+
+    Additionally, to unlock the full functionality of the interface, the
+    NVIDIA Linux kernel module "nvidia.ko" needs to be loaded with the
+    "NVreg_PreserveVideoMemoryAllocations=1" module parameter. This changes
+    the default video memory save/restore strategy to save and restore all
+    video memory allocations. Also, the "/proc/driver/nvidia/suspend" power
+    management mechanism (with a system management tool, such as 'systemd') is
+    required for using this interface.
+
+S0ix-based power management
+
+    If both the platform and the NVIDIA GPU support S0ix-based power
+    management, then the NVIDIA Linux driver will put the GPU video memory in
+    self refresh mode during 's2idle' system suspend. S0ix-based suspend will
+    consume more power than legacy S3 system suspend, but it will enter and
+    exit suspend/resume more quickly. Also, the suspend/resume latency will be
+    constant irrespective of GPU video memory usage.
+
+    To check the platform S0ix state support and required configuration,
+    follow the steps mentioned in
+    https://web.archive.org/web/20230614200816/https://01.org/blogs/qwang59/2018/how-achieve-s0ix-states-linux    
+
+    To check if the NVIDIA GPU has support for S0ix-based power management,
+    install the NVIDIA driver and run the following command:
+
+     "grep 'Video Memory Self Refresh'
+    /proc/driver/nvidia/gpus/<Domain>:<Bus>:<Device>.0/power"
+
+    For example:
+
+     "grep 'Video Memory Self Refresh'
+    /proc/driver/nvidia/gpus/0000\:01\:00.0/power"
+
+    If both the platform and the GPU support S0ix-based power management, then
+    the S0ix support can be enabled in the NVIDIA Linux driver by setting the
+    "nvidia.ko" kernel module parameter "NVreg_EnableS0ixPowerManagement" to
+    "1". With "NVreg_EnableS0ixPowerManagement" set to "1" and system suspend
+    state set to 's2idle', the NVIDIA Linux driver will calculate the video
+    memory usage at system suspend time.
+
+
+   o During the S0ix suspend, if video memory usage is less than a certain
+     threshold, then the driver will copy video memory contents to system
+     memory and power off the video memory along with the GPU. This will help
+     in saving power.
+
+   o During the S0ix suspend, if video memory usage is above a certain
+     threshold, then the video memory will be kept in self-refresh mode while
+     the rest of the GPU is powered down.
+
+
+    By default, this threshold is 256 MB and it can be changed with the
+    "NVreg_S0ixPowerManagementVideoMemoryThreshold" module parameter of
+    "nvidia.ko".
+
+
+All the module parameters can be set on the command line when loading the
+NVIDIA Linux kernel module "nvidia.ko", or via the distribution's kernel
+module configuration files (such as those under /etc/modprobe.d).
+
+
+21D. 'systemd'  CONFIGURATION
+
+This section is specific to the '/proc/driver/nvidia/suspend' interface. This
+is required if using the "NVreg_PreserveVideoMemoryAllocations=1" kernel
+module parameter or advanced CUDA features (such as UVM). The NVIDIA Linux
+kernel driver requires no configuration if the default power management
+mechanism is used.
+
+In order to take advantage of the '/proc' interface, a system management tool
+like 'systemd' needs to be configured to access it at appropriate times in the
+power management sequence. Specifically, the interface needs to be used to
+suspend or hibernate the NVIDIA kernel drivers just before writing to the
+Linux kernel's '/sys/power/state' interface to request entry into the desired
+sleep state. The interface also needs to be used to resume the NVIDIA kernel
+drivers immediately after the return from a sleep state, as well as
+immediately after any unsuccessful attempts to suspend or hibernate.
+
+The following example configuration documents integration with the 'systemd'
+system and service manager, which is commonly used in modern GNU/Linux
+distributions to manage system start-up and various aspects of its operation.
+For systems not using 'systemd', the configuration files provided serve as a
+reference.
+
+The 'systemd' configuration uses the following files:
+
+
+/usr/lib/systemd/system/nvidia-suspend.service
+
+    A 'systemd' service description file used to instruct the system manager
+    to write "suspend" to the '/proc/driver/nvidia/suspend' interface
+    immediately before accessing '/sys/power/state' to suspend the system.
+
+/usr/lib/systemd/system/nvidia-hibernate.service
+
+    A 'systemd' service description file used to instruct the system manager
+    to write "hibernate" to the '/proc/driver/nvidia/suspend' interface
+    immediately before accessing '/sys/power/state' to hibernate the system.
+
+/usr/lib/systemd/system/nvidia-resume.service
+
+    A 'systemd' service description file used to instruct the system manager
+    to write "resume" to the '/proc/driver/nvidia/suspend' interface
+    immediately after returning from a system sleep state.
+
+/lib/systemd/system-sleep/nvidia
+
+    A 'systemd-sleep' script file used to instruct the system manager to write
+    "resume" to the '/proc/driver/nvidia/suspend' interface immediately after
+    an unsuccessful attempt to suspend or hibernate the system via the
+    '/proc/driver/nvidia/suspend' interface.
+
+/usr/bin/nvidia-sleep.sh
+
+    A shell script used by the 'systemd' service description files and the
+    'systemd-sleep' file to interact with the '/proc/driver/nvidia/suspend'
+    interface. The script also manages VT switching for the X server, which is
+    currently needed by the NVIDIA X driver to support power management
+    operations.
+
+
+These files are installed and enabled by nvidia-installer automatically if
+systemd is detected. Installation of systemd units can be disabled by
+specifying the '--no-systemd' installer option.
+
+
+21E. EXERCISING POWER MANAGEMENT WITH  'systemd'
+
+This section is specific to the '/proc/driver/nvidia/suspend' interface, when
+configured as described above. When the default power management mechanism is
+used instead, or when the '/proc' interface is used without 'systemd', then
+the use of "systemctl" is not required.
+
+To suspend (suspend-to-RAM) or to hibernate (suspend-to-disk), respectively,
+use the following commands:
+
+
+   o  "sudo systemctl suspend"
+
+   o  "sudo systemctl hibernate"
+
+
+For the full list of sleep operations supported by 'systemd', please see the
+systemd-suspend.service(8) man page.
+
+
+21F. KNOWN ISSUES AND WORKAROUNDS
+
+
+   o On some systems, where the default suspend mode is '"s2idle"', the system
+     may not resume properly due to a known timing issue in the kernel. The
+     suspend mode can be verified by reading the contents of the file
+     '/sys/power/mem_sleep'. The following upstream kernel changes have been
+     proposed to fix the issue:
+
+           https://lore.kernel.org/linux-pci/20190927090202.1468-1-drake@endlessm.com/     
+
+           https://lore.kernel.org/linux-pci/20190821124519.71594-1-mika.westerberg@linux.intel.com/     
+
+     In the interim, the default suspend mode on the affected systems should
+     be set to '"deep"' using the kernel command line parameter
+     '"mem_sleep_default"' -
+
+      'mem_sleep_default=deep'
+
+
+______________________________________________________________________________
+
+Chapter 22. PCI-Express Runtime D3 (RTD3) Power Management
+______________________________________________________________________________
+
+
+22A. INTRODUCTION
+
+NVIDIA GPUs have many power-saving mechanisms. Some of them will reduce clocks
+and voltages to different parts of the chip, and in some cases turn off clocks
+or power to parts of the chip entirely, without affecting functionality or
+while continuing to function, just at a slower speed.
+
+However, the lowest power states for NVIDIA GPUs require turning power off to
+the entire chip, often through ACPI calls. Obviously, this impacts
+functionality. Nothing can run on the GPU while it is powered off. Care has to
+be taken to only enter this state when there are no workloads running on the
+GPU and any attempts to start work or any memory mapped I/O (MMIO) access must
+be preceded with a sequence to first turn the GPU back on and restore any
+necessary state.
+
+The NVIDIA GPU may have one, two or four PCI functions:
+
+
+
+   o Function 0: VGA controller / 3D controller
+
+   o Function 1: Audio device
+
+   o Function 2: USB xHCI Host controller
+
+   o Function 3: USB Type-C UCSI controller
+
+
+Out of the four PCI functions, the NVIDIA driver directly manages the VGA
+controller / 3D Controller PCI function. Other PCI functions are managed by
+the device drivers provided with the Linux kernel. The NVIDIA driver is
+capable of handling entry into and exit from these low power states, for the
+PCI function 0. The remaining PCI functions are also powered down along with
+function 0 when entering these low power states. As a result, the device
+drivers for the other three functions also need to be taken into account to:
+prevent entering the lowest-power state when the device is in use, trigger
+exiting the lowest-power state when the device is needed, save and restore any
+hardware state around power-off events.
+
+The NVIDIA Linux driver includes support for dynamically managing power to the
+NVIDIA GPU. It depends on the runtime power management framework within the
+Linux kernel to arbitrate power needs of various PCI functions. In order to
+have maximum power saving from this feature, two conditions must be met:
+
+1. Runtime power management for all the PCI functions of the GPU should be
+enabled.
+
+2. The device drivers for all the PCI functions should support runtime power
+management.
+
+If these conditions are satisfied and if all the PCI functions are idle, then
+The NVIDIA GPU will go to the lowest power state resulting into maximum power
+savings.
+
+
+22B. SUPPORTED CONFIGURATIONS
+
+This feature is available only when the following conditions are satisfied:
+
+
+   o This feature is supported on notebooks and desktops.
+
+   o This feature requires system hardware as well as ACPI support (ACPI
+     "_PR0" and "_PR3" methods are needed to control PCIe power). The
+     necessary hardware and ACPI support was first added in Intel Coffeelake
+     chipset series. Hence, this feature is supported from Intel Coffeelake
+     chipset series.
+
+   o This feature requires a Turing or newer GPU.
+
+   o This feature is supported with Linux kernel versions 4.18 and newer. With
+     older kernel versions, it may not work as intended.
+
+   o This feature is supported when Linux kernel defines CONFIG_PM
+     (CONFIG_PM=y). Typically, if the system supports S3 (suspend-to-RAM),
+     then CONFIG_PM would be defined.
+
+
+
+22C. SYSTEM SETTINGS
+
+
+  1. Enable runtime power management for each PCI function.
+
+     For Ampere or later notebooks with supported configurations, runtime D3
+     power management is enabled by default for the GPU's PCI function 0 (VGA
+     controller / 3D controller).
+
+     For pre-Ampere notebooks and all desktop SKUs, runtime D3 power
+     management can be enabled for each PCI function using the following
+     command.
+
+      'echo auto >
+     /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.<Function>/power/control'
+
+     For example:
+
+      'echo auto > /sys/bus/pci/devices/0000\:01\:00.0/power/control'
+
+
+
+22D. DRIVER SETTINGS
+
+This feature is enabled by default on supported Ampere or newer notebook
+computers. In all other configurations, it is disabled by default.
+
+It can be enabled or disabled via the 'NVreg_DynamicPowerManagement' nvidia.ko
+kernel module parameter.
+
+
+
+'Option "NVreg_DynamicPowerManagement=0x00"'
+
+    This setting will disable runtime D3 power management features. With this
+    setting, the NVIDIA driver will only use the GPU's built-in power
+    management so it always is powered on. Actual power usage will vary with
+    the GPU's workload.
+
+'Option "NVreg_DynamicPowerManagement=0x01"'
+
+    This setting is called coarse-grained power control. With this setting,
+    the NVIDIA GPU driver will allow the GPU to go into its lowest power state
+    when no applications are running that use the nvidia driver stack.
+    Whenever an application requiring NVIDIA GPU access is started, the GPU is
+    put into an active state. When the application exits, the GPU is put into
+    a low power state.
+
+'Option "NVreg_DynamicPowerManagement=0x02"'
+
+    This setting is called fine-grained power control. With this setting, the
+    NVIDIA GPU driver will allow the GPU to go into its lowest power state
+    when no applications are running that use the nvidia driver stack.
+    Whenever an application requiring NVIDIA GPU access is started, the GPU is
+    put into an active state. When the application exits, the GPU is put into
+    a low power state.
+
+    Additionally, the NVIDIA driver will actively monitor GPU usage while
+    applications using the GPU are running. When the applications have not
+    used the GPU for a short period, the driver will allow the GPU to be
+    powered down. As soon as the application starts using the GPU, the GPU is
+    reactivated.
+
+    Furthermore, the NVIDIA GPU driver controls power to the NVIDIA GPU and
+    its video memory separately. While turning off the NVIDIA GPU, the video
+    memory will be kept in a low power self-refresh mode unless the following
+    conditions are met:
+
+    
+    
+       o The NVIDIA GPU does not support "Video Memory Self Refresh" mode but
+         supports "Video Memory Off" mode. See "Procfs Interface For Runtime
+         D3" in Chapter 22 for details.
+    
+       o The system is configured in PRIME render offload mode. See Chapter 35
+         for details.
+    
+       o Less than a certain threshold of video memory is in use. The default
+         threshold value is 200 MB. See "Video Memory Utilization Threshold"
+         in Chapter 22 for details.
+    
+       o Sufficient system memory is available for saving the video memory
+         contents.
+    
+    
+    If these conditions are met, the NVIDIA GPU driver will completely turn
+    off the video memory, in addition to the rest of the GPU.
+
+    Keeping video memory in a self-refresh mode uses more power than turning
+    off video memory, but allows the GPU to be powered off and reactivated
+    more quickly.
+
+    It is important to note that the NVIDIA GPU will remain in an active state
+    if it is driving a display. In this case, the NVIDIA GPU will go to a low
+    power state only when the X configuration option HardDPMS is enabled and
+    the display is turned off by some means - either automatically due to an
+    OS setting or manually using commands like 'xset'.
+
+    Similarly, the NVIDIA GPU will remain in an active state if a CUDA
+    application is running.
+
+'Option "NVreg_DynamicPowerManagement=0x03"'
+
+    This is the default setting.
+
+    For Ampere or later notebooks with supported configurations, this value
+    translates to fine-grained power control. For pre-Ampere notebooks, this
+    value disables runtime D3 power management features. For desktop
+    computers, irrespective of the GPU(s) used, this value disables runtime D3
+    power management features.
+
+
+Option "NVreg_DynamicPowerManagement" can be set on the command line while
+loading the NVIDIA Linux kernel module. For example,
+
+ 'modprobe nvidia "NVreg_DynamicPowerManagement=0x02"'
+
+
+22E. VIDEO MEMORY UTILIZATION THRESHOLD
+
+The NVIDIA GPU driver uses 200 MB as the default video memory utilization
+threshold to decide whether the video memory can be turned off or kept in a
+self-refresh mode. This threshold value can be decreased or increased (up to
+1024 MB) using an option 'NVreg_DynamicPowerManagementVideoMemoryThreshold'.
+This option can be set on the command line while loading the NVIDIA Linux
+kernel module. For example,
+
+ 'modprobe nvidia "NVreg_DynamicPowerManagementVideoMemoryThreshold=100"'
+
+The video memory utilization threshold value should be a positive integer. It
+is expressed in Megabytes (1048576 bytes). In the example above, the threshold
+value will be set to 100 MB. The maximum threshold value can be 1024 MB. Any
+value greater than 1024 MB will be clamped to 1024 MB.
+
+The use of a higher threshold value will increase the latency during RTD3
+entry and exit transitions, so use this option only if the latency increase is
+not affecting the usability of the system.
+
+This threshold can be set to 0 in order to prevent the video memory from being
+turned off.
+
+
+22F. PROCFS INTERFACE FOR RUNTIME D3
+
+The following entries in the file
+'/proc/driver/nvidia/gpus/domain:bus:device.function/power' provide more
+details regarding the runtime D3 feature.
+
+
+   o "Runtime D3 status" entry gives the current status of this feature.
+
+   o "Video Memory" entry gives the power status of the video memory.
+
+   o "Video Memory Self Refresh" entry reports whether the NVIDIA GPU hardware
+     supports video memory self refresh mode.
+
+   o "Video Memory Off" entry reports whether the NVIDIA GPU hardware supports
+     video memory off mode.
+
+
+
+22G. KNOWN ISSUES AND WORKAROUNDS
+
+The first two workarounds in the below section are not required on Linux
+kernel 5.5 or newer.
+
+
+  1. The USB xHCI Host controller and USB Type-C UCSI controller drivers
+     present in most Linux distributions do not fully support runtime power
+     management. Full support for runtime power management in these drivers is
+     available in kernel version 5.5. For kernel versions before 5.5, these
+     two PCI functions have to be disabled for this feature to work properly.
+     This can be done using the following command.
+
+      'echo 1 > /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.2/remove'
+
+      'echo 1 > /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.3/remove'
+
+     For example:
+
+      'echo 1 > /sys/bus/pci/devices/0000\:01\:00.2/remove'
+
+      'echo 1 > /sys/bus/pci/devices/0000\:01\:00.3/remove'
+
+  2. There is a known issue with the audio driver due to which the audio PCI
+     function remains in an active state. This affects Linux kernel versions
+     4.19 (starting with git commit id
+     "37a3a98ef601f89100e3bb657fb0e190b857028c") through 5.4, and is fixed in
+     Linux kernel version 5.5.
+
+      'echo 1 > /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.1/remove'
+
+     For example:
+
+      'echo 1 > /sys/bus/pci/devices/0000\:01\:00.1/remove'
+
+     This workaround will result in audio loss when the audio function is
+     being used to play audio over DP/HDMI connection. To recover from audio
+     loss, rescanning the PCI tree will bring back the audio PCI function and
+     audio operation can be recovered. However, after rescanning the PCI tree,
+     all the disabled PCI functions will again become active. To ensure that
+     this feature works again, the workarounds mentioned in this section have
+     to be done again.
+
+  3. When the NVIDIA GPU is driving a console, runtime power management is
+     enabled for the VGA Controller PCI function and nvidia driver is
+     uninstalled, the console will become blank. The workaround for this issue
+     is to disable runtime power management for PCI function 0 before
+     uninstalling the NVIDIA driver using the following command:
+
+      'echo on >
+     /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.<Function>/power/control'
+
+     For example:
+
+      'echo on > /sys/bus/pci/devices/0000\:01\:00.0/power/control'
+
+  4. On desktops, if a NVIDIA GPU is in RTD3 state and a display is connected
+     to it, it will not be detected. This is because the parent PCI/e port
+     switches off the power to the NVIDIA GPU. The workaround for this issue
+     is to first put the NVIDIA GPU into an active state and then connect the
+     display to it. The NVIDIA GPU can be brought into an active state by
+     running the following command:
+
+      'echo on >
+     /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.<Function>/power/control'
+
+     For example:
+
+      'echo on > /sys/bus/pci/devices/0000\:01\:00.0/power/control'
+
+     After connecting the display, runtime power management can be enabled
+     again using the following command:
+
+      'echo auto >
+     /sys/bus/pci/devices/<Domain>:<Bus>:<Device>.<Function>/power/control'
+
+     For example:
+
+      'echo auto > /sys/bus/pci/devices/0000\:01\:00.0/power/control'
+
+
+
+22H. AUTOMATED SETUP
+
+This section describes automated ways to perform the manual steps mentioned
+above so that this feature works seamlessly after boot.
+
+
+  1. Create a file named '80-nvidia-pm.rules' in '/lib/udev/rules.d/'
+     directory.
+
+     Add the content given below to '80-nvidia-pm.rules' file. This would
+     enable runtime power management for the VGA Controller / 3D Controller
+     PCI function. It would also remove Audio device PCI function, USB xHCI
+     Host Controller function as well as USB Type-C UCSI Controller PCI
+     function. Note that the first three rules given below are not required
+     from Linux kernel 5.5 and newer.
+
+
+
+# Remove NVIDIA USB xHCI Host Controller devices, if present
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c0330", ATTR{remove}="1"
+
+# Remove NVIDIA USB Type-C UCSI devices, if present
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c8000", ATTR{remove}="1"
+
+# Remove NVIDIA Audio devices, if present
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x040300", ATTR{remove}="1"
+
+# Enable runtime PM for NVIDIA VGA/3D controller devices on driver bind
+ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+
+# Disable runtime PM for NVIDIA VGA/3D controller devices on driver unbind
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
+
+
+
+  2. The driver option 'NVreg_DynamicPowerManagement' can be set via the
+     distribution's kernel module configuration files (such as those under
+     '/etc/modprobe.d'). For example, the following line can be added to
+     '/etc/modprobe.d/nvidia.conf' file to seamlessly enable this feature.
+
+      'options nvidia "NVreg_DynamicPowerManagement=0x02"'
+
+  3. Reboot the system.
+
+
+
+22I. REPORTING ISSUES
+
+For better error reporting, nvidia-bug-report.sh collects a dump of ACPI
+tables using 'acpidump' utility. Depending on your Linux distribution, this
+utility may be found in a package called 'acpica-tools' or 'acpica' or
+similar.
+
+______________________________________________________________________________
+
+Chapter 23. Dynamic Boost on Linux
+______________________________________________________________________________
+
+
+23A. INTRODUCTION
+
+The 'nvidia-powerd' daemon provides support for the NVIDIA Dynamic Boost
+feature on Linux platforms. Dynamic Boost is a system-wide power controller
+which manages GPU and CPU power, according to the workload on the system. By
+shifting power between the GPU and the CPU, Dynamic Boost can deliver more
+power to the component that would benefit most from it, without impacting the
+system's total thermal and electrical budgets. This optimizes overall system
+performance per watt.
+
+Dynamic Boost will be active only when the notebook system is powered by AC
+and there is enough load on the GPU. It will not be engaged when the system is
+running on battery. Dynamic Boost is intended to improve performance on
+balanced as well as heavily GPU-bound or CPU-bound applications. Dynamic Boost
+requests the CPUFreq Governor to set the CPU frequency by updating the
+'/sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq' sysfs entries.
+
+
+23B. HARDWARE REQUIREMENTS
+
+Dynamic Boost is supported only on platforms that meet all of the following
+requirements:
+
+
+  1. Notebook form factor.
+
+  2. Ampere or newer GPUs.
+
+  3. Intel CometLake or newer Intel chipsets, or AMD Renoir, Cezanne,
+     Rembrandt, or newer AMD chipsets.
+
+  4. SBIOS support for Dynamic Boost
+
+     Run the following command to check if the SBIOS supports Dynamic Boost:
+
+      `nvidia-settings -q DynamicBoostSupport`
+
+
+
+23C. SOFTWARE REQUIREMENTS
+
+The system must fulfill all of the following requirements:
+
+
+  1. Use the 'systemd' init daemon.
+
+  2. Support the 'D-Bus' message bus system.
+
+  3. Use the 'cpufreq' infrastructure.
+
+
+
+23D. CONFIGURATION STEPS
+
+Note: The following commands must be run with root permissions
+
+
+  1. Copy the dbus configuration file 'nvidia-dbus.conf' from
+     '/usr/share/doc/NVIDIA_GLX-1.0/' to '/etc/dbus-1/system.d'. If the
+     '/etc/dbus-1/system.d' directory does not exist, create it before copying
+     the file and reboot the system so that dbus can scan the newly created
+     directory in the next boot.
+
+  2. To enable the nvidia-powerd service, causing it to start automatically on
+     boot:
+
+      `systemctl enable nvidia-powerd.service`
+
+  3. To start the nvidia-powerd service:
+
+      `systemctl start nvidia-powerd.service`
+
+
+Steps to Stop and disable the nvidia-powerd service:
+
+
+  1. To stop the service:
+
+      `systemctl stop nvidia-powerd.service`
+
+  2. To disable the service such that it does not automatically start on boot:
+
+      `systemctl disable nvidia-powerd.service`
+
+
+______________________________________________________________________________
+
+Chapter 24. Using the X Composite Extension
+______________________________________________________________________________
+
+X.Org X servers support an X protocol extension called Composite. This
+extension allows windows to be drawn into pixmaps instead of directly onto the
+screen. In conjunction with the Damage and Render extensions, this allows a
+program called a composite manager to blend windows together to draw the
+screen.
+
+Performance will be degraded significantly if the "RenderAccel" option is
+disabled in xorg.conf. See Appendix B for more details.
+
+When the NVIDIA X driver is used and the Composite extension is enabled,
+NVIDIA's OpenGL implementation interacts properly with the Damage and
+Composite X extensions. This means that OpenGL rendering is drawn into
+offscreen pixmaps and the X server is notified of the Damage event when OpenGL
+renders to the pixmap. This allows OpenGL applications to behave properly in a
+composited X desktop.
+
+The Composite X extension is enabled by default. It can be disabled with
+'nvidia-xconfig --no-composite'. See the nvidia-xconfig(1) man page for
+details.
+
+The Composite extension causes problems with some driver components:
+
+   o Xv adaptors will ignore the sync-to-vblank option when drawing into a
+     redirected window.
+
+   o Workstation overlays are incompatible with Composite. Workstation
+     overlays will be automatically disabled when Composite is detected.
+
+   o The NVIDIA Linux driver supports quad-buffered stereo together with
+     Composite. However, many composite managers will only texture from and
+     display the left eye content, effectively disabling the stereo effect.
+     Workarounds for this problem are either to use a different composite
+     manager that supports stereo or disable the Composite extension.
+
+   o The Composite extension is incompatible with Xinerama in X.Org X servers
+     prior to version 1.10. Composite will be automatically disabled when
+     Xinerama is enabled on those servers.
+
+   o Prior to X.Org X server version 1.15, the Damage extension does not
+     properly report rendering events on all physical X screens in Xinerama
+     configurations. This prevents most composite mangers from rendering
+     correctly.
+
+
+This NVIDIA Linux driver supports OpenGL rendering to 32-bit ARGB windows.
+32-bit visuals are only available on screens with depths 24 or 30. If you are
+an application developer, you can use these new visuals in conjunction with a
+composite manager to create translucent OpenGL applications:
+
+    int attrib[] = {
+        GLX_RENDER_TYPE, GLX_RGBA_BIT,
+        GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+        GLX_RED_SIZE, 1,
+        GLX_GREEN_SIZE, 1,
+        GLX_BLUE_SIZE, 1,
+        GLX_ALPHA_SIZE, 1,
+        GLX_DOUBLEBUFFER, True,
+        GLX_DEPTH_SIZE, 1,
+        None };
+    GLXFBConfig *fbconfigs, fbconfig;
+    int numfbconfigs, render_event_base, render_error_base;
+    XVisualInfo *visinfo;
+    XRenderPictFormat *pictFormat;
+
+    /* Make sure we have the RENDER extension */
+    if(!XRenderQueryExtension(dpy, &render_event_base, &render_error_base)) {
+        fprintf(stderr, "No RENDER extension found\n");
+        exit(EXIT_FAILURE);
+    }
+
+    /* Get the list of FBConfigs that match our criteria */
+    fbconfigs = glXChooseFBConfig(dpy, scrnum, attrib, &numfbconfigs);
+    if (!fbconfigs) {
+        /* None matched */
+        exit(EXIT_FAILURE);
+    }
+
+    /* Find an FBConfig with a visual that has a RENDER picture format that
+     * has alpha */
+    for (i = 0; i < numfbconfigs; i++) {
+        visinfo = glXGetVisualFromFBConfig(dpy, fbconfigs[i]);
+        if (!visinfo) continue;
+        pictFormat = XRenderFindVisualFormat(dpy, visinfo->visual);
+        if (!pictFormat) continue;
+
+        if(pictFormat->direct.alphaMask > 0) {
+            fbconfig = fbconfigs[i];
+            break;
+        }
+
+        XFree(visinfo);
+    }
+
+    if (i == numfbconfigs) {
+        /* None of the FBConfigs have alpha.  Use a normal (opaque)
+         * FBConfig instead */
+        fbconfig = fbconfigs[0];
+        visinfo = glXGetVisualFromFBConfig(dpy, fbconfig);
+        pictFormat = XRenderFindVisualFormat(dpy, visinfo->visual);
+    }
+
+    XFree(fbconfigs);
+
+
+When rendering to a 32-bit window, keep in mind that composite managers expect
+"premultiplied alpha" colors. This means that if your color has components
+(r,g,b) and alpha value a, then you must render (a*r, a*g, a*b, a) into the
+target window.
+
+More information about Composite can be found at
+http://freedesktop.org/Software/CompositeExt
+
+______________________________________________________________________________
+
+Chapter 25. Using the nvidia-settings Utility
+______________________________________________________________________________
+
+A graphical configuration utility, 'nvidia-settings', is included with the
+NVIDIA Linux graphics driver. After installing the driver and starting X, you
+can run this configuration utility by running:
+
+    % nvidia-settings
+
+in a terminal window. nvidia-settings requires version 2.4 or later of the
+GTK+ 2 library.
+
+Some architectures of Linux support the GTK+ 3 library and would require
+version 3.0 or later if available.
+
+Detailed information about the configuration options available are documented
+in the help window in the utility.
+
+For more information, see the nvidia-settings man page.
+
+The source code to nvidia-settings is released as GPL and is available here:
+https://download.nvidia.com/XFree86/nvidia-settings/
+
+______________________________________________________________________________
+
+Chapter 26. NVIDIA Spectre V2 Mitigation
+______________________________________________________________________________
+
+The NVIDIA Linux driver supports the retpoline Spectre V2 mitigation technique
+as identified by:
+https://software.intel.com/security-software-guidance/api-app/sites/default/files/Retpoline-A-Branch-Target-Injection-Mitigation.pdf
+
+For Linux systems that define CONFIG_RETPOLINE or CONFIG_MITIGATION_RETPOLINE,
+the NVIDIA driver yields to the kernel's implementation of Spectre V2
+mitigation. When CONFIG_RETPOLINE or CONFIG_MITIGATION_RETPOLINE is not
+defined, the NVIDIA Linux driver implements the retpoline thunk without the
+Spectre V2 mitigation.
+
+Linux kernels that implement retpoline based Spectre V2 mitigation provide a
+kernel boot flag to enable or disable the feature. When enabled, users may
+notice a performance degradation. In order to recover performance, the user
+can disable the feature using the 'spectre_v2' boot flag (unsafe).
+
+
+
+spectre_v2=off
+
+
+
+Please note that CONFIG_RETPOLINE has been renamed to
+CONFIG_MITIGATION_RETPOLINE by commit "aefb2f2e619b" ("x86/bugs: Rename
+CONFIG_RETPOLINE => CONFIG_MITIGATION_RETPOLINE") in Linux kernel v6.9.
+
+______________________________________________________________________________
+
+Chapter 27. Using the nvidia-smi Utility
+______________________________________________________________________________
+
+A monitoring and management command line utility, 'nvidia-smi', is included
+with the NVIDIA Linux graphics driver. After installing the driver, you can
+run this utility by running:
+
+    % nvidia-smi
+
+in a terminal window.
+
+Detailed help information is available via the --help command line option and
+via the nvidia-smi man page.
+
+To include nvidia-smi information in other applications see Chapter 28
+
+______________________________________________________________________________
+
+Chapter 28. The NVIDIA Management Library
+______________________________________________________________________________
+
+A C-based API for monitoring and managing various states of the NVIDIA GPU
+devices. NVIDIA Management Library (NVML) provides a direct access to the
+queries and commands exposed via nvidia-smi. NVML is included with the NVIDIA
+Linux graphics driver.
+
+To write applications against this library see the NVML developer page:
+http://developer.nvidia.com/nvidia-management-library-NVML
+
+To include NVML functionality in scripting languages see:
+http://search.cpan.org/~nvbinding/nvidia-ml-pl/lib/nvidia/ml.pm and
+http://pypi.python.org/pypi/nvidia-ml-py/
+
+______________________________________________________________________________
+
+Chapter 29. Using the nvidia-debugdump Utility
+______________________________________________________________________________
+
+A utility for collecting internal GPU state, 'nvidia-debugdump', is included
+with the NVIDIA Linux graphics driver. After installing the driver, you can
+run this utility by running:
+
+    % nvidia-debugdump
+
+in a terminal window.
+
+Detailed help information is available via the --help command line option, or
+when no parameters are supplied.
+
+In most cases, this utility is invoked by the 'nvidia-bug-report.sh'
+(/usr/bin/nvidia-bug-report.sh) script. In rare cases, typically when directed
+by an NVIDIA technical support representative, nvidia-debugdump may also be
+invoked as a stand-alone diagnostics program. The "dump" output of
+nvidia-debugdump is a binary blob that requires internal NVIDIA engineering
+tools in order to be interpreted.
+
+______________________________________________________________________________
+
+Chapter 30. Using the nvidia-persistenced Utility
+______________________________________________________________________________
+
+
+30A. BACKGROUND
+
+A Linux daemon utility, 'nvidia-persistenced', addresses an undesirable side
+effect of the NVIDIA kernel driver behavior in certain computing environments.
+Whenever the NVIDIA device resources are no longer in use, the NVIDIA kernel
+driver will tear down the device state. Normally, this is the intended
+behavior of the device driver, but for some applications, the latencies
+incurred by repetitive device initialization can significantly impact
+performance.
+
+To avoid this behavior, 'nvidia-persistenced' provides a configuration option
+called "persistence mode" that can be set by NVIDIA management software, such
+as 'nvidia-smi'. When persistence mode is enabled, the daemon holds the NVIDIA
+character device files open, preventing the NVIDIA kernel driver from tearing
+down device state when no other process is using the device. This utility does
+not actually use any device resources itself - it will simply sleep while
+maintaining a reference to the NVIDIA device state.
+
+
+30B. USAGE
+
+ 'nvidia-persistenced' is included with the NVIDIA Linux GPU driver. After
+installing the driver, this utility may be installed to run on system startup
+or manually with the command:
+
+    # nvidia-persistenced
+
+in a terminal window. Note that the daemon may require root privileges to
+create its runtime data directory, /var/run/nvidia-persistenced/, or it may
+otherwise need to be run as a user that has access to that directory.
+
+Detailed help and usage information is available primarily via the
+'nvidia-persistenced' man page, as well as the '--help' command line option.
+
+The source code to nvidia-persistenced is released under the MIT license and
+is available at: https://download.nvidia.com/XFree86/nvidia-persistenced/.
+
+
+30C. TROUBLESHOOTING
+
+If you have difficulty getting 'nvidia-persistenced' to work as expected, the
+best way to gather information as to what is happening is to run the daemon
+with the '--verbose' option.
+
+ 'nvidia-persistenced' detaches from its parent process very early on, and as
+such only invalid command line argument errors will be printed in the terminal
+window. All other output, including verbose informational messages, are sent
+to the syslog interface instead. Consult your distribution's documentation for
+accessing syslog output.
+
+
+30D. NOTES FOR PACKAGE MAINTAINERS
+
+The daemon utility 'nvidia-persistenced' is installed by the NVIDIA Linux GPU
+driver installer, but it is not installed to run on system startup. Due to the
+wide variety of init systems used by the various Linux distributions that the
+NVIDIA Linux GPU driver supports, we request that package maintainers for
+those distributions provide the packaging necessary to integrate well with
+their platform.
+
+NVIDIA provides sample init scripts for some common init systems in
+/usr/share/doc/NVIDIA_GLX-1.0/sample/nvidia-persistenced-init.tar.bz2 to aid
+in installation of the utility.
+
+ 'nvidia-persistenced' is intended to be run as a daemon from system
+initialization, and is generally designed as a tool for compute-only platforms
+where the NVIDIA device is not used to display a graphical user interface. As
+such, depending on how your package is typically used, it may not be necessary
+to install the daemon to run on system initialization.
+
+If 'nvidia-persistenced' is packaged to run on system initialization, the
+package installation, init script or system management utility that runs the
+daemon should provide the following:
+
+A non-root user to run as
+
+    It is strongly recommended, though not required, that the daemon be run as
+    a non-root user for security purposes.
+
+    The daemon may either be started with root privileges and the '--user'
+    option, or it may be run directly as the non-root user.
+
+Runtime access to /var/run/nvidia-persistenced/
+
+    The daemon must be able to create its socket and PID file in this
+    directory.
+
+    If the daemon is run as root, it will create this directory itself and
+    remove it when it shuts down cleanly.
+
+    If the daemon is run as a non-root user, this directory must already
+    exist, and the daemon will not attempt to remove it when it shuts down
+    cleanly.
+
+    If the daemon is started as root, but provided a non-root user to run as
+    via the '--user' option, the daemon will create this directory itself,
+    'chown' it to the provided user, and 'setuid' to the provided user to drop
+    root privileges. The daemon may be unable to remove this directory when it
+    shuts down cleanly, depending on the privileges of the provided user.
+
+
+______________________________________________________________________________
+
+Chapter 31. Configuring SLI Mosaic
+______________________________________________________________________________
+
+The NVIDIA Linux driver contains support for NVIDIA SLI Mosaic. This
+technology enables you to extend a single X screen transparently across all of
+the available display outputs on each GPU. See below for the exact set of
+configurations which can be used with SLI Mosaic Mode.
+
+If any SLI mode is enabled, applications may override which rendering mode is
+in use by creating an OpenGL context with the GLX_CONTEXT_MULTIGPU_ATTRIB_NV
+attribute. In addition, applications may gain explicit control over individual
+GPU rendering in SLI configurations through the GL_NV_gpu_multicast extension
+by creating a context with the GLX_CONTEXT_MULTIGPU_ATTRIB_MULTICAST_NV
+attribute. Multicast rendering in SLI Mosaic configurations requires use of
+the GLX_CONTEXT_MULTIGPU_ATTRIB_MULTI_DISPLAY_MULTICAST_NV attribute, which is
+only allowed on Quadro GPUs.
+
+
+31A. ENABLING SLI
+
+SLI is enabled by setting the "SLI" option in the X configuration file; see
+Appendix B for details about the SLI option.
+
+The nvidia-xconfig utility can be used to set the SLI option, rather than
+modifying the X configuration file by hand. For example:
+
+    % nvidia-xconfig --sli=mosaic
+
+
+
+31B. ENABLING SLI MOSAIC MODE
+
+The simplest way to configure SLI Mosaic Mode using a grid of monitors is to
+use 'nvidia-settings' (see Chapter 25). The steps to perform this
+configuration are as follows:
+
+
+
+  1. Connect each of the monitors you would like to use to any connector from
+     any GPU used for SLI Mosaic Mode. If you are going to use fewer monitors
+     than there are connectors, connect one monitor to each GPU before adding
+     a second monitor to any GPUs.
+
+  2. Install the NVIDIA display driver set.
+
+  3. Configure an X screen to use the "nvidia" driver on at least one of the
+     GPUs (see Chapter 6 for more information).
+
+  4. Start X.
+
+  5. Run 'nvidia-settings' and open the "X Server Display Configuration" page
+     using the navigation pane on the left side of the application.
+
+  6. Below the layout window, enable the "Use SLI Mosaic Mode" check box if
+     not already enabled. Then click the "Configure SLI Mosaic Displays"
+     button. You may need to click the "Advanced..." button near the bottom of
+     the page.
+
+  7. In the "Configure SLI Mosaic Layout" dialog, select the monitor grid
+     configuration you'd like to use from the "Display Configuration"
+     dropdown.
+
+  8. Choose the resolution and refresh rate at which you would like to drive
+     each individual monitor.
+
+  9. Set any overlap you would like between the displays.
+
+  10. Click the "Apply to Layout" button. The configuration described in the
+     dialog will be loaded into the "Display Configuration" page and can be
+     adjusted, if needed.
+
+  11. Click the "Save to X Configuration File" button. NOTE: If you don't have
+     permissions to write to your system's X configuration file, you will be
+     prompted to choose a location to save the file. After doing so, you MUST
+     copy the X configuration file into a location the X server will consider
+     upon startup (usually '/etc/X11/xorg.conf').
+
+  12. Exit nvidia-settings and restart your X server.
+
+
+Alternatively, nvidia-xconfig can be used to configure SLI Mosaic Mode via a
+command like 'nvidia-xconfig --sli=Mosaic --metamodes=METAMODES' where the
+METAMODES string specifies the desired grid configuration. For example:
+
+    nvidia-xconfig --sli=Mosaic --metamodes="GPU-0.DFP-0: 1920x1024+0+0,
+GPU-0.DFP-1: 1920x1024+1920+0, GPU-1.DFP-0: 1920x1024+0+1024, GPU-1.DFP-1:
+1920x1024+1920+1024"
+
+will configure four DFPs in a 2x2 configuration, each running at 1920x1024,
+with the two DFPs on GPU-0 driving the top two monitors of the 2x2
+configuration, and the two DFPs on GPU-1 driving the bottom two monitors of
+the 2x2 configuration.
+
+See the MetaModes X configuration description in details in Chapter 12. See
+Appendix C for further details on GPU and Display Device Names.
+
+
+31C. HARDWARE REQUIREMENTS
+
+SLI functionality requires:
+
+   o Identical PCI Express graphics cards
+
+   o A supported motherboard
+
+   o For the displays to be synchronized across GPUs, the GPUs must be
+     connected using an SLI video bridge or nvlink bridge.
+
+   o SLI Mosaic Mode requires NVIDIA Quadro GPUs.
+
+
+
+31D. OTHER NOTES AND REQUIREMENTS
+
+The following other requirements apply to SLI:
+
+   o Mobile GPUs are NOT supported
+
+   o GPUs with ECC enabled may not be used in an SLI configuration
+
+   o If X is configured to use multiple screens and screen 0 has SLI enabled,
+     the other screens configured to use the nvidia driver will be disabled.
+     Note that if SLI is enabled, the GPUs used by that configuration will be
+     unavailable for single GPU rendering.
+
+
+
+FREQUENTLY ASKED SLI QUESTIONS
+
+Q. Why does SLI fail to initialize?
+
+A. There are several reasons why SLI may fail to initialize. Most of these
+   should be clear from the warning message in the X log file; e.g.:
+   
+      o "Unsupported bus type"
+   
+      o "The video link was not detected"
+   
+      o "GPUs do not match"
+   
+      o "Unsupported GPU video BIOS"
+   
+      o "Insufficient PCIe link width"
+   
+   The warning message "'Unsupported PCI topology'" is likely due to problems
+   with your Linux kernel. The NVIDIA driver must have access to the PCI
+   Bridge (often called the Root Bridge) that each NVIDIA GPU is connected to
+   in order to configure SLI correctly. There are many kernels that do not
+   properly recognize this bridge and, as a result, do not allow the NVIDIA
+   driver to access this bridge. See the below "How can I determine if my
+   kernel correctly detects my PCI Bridge?" FAQ for details.
+
+   Below are some specific troubleshooting steps to help deal with SLI
+   initialization failures.
+   
+      o Make sure that ACPI is enabled in your kernel. NVIDIA's experience
+        has been that ACPI is needed for the kernel to correctly recognize
+        the Root Bridge. Note that in some cases, the kernel's version of
+        ACPI may still have problems and require an update to a newer kernel.
+   
+      o Run 'lspci' to check that multiple NVIDIA GPUs can be identified by
+        the operating system; e.g:
+        
+            % /sbin/lspci | grep -i nvidia
+        
+        If 'lspci' does not report all the GPUs that are in your system, then
+        this is a problem with your Linux kernel, and it is recommended that
+        you use a different kernel.
+   
+        Please note: the 'lspci' utility may be installed in a location other
+        than '/sbin' on your system. If the above command fails with the
+        error: "'/sbin/lspci: No such file or directory'", please try:
+        
+            % lspci | grep -i nvidia
+        
+        , instead. You may also need to install your distribution's
+        "pciutils" package.
+   
+      o Make sure you have the most recent SBIOS available for your
+        motherboard.
+   
+      o The PCI Express slots on the motherboard must provide a minimum link
+        width. Please make sure that the PCI Express slot(s) on your
+        motherboard meet the following requirements and that you have
+        connected the graphics board to the correct PCI Express slot(s):
+        
+           o A pair of boards requires one of the following supported link
+             width combinations:
+             
+                o x16 + x16
+             
+                o x16 + x8
+             
+                o x16 + x4
+             
+                o x8 + x8
+             
+             
+        
+   
+
+Q. How can I determine if my kernel correctly detects my PCI Bridge?
+
+A. As discussed above, the NVIDIA driver must have access to the PCI Bridge
+   that each NVIDIA GPU is connected to in order to configure SLI correctly.
+   The following steps will identify whether the kernel correctly recognizes
+   the PCI Bridge:
+   
+      o Identify both NVIDIA GPUs:
+        
+            % /sbin/lspci | grep -i vga
+        
+            0a:00.0 VGA compatible controller: nVidia Corporation [...]
+            81:00.0 VGA compatible controller: nVidia Corporation [...]
+        
+        
+      o Verify that each GPU is connected to a bus connected to the Root
+        Bridge (note that the GPUs in the above example are on buses 0a and
+        81):
+        
+            % /sbin/lspci -t
+        
+        good:
+        
+            -+-[0000:80]-+-00.0
+             |           +-01.0
+             |           \-0e.0-[0000:81]----00.0
+            ...
+             \-[0000:00]-+-00.0
+                         +-01.0
+                         +-01.1
+                         +-0e.0-[0000:0a]----00.0
+        
+        bad:
+        
+            -+-[0000:81]---00.0
+            ...
+             \-[0000:00]-+-00.0
+                         +-01.0
+                         +-01.1
+                         +-0e.0-[0000:0a]----00.0
+        
+        Note that in the first example, bus 81 is connected to Root Bridge
+        80, but that in the second example there is no Root Bridge 80 and bus
+        81 is incorrectly connected at the base of the device tree. In the
+        bad case, the only solution is to upgrade your kernel to one that
+        properly detects your PCI bus layout.
+   
+   
+
+______________________________________________________________________________
+
+Chapter 32. Configuring Frame Lock and Genlock
+______________________________________________________________________________
+
+NOTE: Frame Lock and Genlock features are supported only on specific hardware,
+as noted below.
+
+Visual computing applications that involve multiple displays, or even multiple
+windows within a display, can require special signal processing and
+application controls in order to function properly. For example, in order to
+produce quality video recording of animated graphics, the graphics display
+must be synchronized with the video camera. As another example, applications
+presented on multiple displays must be synchronized in order to complete the
+illusion of a larger, virtual canvas.
+
+This synchronization is enabled through the Frame Lock and Genlock
+capabilities of the NVIDIA driver. This section describes the setup and use of
+Frame Lock and Genlock.
+
+
+32A. DEFINITION OF TERMS
+
+GENLOCK: Genlock refers to the process of synchronizing the pixel scanning of
+one or more displays to an external synchronization source. Genlock requires
+the external signal to be either TTL or composite, such as used for NTSC, PAL,
+or HDTV. It should be noted that Genlock is guaranteed only to be
+frame-synchronized, and not necessarily pixel-synchronized.
+
+FRAME LOCK: Frame Lock involves the use of hardware to synchronize the frames
+on each display in a connected system. When graphics and video are displayed
+across multiple monitors, Frame Locked systems help maintain image continuity
+to create a virtual canvas. Frame Lock is especially critical for stereo
+viewing, where the left and right fields must be in sync across all displays.
+
+In short, to enable Genlock means to sync to an external signal. To enable
+Frame Lock means to sync 2 or more display devices to a signal generated
+internally by the hardware, and to use both means to sync 2 or more display
+devices to an external signal.
+
+SWAP SYNC: Swap sync refers to the synchronization of buffer swaps of multiple
+application windows. By means of swap sync, applications running on multiple
+systems can synchronize the application buffer swaps between all the systems.
+In order to work across multiple systems, swap sync requires that the systems
+are Frame Locked.
+
+QUADRO SYNC DEVICE: A Quadro Sync Device refers to a device capable of Frame
+Lock/Genlock. See "Supported Hardware" below.
+
+
+32B. SUPPORTED HARDWARE
+
+Frame Lock and Genlock are supported for the following hardware:
+
+   o Quadro Sync II, used in conjunction with an NVIDIA RTX A6000, NVIDIA A40,
+     Quadro RTX 8000, Quadro RTX 6000, Quadro RTX 5000, Quadro RTX 4000,
+     Quadro GV100, Quadro GP100, Quadro P6000, Quadro P5000, or Quadro P4000
+
+   o Quadro Sync, used in conjunction with a Quadro M6000 24GB, Quadro M6000,
+     Quadro M5000, Quadro M4000, Quadro K6000, Quadro K5200, Quadro K5000, or
+     Quadro K4200
+
+
+
+32C. HARDWARE SETUP
+
+Before you begin, you should check that your hardware has been properly
+installed. The following steps must be performed while the system is off.
+
+  1. On a Quadro Sync card with four Sync connectors, connect a ribbon cable
+     to any of the four connectors, if none are already connected.
+
+  2. Install the Quadro Sync card in any available slot. Note that the slot
+     itself is only used for physical mounting, so even a known "bad" slot is
+     acceptable. The slot must be close enough to the graphics card that the
+     ribbon cable can reach.
+
+  3. On a Quadro Sync card with four Sync connectors, external power is
+     required. Connect a 6-pin PCIe power cable or a SATA power cable to the
+     card.
+
+  4. Connect the other end of the ribbon cable to the Quadro Sync connector on
+     the graphics card.
+
+     On supported Quadro Kepler cards, the Quadro Sync connector is identical
+     in appearance to the SLI connector. The ribbon cable from the Quadro Sync
+     card should be connected to the connector labeled "SDI | SYNC". If the
+     ribbon cable is connected to the SLI connector, the GPU will not be able
+     to synchronize with the Quadro Sync card.
+
+You may now boot the system and begin the software setup of Genlock and/or
+Frame Lock. These instructions assume that you have already successfully
+installed the NVIDIA Accelerated Linux Driver Set. If you have not done so,
+see Chapter 4.
+
+
+32D. CONFIGURATION WITH NVIDIA-SETTINGS GUI
+
+Frame Lock and Genlock are configured through the nvidia-settings utility. See
+the 'nvidia-settings(1)' man page, and the nvidia-settings online help (click
+the "Help" button in the lower right corner of the interface for per-page help
+information).
+
+From the nvidia-settings Frame Lock panel, you may control the addition of
+Quadro Sync (and display) devices to the Frame Lock/Genlock group, monitor the
+status of that group, and enable/disable Frame Lock and Genlock.
+
+After the system has booted and X Windows has been started, run
+nvidia-settings as
+
+    % nvidia-settings
+
+You may wish to start this utility before continuing, as we refer to it
+frequently in the subsequent discussion.
+
+The setup of Genlock and Frame Lock are described separately. We then describe
+the use of Genlock and Frame Lock together.
+
+
+32E. GENLOCK SETUP
+
+After the system has been booted, connect the external signal to the house
+sync connector (the BNC connector) on either the graphics card or the Quadro
+Sync card. There is a status LED next to the connector. A solid red or unlit
+LED indicates that the hardware cannot detect the timing signal. A green LED
+indicates that the hardware is detecting a timing signal. An occasional red
+flash is okay. On a Quadro Sync card with four Sync connectors, a blinking
+green LED indicates that the server is locked to the house sync. The Quadro
+Sync device (graphics card or Quadro Sync card) will need to be configured
+correctly for the signal to be detected.
+
+In the Frame Lock panel of the nvidia-settings interface, add the X Server
+that contains the display and Quadro Sync devices that you would like to sync
+to this external source by clicking the "Add Devices..." button. An X Server
+is typically specified in the format "system:m", e.g.:
+
+    mycomputer.domain.com:0
+
+or
+
+    localhost:0
+
+After adding an X Server, rows will appear in the "Quadro Sync Devices"
+section on the Frame Lock panel that displays relevant status information
+about the Quadro Sync devices, GPUs attached to those Quadro Sync devices and
+the display devices driven by those GPUs. In particular, the Quadro Sync rows
+will display the server name and Quadro Sync device number along with
+"Receiving" LED, "Rate", "House" LED, "Port 0"/"Port 1" Images, and "Delay"
+information. The GPU rows will display the GPU product name information along
+with the GPU ID for the server. The Display Device rows will show the display
+device name and device type along with server/client check boxes, refresh
+rate, "Timing" LED and "Stereo" LED.
+
+Once the Quadro Sync and display devices have been added to the Frame
+Lock/Genlock group, a Server display device will need to be selected. This is
+done by selecting the "Server" check box of the desired display device.
+
+If you are using a Quadro Sync card, you must also click the "Use House Sync
+if Present" check box. To enable synchronization of this Quadro Sync device to
+the external source, click the "Enable Frame Lock" button. The display
+device(s) may take a moment to stabilize. If it does not stabilize, you may
+have selected a synchronization signal that the system cannot support. You
+should disable synchronization by clicking the "Disable Frame Lock" button and
+check the external sync signal.
+
+Modifications to Genlock settings (e.g., "Use House Sync if Present", "Add
+Devices...") must be done while synchronization is disabled.
+
+
+32F. FRAME LOCK SETUP
+
+Frame Lock is supported across an arbitrary number of Quadro Sync systems,
+although mixing different generations of Quadro Sync products in the same
+Frame Lock group is not supported. Additionally, each system to be included in
+the Frame Lock group must be configured with identical mode timings. See
+Chapter 18 for information on mode timings.
+
+Connect the systems through their RJ45 ports using standard CAT5 patch cables.
+These ports are located on the Frame Lock card. DO NOT CONNECT A FRAME LOCK
+PORT TO AN ETHERNET CARD OR HUB. DOING SO MAY PERMANENTLY DAMAGE THE HARDWARE.
+The connections should be made in a daisy-chain fashion: each card has two
+RJ45 ports, call them 1 and 2. Connect port 1 of system A to port 2 of system
+B, connect port 1 of system B to port 2 of system C, etc. Note that you will
+always have two empty ports in your Frame Lock group.
+
+The ports self-configure as inputs or outputs once Frame Lock is enabled. Each
+port has a yellow and a green LED that reflect this state. A flashing yellow
+LED indicates an output and a flashing green LED indicates an input. On a
+Quadro Sync card with four Sync connectors, a solid green LED indicates that
+the port has been configured as an input, but no sync pulse is detected, and a
+solid yellow LED means the card is configured as an output, but no sync is
+being transmitted.
+
+In the Frame Lock panel of the nvidia-settings interface, add the X server
+that contains the display devices that you would like to include in the Frame
+Lock group by clicking the "Add Devices..." button (see the description for
+adding display devices in the previous section on GENLOCK SETUP. Like the
+Genlock status indicators, the "Port 0" and "Port 1" columns in the table on
+the Frame Lock panel contain indicators whose states mirror the states of the
+physical LEDs on the RJ45 ports. Thus, you may monitor the status of these
+ports from the software interface.
+
+Any X Server can be added to the Frame Lock group, provided that
+
+  1. The system supporting the X Server is configured to support Frame Lock
+     and is connected via RJ45 cable to the other systems in the Frame Lock
+     group.
+
+  2. The system driving nvidia-settings can communicate with the X server that
+     is to be included for Frame Lock. This means that either the server must
+     be listening over TCP and the system's firewall is permissive enough to
+     allow remote X11 display connections, or that you've configured an
+     alternative mechanism such as ssh(1) forwarding between the machines.
+
+     For the case of listening over TCP, verify that the "-nolisten tcp"
+     commandline option was not used when starting the X server. You can find
+     the X server commandline with a command such as
+     
+         % ps ax | grep X
+     
+     If "-nolisten tcp" is on the X server commandline, consult your Linux
+     distribution documentation for details on how to properly remove this
+     option. For example, distributions configured to use the GDM login
+     manager may need to set "DisallowTCP=false" in the GDM configuration file
+     (e.g., /etc/gdm/custom.conf, /etc/X11/gdm/gdm.conf, or /etc/gdb/gdb.conf;
+     the exact configuration file name and path varies by the distribution).
+     Or, distributions configured to use the KDM login manager may have the
+     line
+     
+         ServerArgsLocal=-nolisten tcp
+     
+     in their kdm file (e.g., /etc/kde3/kdm/kdmrc). This line can be commented
+     out by prepending with "#". Starting with version 1.17, the X.org X
+     server no longer allows listening over TCP by default when built with its
+     default build configuration options. On newer X servers that were not
+     built with --enable-listen-tcp at build configuration time, in addition
+     to ensuring that "-nolisten tcp" is not set on the X server commandline,
+     you will also need to ensure that "-listen tcp" is explicitly set.
+
+  3. The system driving nvidia-settings can locate and has display privileges
+     on the X server that is to be included for Frame Lock.
+
+     A system can gain display privileges on a remote system by executing
+     
+         % xhost +
+     
+     on the remote system. See the xhost(1) man page for details.
+
+Typically, Frame Lock is controlled through one of the systems that will be
+included in the Frame Lock group. While this is not a requirement, note that
+nvidia-settings will only display the Frame Lock panel when running on an X
+server that supports Frame Lock.
+
+To enable synchronization on these display devices, click the "Enable Frame
+Lock" button. The screens may take a moment to stabilize. If they do not
+stabilize, you may have selected mode timings that one or more of the systems
+cannot support. In this case you should disable synchronization by clicking
+the "Disable Frame Lock" button and refer to Chapter 18 for information on
+mode timings.
+
+Modifications to Frame Lock settings (e.g. "Add/Remove Devices...") must be
+done while synchronization is disabled.
+
+nvidia-settings will not automatically enable Frame Lock via the
+nvidia-settings.rc file. To enable Frame Lock when starting the X server, a
+line such as the following can be added to the '~/.xinitrc' file:
+
+    # nvidia-settings -a [gpu:0]/FrameLockEnable=1
+
+
+
+32G. FRAME LOCK + GENLOCK
+
+The use of Frame Lock and Genlock together is a simple extension of the above
+instructions for using them separately. You should first follow the
+instructions for Frame Lock Setup, and then to one of the systems that will be
+included in the Frame Lock group, attach an external sync source. In order to
+sync the Frame Lock group to this single external source, you must select a
+display device driven by the GPU connected to the Quadro Sync card that is
+connected to the external source to be the signal server for the group. This
+is done by selecting the check box labeled "Server" of the tree on the Frame
+Lock panel in nvidia-settings. If you are using a Quadro Sync based Frame Lock
+group, you must also select the "Use House Sync if Present" check box. Enable
+synchronization by clicking the "Enable Frame Lock" button. As with other
+Frame Lock/Genlock controls, you must select the signal server while
+synchronization is disabled.
+
+
+32H. GPU STATUS LEDS ON THE QUADRO SYNC CARD
+
+In addition to the graphical indicators in the control panel described in the
+Genlock Setup section above, the Quadro Sync card has two status LEDs for each
+of the four ports:
+
+A sync status LED indicates the sync status for each port. An unlit LED
+indicates that no GPU is connected to the port; a steady amber LED indicates
+that a GPU is connected, but not synced to any sync source; and a steady green
+LED indicates that a GPU is connected and in sync with an internal or external
+sync source. A flashing LED indicates that a connected GPU is in the process
+of locking to a sync source; flashing green indicates that the sync source's
+timings are within a reasonable range, and flashing amber indicates that the
+timings are out of range, and the GPU may be unable to lock to the sync
+source.
+
+A stereo status LED indicates the stereo sync status for each port. The LED
+will be lit steady amber when the card first powers on. An unlit LED indicates
+that stereo is not active, or that no GPU is connected; a blinking green LED
+indicates that stereo is active, but not locked to the stereo master; and a
+steady green LED indicates that stereo is active and locked to the stereo
+master.
+
+
+32I. CONFIGURATION WITH NVIDIA-SETTINGS COMMAND LINE
+
+Frame Lock may also be configured through the nvidia-settings command line.
+This method of configuring Frame Lock may be useful in a scripted environment
+to automate the setup process. (Note that the examples listed below depend on
+the actual hardware configuration and as such may not work as-is.)
+
+To properly configure Frame Lock, the following steps should be completed:
+
+  1. Make sure Frame Lock Sync is disabled on all GPUs.
+
+  2. Make sure all display devices that are to be Frame Locked have the same
+     refresh rate.
+
+  3. Configure which (display/GPU) device should be the master.
+
+  4. Configure house sync (if applicable).
+
+  5. Configure the slave display devices.
+
+  6. Enable Frame Lock sync on the master GPU.
+
+  7. Enable Frame Lock sync on the slave GPUs.
+
+  8. Toggle the test signal on the master GPU (for testing the hardware
+     connectivity.)
+
+
+For a full list of the nvidia-settings Frame Lock attributes, please see the
+'nvidia-settings(1)' man page. Examples:
+
+  1. 1 System, 1 Frame Lock board, 1 GPU, and 1 display device syncing to the
+     house signal:
+     
+       # - Make sure Frame Lock sync is disabled
+       nvidia-settings -a [gpu:0]/FrameLockEnable=0
+       nvidia-settings -q [gpu:0]/FrameLockEnable
+     
+       # - Enable use of house sync signal
+       nvidia-settings -a [framelock:0]/FrameLockUseHouseSync=1
+     
+       # - Configure the house sync signal video mode
+       nvidia-settings -a [framelock:0]/FrameLockVideoMode=0
+     
+       # - Query the enabled displays on the gpu(s)
+       nvidia-settings -V all -q gpus
+     
+       # - Check the refresh rate is as desired
+       nvidia-settings -q [dpy:DVI-I-0]/RefreshRate
+     
+       # - Query the valid Frame Lock configurations for the display device
+       nvidia-settings -q [dpy:DVI-I-0]/FrameLockDisplayConfig
+     
+       # - Set DVI-I-0 as a slave (this display will be synchronized to the
+       #   input signal)
+       #
+       # NOTE: FrameLockDisplayConfig takes one of three values:
+       #       0 (disabled), 1 (client), 2 (server).
+       nvidia-settings -a [dpy:DVI-I-0]/FrameLockDisplayConfig=0
+     
+       # - Enable Frame Lock
+       nvidia-settings -a [gpu:0]/FrameLockEnable=1
+     
+       # - Toggle the test signal
+       nvidia-settings -a [gpu:0]/FrameLockTestSignal=1
+       nvidia-settings -a [gpu:0]/FrameLockTestSignal=0
+     
+     
+  2. 2 Systems, each with 2 GPUs, 1 Frame Lock board and 1 display device per
+     GPU syncing from the first system's first display device:
+     
+       # - Make sure Frame Lock sync is disabled on all gpus
+       nvidia-settings -a myserver:0[gpu]/FrameLockEnable=0
+       nvidia-settings -a myslave1:0[gpu]/FrameLockEnable=0
+     
+       # - Disable the house sync signal on the master device
+       nvidia-settings -a myserver:0[framelock:0]/FrameLockUseHouseSync=0
+     
+       # - Query the enabled displays on the GPUs
+       nvidia-settings -c myserver:0 -q gpus
+       nvidia-settings -c myslave1:0 -q gpus
+     
+       # - Check the refresh rate is the same for all displays
+       nvidia-settings -q myserver:0[dpy]/RefreshRate
+       nvidia-settings -q myslave1:0[dpy]/RefreshRate
+     
+       # - Query the valid Frame Lock configurations for the display devices
+       nvidia-settings -q myserver:0[dpy]/FrameLockDisplayConfig
+       nvidia-settings -q myslave1:0[dpy]/FrameLockDisplayConfig
+     
+       # - Set the server display device
+       nvidia-settings -a myserver:0[dpy:DVI-I-0]/FrameLockDisplayConfig=2
+     
+       # - Set the slave display devices
+       nvidia-settings -a myserver:0[dpy:DVI-I-1]/FrameLockDisplayConfig=1
+       nvidia-settings -a myslave1:0[dpy]/FrameLockDisplayConfig=1
+     
+       # - Enable Frame Lock on server
+       nvidia-settings -a myserver:0[gpu:0]/FrameLockEnable=1
+     
+       # - Enable Frame Lock on slave devices
+       nvidia-settings -a myserver:0[gpu:1]/FrameLockEnable=1
+       nvidia-settings -a myslave1:0[gpu]/FrameLockEnable=1
+     
+       # - Toggle the test signal (on the master GPU)
+       nvidia-settings -a myserver:0[gpu:0]/FrameLockTestSignal=1
+       nvidia-settings -a myserver:0[gpu:0]/FrameLockTestSignal=0
+     
+     
+  3. 1 System, 4 GPUs, 2 Frame Lock boards and 2 display devices per GPU
+     syncing from the first GPU's display device:
+     
+       # - Make sure Frame Lock sync is disabled
+       nvidia-settings -a [gpu]/FrameLockEnable=0
+     
+       # - Disable the house sync signal on the master device
+       nvidia-settings -a [framelock:0]/FrameLockUseHouseSync=0
+     
+       # - Query the enabled displays on the GPUs
+       nvidia-settings -V all -q gpus
+     
+       # - Check the refresh rate is the same for all displays
+       nvidia-settings -q [dpy]/RefreshRate
+     
+       # - Query the valid Frame Lock configurations for the display devices
+       nvidia-settings -q [dpy]/FrameLockDisplayConfig
+       
+       # - Set the master display device
+       nvidia-settings -a [gpu:0.dpy:DVI-I-0]/FrameLockDisplayConfig=2
+     
+       # - Set the slave display devices
+       nvidia-settings -a [gpu:0.dpy:DVI-I-1]/FrameLockDisplayConfig=1
+       nvidia-settings -a [gpu:1.dpy]/FrameLockDisplayConfig=1
+       nvidia-settings -a [gpu:2.dpy]/FrameLockDisplayConfig=1
+       nvidia-settings -a [gpu:3.dpy]/FrameLockDisplayConfig=1
+     
+       # - Enable Frame Lock on master GPU
+       nvidia-settings -a [gpu:0]/FrameLockEnable=1
+     
+       # - Enable Frame Lock on slave devices
+       nvidia-settings -a [gpu:1]/FrameLockEnable=1
+       nvidia-settings -a [gpu:2]/FrameLockEnable=1
+       nvidia-settings -a [gpu:3]/FrameLockEnable=1
+     
+       # - Toggle the test signal
+       nvidia-settings -a [gpu:0]/FrameLockTestSignal=1
+       nvidia-settings -a [gpu:0]/FrameLockTestSignal=0
+     
+     
+
+
+32J. LEVERAGING FRAME LOCK/GENLOCK IN OPENGL
+
+With the GLX_NV_swap_group extension, OpenGL applications can be implemented
+to join a group of applications within a system for local swap sync, and bind
+the group to a barrier for swap sync across a Frame Lock group. A universal
+frame counter is also provided to promote synchronization across applications.
+
+
+32K. FRAME LOCK RESTRICTIONS:
+
+The following restrictions must be met for enabling Frame Lock:
+
+  1. All display devices set as client in a Frame Lock group must have the
+     same mode timings as the server (master) display device. If a House Sync
+     signal is used (instead of internal timings), all client display devices
+     must be set to have the same refresh rate as the incoming house sync
+     signal.
+
+  2. All X Screens (driving the selected client/server display devices) must
+     have the same stereo setting. See the Stereo X configuration option for
+     instructions on how to set the stereo X option.
+
+  3. In configurations with more than one display device per GPU, we recommend
+     enabling Frame Lock on all display devices on those GPUs.
+
+  4. Virtual terminal switching or mode switching will disable Frame Lock on
+     the display device. Note that the glXQueryFrameCountNV entry point
+     (provided by the GLX_NV_swap_group extension) will only provide
+     incrementing numbers while Frame Lock is enabled. Therefore, applications
+     that use glXQueryFrameCountNV to control animation will appear to stop
+     animating while Frame Lock is disabled.
+
+
+
+32L. SUPPORTED FRAME LOCK CONFIGURATIONS:
+
+The following configurations are currently supported:
+
+  1. Basic Frame Lock: Single GPU, Single X Screen, Single Display Device with
+     or without OpenGL applications that make use of Quad-Buffered Stereo
+     and/or the GLX_NV_swap_group extension.
+
+  2. Frame Lock + TwinView: Single GPU, Single X Screen, Multiple Display
+     Devices with or without OpenGL applications that make use of
+     Quad-Buffered Stereo and/or the GLX_NV_swap_group extension.
+
+  3. Frame Lock + Xinerama: 1 or more GPU(s), Multiple X Screens, Multiple
+     Display Devices with or without OpenGL applications that make use of
+     Quad-Buffered Stereo and/or the GLX_NV_swap_group extension.
+
+  4. Frame Lock + TwinView + Xinerama: 1 or more GPU(s), Multiple X Screens,
+     Multiple Display Devices with or without OpenGL applications that make
+     use of Quad-Buffered Stereo and/or the GLX_NV_swap_group extension.
+
+
+______________________________________________________________________________
+
+Chapter 33. Configuring Depth 30 Displays
+______________________________________________________________________________
+
+This driver release supports X screens with screen depths of 30 bits per pixel
+(10 bits per color component). This provides about 1 billion possible colors,
+allowing for higher color precision and smoother gradients.
+
+When displaying a depth 30 image, the color data may be dithered to lower bit
+depths, depending on the capabilities of the display device and how it is
+connected to the GPU. Some devices connected via analog VGA, DisplayPort, or
+HDMI can display the full 10 bit range of colors. Devices connected via DVI,
+as well as laptop internal panels connected via LVDS, will be dithered to 8 or
+6 bits per pixel.
+
+To work reliably, depth 30 requires pixman 0.11.6 or higher.
+
+In addition to the above software requirements, many X applications and
+toolkits do not understand depth 30 visuals as of this writing. Some programs
+may work correctly, some may work but display incorrect colors, and some may
+simply fail to run. In particular, many OpenGL applications request 8 bits of
+alpha when searching for FBConfigs. Since depth 30 visuals have only 2 bits of
+alpha, no suitable FBConfigs will be found and such applications will fail to
+start.
+
+______________________________________________________________________________
+
+Chapter 34. Offloading Graphics Display with RandR 1.4
+______________________________________________________________________________
+
+Version 1.4 of the X Resize, Rotate, and Reflect Extension (RandR 1.4 for
+short) adds a way for drivers to work together so that one graphics device can
+display images rendered by another.
+
+
+34A. SYSTEM REQUIREMENTS
+
+
+   o For displaying NVIDIA GPU desktop contents on a screen connected to
+     another graphics device, X.Org X server version 1.13 or higher.
+
+   o For displaying another graphics device's desktop contents on a screen
+     connected to an NVIDIA GPU, X.Org X server version 1.20.7 or higher. X
+     server version 1.20.6 is also supported using Appendix B.
+
+   o A Linux kernel, version 3.13 or higher, with CONFIG_DRM enabled.
+
+   o Version 1.4.0 of the xrandr command-line utility.
+
+
+
+34B. USING THE NVIDIA DRIVER AS AN RANDR 1.4 OUTPUT SOURCE OR OUTPUT SINK
+PROVIDER
+
+To use the NVIDIA driver as an RandR 1.4 output source provider, also known as
+"PRIME", the X server needs to be configured to use the NVIDIA driver for its
+primary screen and to use the "modesetting" driver for the other graphics
+device. This can be achieved by placing the following in "/etc/X11/xorg.conf":
+
+Section "ServerLayout"
+    Identifier "layout"
+    Screen 0 "nvidia"
+    Inactive "intel"
+EndSection
+
+Section "Device"
+    Identifier "nvidia"
+    Driver "nvidia"
+    BusID "<BusID for NVIDIA device here>"
+EndSection
+
+Section "Screen"
+    Identifier "nvidia"
+    Device "nvidia"
+    Option "AllowEmptyInitialConfiguration"
+EndSection
+
+Section "Device"
+    Identifier "intel"
+    Driver "modesetting"
+EndSection
+
+Section "Screen"
+    Identifier "intel"
+    Device "intel"
+EndSection
+
+
+To use the NVIDIA driver as an RandR 1.4 output sink provider, also known as
+"Reverse PRIME", the X server needs to be configured to use the "modesetting"
+driver for its primary screen and to use the NVIDIA driver for the other
+graphics device. This can be achieved by placing the following in
+"/etc/X11/xorg.conf":
+
+Section "ServerLayout"
+    Identifier "layout"
+    Screen 0 "intel"
+    Inactive "nvidia"
+    Option "AllowNVIDIAGPUScreens"
+EndSection
+
+Section "Device"
+    Identifier "intel"
+    Driver "modesetting"
+    BusID "<BusID for Intel device here>"
+EndSection
+
+Section "Screen"
+    Identifier "intel"
+    Device "intel"
+EndSection
+
+Section "Device"
+    Identifier "nvidia"
+    Driver "nvidia"
+EndSection
+
+Section "Screen"
+    Identifier "nvidia"
+    Device "nvidia"
+EndSection
+
+
+When using the NVIDIA driver as a "Reverse PRIME" RandR 1.4 output sink
+provider combined with an application being run via PRIME Render Offload, an
+optimization known as "Reverse PRIME Bypass" may be used, bypassing the
+bandwidth overhead of both PRIME Render Offload and PRIME Display Offload. In
+order for Reverse PRIME Bypass to be used, a PRIME Render Offload application
+must be unredirected, fullscreen, and visible only on a single NVIDIA-driven
+PRIME Display Offload output. Usage of Reverse PRIME Bypass is printed to the
+X log when verbose logging is enabled in the X server.
+
+If an NVIDIA Reverse PRIME output is the sole display in the system then
+special conditions apply. That configuration is supported if the NVIDIA driver
+version is 495.46 or later and the X.Org X server version is newer than
+21.1.3. Failing these conditions the NVIDIA Reverse PRIME output will not be
+synchronized to the native refresh rate of the NVIDIA graphics card in which
+case X.Org will revert the display to a default rate of 1 frame per second.
+
+Note that at the time of writing the latest X.Org X server is 21.1.3 so there
+is no official X.Org release yet where this configuration is supported. For
+maintainers of Linux distributions and others who are willing to compile the
+X.Org X server locally, please cherry-pick this Git commit to support the
+configuration:
+https://gitlab.freedesktop.org/xorg/xserver/-/commit/69774044716039fa70655b3bc6dd6a4ff4535cfd.The commit already lives in the branch where the next X.Org X server release
+after 21.1.3 will come from.
+
+See "Q. What is the format of a PCI Bus ID?" in Chapter 7 for information on
+determining the appropriate BusID string for your graphics card.
+
+The nvidia-xconfig(1) utility can be used to update the X configuration file
+for using the NVIDIA driver as an output source provider.
+
+$ nvidia-xconfig --prime
+
+See the nvidia-xconfig(1) man page for details.
+
+The X server does not automatically enable displays attached using the output
+sink in this configuration. To do that, use the "xrandr" command line tool.
+
+For NVIDIA as an output source:
+
+$ xrandr --setprovideroutputsource modesetting NVIDIA-0
+$ xrandr --auto
+
+
+For NVIDIA as an output sink:
+
+$ xrandr --setprovideroutputsource NVIDIA-G0 modesetting
+$ xrandr --auto
+
+
+This pair of commands can be added to your X session startup scripts, for
+example by putting them in "$HOME/.xinitrc" before running "startx".
+
+Use the
+
+$ xrandr --listproviders
+
+command to query the capabilities of the graphics devices. If the system
+requirements are met and the X server is configured correctly, there should be
+a provider named "NVIDIA-0" or "NVIDIA-G0" with the "Source Output" or "Sink
+Output" capability, respectively, and one named "modesetting" with the "Sink
+Output" and/or "Source Output" capabilities. If either provider is missing or
+doesn't have the expected capability, check your system configuration.
+
+
+34C. SYNCHRONIZED RANDR 1.4 OUTPUTS
+
+When running against X.Org X server with video driver ABI 23 or higher,
+synchronization is supported with compatible drivers. At the time of writing,
+synchronization is compatible with the "modesetting" driver with Intel devices
+on Linux version 4.5 or newer. If all requirements are met, synchronization
+will be used automatically.
+
+X.Org X server version 1.19 or newer is required to support synchronization.
+Without synchronization, displays are prone to "tearing". See Caveats for
+details.
+
+If synchronization is being used but is not desired, it can be disabled with:
+
+
+$ xrandr --output <output> --set "PRIME Synchronization" 0
+
+
+and re-enabled with:
+
+
+$ xrandr --output <output> --set "PRIME Synchronization" 1
+
+
+
+See Vblank syncing for information on how OpenGL applications can synchronize
+with sink-provided outputs.
+
+
+34D. CAVEATS
+
+
+   o Support for PRIME Synchronization relies on DRM KMS support. See Chapter
+     36 for more information.
+
+   o Some Intel i915 DRM driver versions, such as that included with Linux
+     4.5, have a bug where drmModeMoveCursor() and drmModePageFlip() interfere
+     with each other, resulting in only one occurring per frame. If choppy
+     performance is observed in configurations using PRIME Synchronization and
+     i915, it is suggested to add "Option "SWCursor"" to Intel's device
+     section in xorg.conf. The bug appears to be fixed as of Linux 4.6.
+
+   o When running against X.Org X server version 1.18.x or lower, there is no
+     synchronization between the images rendered by the NVIDIA GPU and the
+     output device. This means that the output device can start reading the
+     next frame of video while it is still being updated, producing a
+     graphical artifact known as "tearing". Tearing is expected due to
+     limitations in the design of the X.Org X server prior to video driver ABI
+     23.
+
+   o NVIDIA's implementation of PRIME requires support for DRM render nodes, a
+     feature first merged in Linux 3.12. However, the feature was not enabled
+     by default until Linux 3.17. To enable it on earlier supported kernels,
+     specify the "drm.rnodes=1" kernel boot parameter.
+
+   o PRIME Synchronization is compatible with xf86-video-amdgpu as an output
+     sink. xf86-video-amdgpu implements a separate interface for PRIME
+     Synchronization that the RandR layer of the X server does not recognize.
+     As a result, X will print "randr: falling back to unsynchronized pixmap
+     sharing", despite the fact that PRIME is synchronized. Additionally, the
+     "PRIME Synchronization" output property will not function to disable
+     PRIME Synchronization when set to 0.
+
+   o The NVIDIA driver only exposes the "Output Sink" capability by default on
+     X server version 1.20.7 or later, but can be used without issue on X
+     server version 1.20.6 with "Option "AllowPRIMEDisplayOffloadSink"". See
+     Appendix B for more information.
+
+   o The NVIDIA driver requires DRM KMS support to operate as an output sink
+     when the output source driver is either NVIDIA or AMDGPU. See Chapter 36
+     for more information.
+
+
+______________________________________________________________________________
+
+Chapter 35. PRIME Render Offload
+______________________________________________________________________________
+
+PRIME render offload is the ability to have an X screen rendered by one GPU,
+but choose certain applications within that X screen to be rendered on a
+different GPU. This is particularly useful in combination with dynamic power
+management to leave an NVIDIA GPU powered off except when it is needed to
+render select performance-sensitive applications.
+
+The GPU rendering the majority of the X screen is known as the "sink", and the
+GPU to which certain application rendering is "offloaded" is known as the
+"source". The render offload source produces content that is presented on the
+render offload sink. The NVIDIA driver can function as a PRIME render offload
+source, to offload rendering of GLX+OpenGL or Vulkan, presenting to an X
+screen driven by the xf86-video-modesetting X driver.
+
+
+35A. X SERVER REQUIREMENTS
+
+NVIDIA's PRIME render offload support requires X.Org xserver version 1.20.7 or
+newer.
+
+
+35B. CONFIGURE THE X SERVER
+
+On systems with both an integrated GPU and an NVIDIA discrete GPU, the X.Org X
+server version 1.20.7 and newer will automatically use NVIDIA's PRIME render
+offload support if the system BIOS is configured to boot on the iGPU and no
+other explicit configuration files are present. Note that some Linux
+distributions (such as Ubuntu) may configure the X server differently. Please
+refer to your distribution's documentation for details.
+
+If GPU screen creation was successful, the log file '/var/log/Xorg.0.log'
+should contain lines with "NVIDIA(G0)", and querying the RandR providers with
+"xrandr --listproviders" should display a provider named "NVIDIA-G0" (for
+"NVIDIA GPU screen 0"). For example:
+
+
+
+Providers: number : 2
+Provider 0: id: 0x221 cap: 0x9, Source Output, Sink Offload crtcs: 3 outputs: 6 associated providers: 0 name:modesetting
+Provider 1: id: 0x1f8 cap: 0x0 crtcs: 0 outputs: 0 associated providers: 0 name:NVIDIA-G0
+
+
+
+
+35C. CONFIGURE GRAPHICS APPLICATIONS TO RENDER USING THE GPU SCREEN
+
+To configure a graphics application to be offloaded to the NVIDIA GPU screen,
+set the environment variable "__NV_PRIME_RENDER_OFFLOAD" to "1". If the
+graphics application uses Vulkan or EGL, that should be all that is needed. If
+the graphics application uses GLX, then also set the environment variable
+"__GLX_VENDOR_LIBRARY_NAME" to "nvidia", so that GLVND loads the NVIDIA GLX
+driver.
+
+Examples:
+
+
+__NV_PRIME_RENDER_OFFLOAD=1 vkcube
+__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia glxinfo | grep
+vendor
+
+
+
+
+35D. FINER-GRAINED CONTROL OF VULKAN
+
+The "__NV_PRIME_RENDER_OFFLOAD" environment variable causes the special Vulkan
+layer "VK_LAYER_NV_optimus" to be loaded. Vulkan applications use the Vulkan
+API to enumerate the GPUs in the system and select which GPU to use; most
+Vulkan applications will use the first GPU reported by Vulkan. Newer Vulkan
+loaders can sort the GPU enumeration to put the preferred GPUs first, based on
+platform defined criteria. The "VK_LAYER_NV_optimus" layer causes the GPUs to
+be sorted such that the NVIDIA GPUs are enumerated first if the loader does
+not do its own sorting. For finer-grained control, the "VK_LAYER_NV_optimus"
+layer looks at the "__VK_LAYER_NV_optimus" environment variable. The value
+"NVIDIA_only" causes "VK_LAYER_NV_optimus" to always sort the GPUs so NVIDIA
+GPUs are enumerated first for the Vulkan application, overriding any Vulkan
+loader sorting. The value "non_NVIDIA_only" causes "VK_LAYER_NV_optimus" to
+always sort the GPUs so non-NVIDIA GPUs are enumerated first for to the Vulkan
+application, overriding any Vulkan loader sorting. Note that the
+"VK_LAYER_NV_optimus" layer affects the ordering of discrete and integrated
+GPUs but won't touch CPU devices.
+
+Examples:
+
+
+__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only vkcube
+__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=non_NVIDIA_only vkcube
+
+
+
+
+35E. FINER-GRAINED CONTROL OF OPENGL
+
+For OpenGL with either GLX or EGL, the environment variable
+"__NV_PRIME_RENDER_OFFLOAD_PROVIDER" provides finer-grained control. While
+"__NV_PRIME_RENDER_OFFLOAD=1" tells GLX or EGL to use the first NVIDIA GPU
+screen, "__NV_PRIME_RENDER_OFFLOAD_PROVIDER" can use an RandR provider name to
+pick a specific NVIDIA GPU screen, using the NVIDIA GPU screen names reported
+by "`xrandr --listproviders`".
+
+Examples:
+
+
+__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia glxgears
+__NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia
+glxgears
+__NV_PRIME_RENDER_OFFLOAD=1 eglinfo
+__NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 eglinfo
+
+
+
+
+35F. TROUBLESHOOTING
+
+After starting the X server, verify that the xf86-video-modesetting X driver
+is using "glamoregl". The log file '/var/log/Xorg.0.log' should contain
+something like this:
+
+
+
+[1272173.618] (II) Loading sub module "glamoregl"
+[1272173.618] (II) LoadModule: "glamoregl"
+[1272173.618] (II) Loading /usr/lib/xorg/modules/libglamoregl.so
+[1272173.622] (II) Module glamoregl: vendor="X.Org Foundation"
+[1272173.622]   compiled for 1.20.4, module version = 1.0.1
+[1272173.622]   ABI class: X.Org ANSI C Emulation, version 0.4
+[1272173.638] (II) modeset(0): glamor X acceleration enabled on Mesa DRI Intel(R) HD Graphics 630 (Kaby Lake GT2)
+[1272173.638] (II) modeset(0): glamor initialized
+
+
+
+If glamoregl could not be loaded, the X log may report something like:
+
+
+
+[1271802.673] (II) Loading sub module "glamoregl"
+[1271802.673] (II) LoadModule: "glamoregl"
+[1271802.673] (WW) Warning, couldn't open module glamoregl
+[1271802.673] (EE) modeset: Failed to load module "glamoregl" (module does not exist, 0)
+[1271802.673] (EE) modeset(0): Failed to load glamor module.
+
+
+
+in which case, consult your distribution's documentation for how to
+(re-)install the package containing glamoregl.
+
+If the server didn't create a GPU screen automatically, ensure that the
+nvidia_drm kernel module is loaded. This should normally happen by default,
+but you can confirm by running "lsmod | grep nvidia_drm" to see if the kernel
+module is loaded. Run "modprobe nvidia_drm" to load it.
+
+If automatic configuration does not work, it may be necessary to explicitly
+configure the iGPU and dGPU devices in xorg.conf:
+
+
+
+    Section "ServerLayout"
+      Identifier "layout"
+      Screen 0 "iGPU"
+    EndSection
+
+    Section "Device"
+      Identifier "iGPU"
+      Driver "modesetting"
+    EndSection
+
+    Section "Screen"
+      Identifier "iGPU"
+      Device "iGPU"
+    EndSection
+
+    Section "Device"
+      Identifier "dGPU"
+      Driver "nvidia"
+    EndSection
+
+
+
+______________________________________________________________________________
+
+Chapter 36. Direct Rendering Manager Kernel Modesetting (DRM KMS)
+______________________________________________________________________________
+
+The NVIDIA GPU driver package provides a kernel module, 'nvidia-drm.ko', which
+registers a DRM driver with the DRM subsystem of the Linux kernel. The
+capabilities advertised by this DRM driver depend on the Linux kernel version
+and configuration:
+
+
+   o PRIME: This is needed to support graphics display offload in RandR 1.4.
+     Linux kernel version 3.13 or higher is required, with CONFIG_DRM enabled.
+
+   o Atomic Modeset: This is used for display of non-X11 based desktop
+     environments, such as Wayland and Mir. Linux kernel version 4.1 or higher
+     is required, with CONFIG_DRM and CONFIG_DRM_KMS_HELPER enabled.
+
+
+NVIDIA's DRM KMS support is still considered experimental. It is disabled by
+default, but can be enabled on suitable kernels with the 'modeset' kernel
+module parameter. E.g.,
+
+modprobe -r nvidia_drm ; modprobe nvidia_drm modeset=1
+
+
+Applications can present through NVIDIA's DRM KMS implementation using any of
+the following:
+
+
+   o The DRM KMS "dumb buffer" mechanism to create and map CPU-accessible
+     buffers: DRM_IOCTL_MODE_CREATE_DUMB, DRM_IOCTL_MODE_MAP_DUMB, and
+     DRM_IOCTL_MODE_DESTROY_DUMB.
+
+   o Using the EGL_EXT_device_drm, EGL_EXT_output_drm, and
+     EGL_EXT_stream_consumer_egloutput EGL extensions to associate EGLStream
+     producers with specific DRM KMS planes.
+
+
+
+36A. KNOWN ISSUES
+
+
+   o The NVIDIA DRM KMS implementation is currently incompatible with SLI
+     Mosaic. The X server will fail to initialize SLI Mosaic if DRM KMS is
+     enabled.
+
+   o The NVIDIA DRM KMS implementation does not yet register an overlay plane:
+     only primary and cursor planes are currently provided.
+
+   o Buffer allocation and submission to DRM KMS using gbm is not currently
+     supported.
+
+
+______________________________________________________________________________
+
+Chapter 37. Configuring External and Removable GPUs
+______________________________________________________________________________
+
+This driver release supports the use of external GPUs, or eGPUs, such as those
+commonly connected via Thunderbolt. However, system stability when an eGPU is
+unplugged while in use (also known as "hot-unplug") is not guaranteed. This
+includes situations where the eGPU is being used to display the X11 desktop.
+
+External GPUs are often used in short-running compute scenarios, which better
+tolerate the eGPU being hot-unplugged. In such cases, a different GPU may be
+used to display the X11 desktop.
+
+To prevent system instability from hot-unplugging an eGPU while being used to
+display the X11 desktop, the NVIDIA X driver does not configure X screens on
+external GPUs by default.
+
+This behavior may also apply to GPUs attached to internal PCIe slots with
+hot-unplug support, such as in some enterprise systems.
+
+To override this behavior in xorg.conf, see Appendix B. Then, external GPUs
+may be configured with X as one would any other secondary GPU, by specifying
+the BusID in the Device section in xorg.conf. See the xorg.conf man page for
+more information on the BusID option, and "Q. What is the format of a PCI Bus
+ID?" in Chapter 7 for information on how to determine the BusID.
+
+______________________________________________________________________________
+
+Chapter 38. NGX
+______________________________________________________________________________
+
+NGX is a framework allowing for easy and consistent integration of Deep
+Learning features into applications. There are three components shipped with
+the driver that comprise NGX:
+
+   o NGX Core: The interface used by applications to communicate with NGX
+     features.
+
+   o NGX Updater: A program optionally launched by NGX Core which downloads
+     updated versions of NGX features.
+
+   o NGX Core for Proton: A copy of NGX Core built as a DLL for use with
+     Proton.
+
+
+
+38A. CONFIGURING THE NGX UPDATER:
+
+NGX Configuration file search order:
+
+  1. Path supplied via "__NGX_CONF_FILE" environment variable. Note: if the
+     application's effective UID/GID does not match its actual UID/GID (if the
+     SETUID sticky bit is set), the location specified here will not be
+     searched.
+
+  2.  "${XDG_CONFIG_HOME}/nvidia-ngx-conf.json". Note: if the application's
+     effective UID/GID does not match its actual UID/GID (if the SETUID sticky
+     bit is set), the location specified here will not be searched.
+
+  3.  "/usr/share/nvidia/nvidia-ngx-conf.json"
+
+
+JSON Config Options:
+
+    Key                      Description              Example
+    ---------------------    ---------------------    ---------------------
+    "file_format_version"    The version of the       "1.0.0"
+                             config file in the   
+                             following format     
+                             "major.minor.patch". 
+                             Values should be of  
+                             type "string".       
+    "ngx_models_path"        The absolute path to     "/usr/share/nvidia/ngx"
+   
+                             the NGX models       
+                             directory. The NGX   
+                             Updater will save    
+                             files here to later  
+                             be read by           
+                             applications which   
+                             make use of NGX      
+                             functionality. Values
+                             should be of type    
+                             "string".            
+    "allow_ngx_updater"      A boolean value which    "false"
+                             enables the NGX      
+                             Updater functionality
+                             on a system,         
+                             defaulting to false  
+                             if non-existent.     
+                             Values should be of  
+                             type "boolean".      
+
+
+For systems that have multiple user accounts who may run applications which
+make use of NGX, it may be preferable to choose a ngx_models_path which is in
+a shared directory. If a shared directory is chosen it is important that the
+NGX Updater has permissions to write into it, this can be attained either
+through use of setuid/setgid sticky bit, or by altering the directories
+permissions accordingly.
+
+
+38B. CONFIGURING THE NGX SIGNED LOAD MECHANISM:
+
+The NGX Core component of the driver performs a signature check when loading
+NGX features. This check can be disabled by setting the
+"__NV_SIGNED_LOAD_CHECK" environment variable to a value of "none". Values
+other than "none" will be ignored. By default this check is enabled to prevent
+loading of potentially malicious non-NVIDIA provided NGX features. This check
+should only be disabled when there is confidence that only authentic NGX
+features are available on the current system.
+
+
+38C. CONFIGURING THE NGX UPDATER FOR WINE/PROTON:
+
+The NGX Updater for Wine/Proton can be enabled by setting the
+"PROTON_ENABLE_NGX_UPDATER" environment variable to a value of "1". Values
+other than "1" will be ignored.
+
+______________________________________________________________________________
+
+Chapter 39. OpenGL, Vulkan and VDPAU on Xwayland
+______________________________________________________________________________
+
+
+39A. OVERVIEW
+
+Xwayland is an X11 server implemented as a Wayland client, allowing one to run
+X11 applications on a Wayland desktop in a relatively seamless fashion. The
+NVIDIA driver is able to facilitate accelerated 3D rendering for such
+applications, but there are some particular considerations compared to a
+typical X11 configuration which are outlined in this chapter.
+
+Note that some NVIDIA driver features may not be available, see Appendix L for
+details.
+
+
+39B. REQUIREMENTS
+
+The following are necessary to enable accelerated rendering on Xwayland with
+the NVIDIA driver:
+
+   o DRM KMS must be enabled. See Chapter 36 for details.
+
+   o The installed copy of Xwayland should be a build from the master branch
+     of https://gitlab.freedesktop.org/xorg/xserver at least as recent as
+     commit c468d34c. Note that if this requirement is not satisfied, the
+     NVIDIA GPU can still be used for rendering, however it will fall back to
+     a suboptimal path for presentation resulting in degraded performance.
+
+   o libxcb version 1.13 or later must be present.
+
+   o egl-wayland version 1.1.7 or later must be present (if installed
+     separately from the the NVIDIA driver).
+
+   o If using the GNOME desktop environment, kms-modifiers must be enabled
+     through gsettings. This can be done with the following command `gsettings
+     set org.gnome.mutter experimental-features [\"kms-modifiers\"]`
+
+
+
+39C. REPORTING ISSUES
+
+The Wayland desktop relies on the close interaction of several components to
+function correctly. Because of this, it can be tricky to determine exactly
+which one is responsible for a suspected bug.
+
+   o If the issue only reproduces on NVIDIA hardware with the proprietary
+     driver, see Chapter 45 for links to the appropriate channels to report
+     the bug to us.
+
+   o If the issue only reproduces with a particular compositor, it can be
+     reported on that project's bug tracker, for example:
+     
+        o https://gitlab.gnome.org/GNOME/mutter/-/issues/ for GNOME
+     
+        o https://bugs.kde.org/ for KDE
+     
+     
+   o If the issue is specific to X11 applications running on Xwayland, it can
+     be reported on the X.org xserver issue tracker
+     https://gitlab.freedesktop.org/xorg/xserver/-/issues.
+
+
+______________________________________________________________________________
+
+Chapter 40. GBM and GBM-based Wayland Compositors
+______________________________________________________________________________
+
+
+40A. OVERVIEW
+
+GBM is a memory allocation API developed as a component of the Mesa project.
+Most Wayland compositors use the GBM API to initialize an EGLDisplay object
+directly on a GPU, and to allocate the EGLSurface representing the desktop.
+The NVIDIA driver includes a GBM backend enabling the use of such software on
+NVIDIA GPUs. A GBM EGL external platform library is also included to enable
+the use of GBM objects in EGL.
+
+
+40B. REQUIREMENTS
+
+The following are necessary to enable use of the NVIDIA driver's GBM backend
+and its EGL and related Wayland client support:
+
+   o DRM KMS must be enabled. See Chapter 36 for details.
+
+   o libgbm.so.1 from Mesa version 21.2
+     (https://gitlab.freedesktop.org/mesa/mesa).
+
+   o egl-wayland version 1.1.8 or later must be present (if installed
+     separately from the the NVIDIA driver). To support applications that use
+     the wl_drm Wayland protocol to select a GPU to render on, such as
+     Xwayland, version 1.1.9 or later must be present.
+
+
+
+40C. XWAYLAND AND GBM
+
+Xwayland uses the GLAMOR backend to accelerate X application rendering using
+EGL. While not required for basic functionality, GLAMOR acceleration is
+required for good performance when running accelerated Vulkan or OpenGL X11
+applications. The GLAMOR integration code in Xwayland has paths to use either
+EGLStreams or GBM to allocate surfaces for use with accelerated rendering. To
+use the GBM path with the NVIDIA driver's GBM backend and GBM EGL external
+platform library, the installed copy of Xwayland should be a build from the
+master branch of https://gitlab.freedesktop.org/xorg/xserver at least as
+recent as commit 5daf42b4. Xwayland versions 21.1.3 and above satisfy this
+requirement.
+
+See Chapter 39 for more details on Xwayland support in the NVIDIA driver.
+
+______________________________________________________________________________
+
+Chapter 41. Addressing Capabilities
+______________________________________________________________________________
+
+Many PCIe devices have limitations in what memory addresses they can access
+for DMA purposes (based on the number of lines dedicated to memory
+addressing). This can cause problems if the host system has memory mapped to
+addresses beyond what the PCIe device can support. If a PCIe device is
+allocated memory at an address beyond what the device can support, the address
+may be truncated and the device will access the incorrect memory location.
+
+Note that since certain system resources, such as ACPI tables and PCI I/O
+regions, are mapped to address ranges below the 4 GB boundary, the RAM
+installed in x86/x86-64 systems cannot necessarily be mapped contiguously.
+Similarly, system firmware is free to map the available RAM at its or its
+users' discretion. As a result, it is common for systems to have RAM mapped
+outside of the address range [0, RAM_SIZE], where RAM_SIZE is the amount of
+RAM installed in the system.
+
+For example, it is common for a system with 512 GB of RAM installed to have
+physical addresses up to ~513 GB. In this scenario, a GPU with an addressing
+capability of 512 GB would force the driver to fall back to the 4 GB DMA zone
+for this GPU.
+
+The NVIDIA Linux driver attempts to identify the scenario where the host
+system has more memory than a given GPU can address. If this scenario is
+detected, the NVIDIA driver will drop back to allocations from the 4 GB DMA
+zone to avoid address truncation. This means that the driver will use the
+__GFP_DMA32 flag and limit itself to memory addresses below the 4 GB boundary.
+This is done on a per-GPU basis, so limiting one GPU will not limit other GPUs
+in the system.
+
+The addressing capabilities of an NVIDIA GPU can be queried at runtime via the
+procfs interface:
+
+
+
+% cat /proc/driver/nvidia/gpus/domain:bus:device.function/information
+...
+DMA Size:        40 bits
+DMA Mask:        0xffffffffff
+...
+
+
+
+The memory mapping of RAM on a given system can be seen in the BIOS-e820 table
+printed out by the kernel and available via `dmesg`. Note that the 'usable'
+ranges are actual RAM:
+
+
+
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000]  BIOS-e820: 0000000000000000 - 000000000009f000 (usable)
+[    0.000000]  BIOS-e820: 000000000009f000 - 00000000000a0000 (reserved)
+[    0.000000]  BIOS-e820: 0000000000100000 - 000000003fe5a800 (usable)
+[    0.000000]  BIOS-e820: 000000003fe5a800 - 0000000040000000 (reserved)
+
+
+
+
+41A. SOLUTIONS
+
+There are multiple potential ways to solve a discrepancy between your system
+configuration and a GPU's addressing capabilities.
+
+
+  1. Select a GPU with addressing capabilities that match your target
+     configuration.
+
+     The best way to achieve optimal system and GPU performance is to make
+     sure that the capabilities of the two are in alignment. This is
+     especially important with multiple GPUs in the system, as the GPUs may
+     have different addressing capabilities. In this multiple GPU scenario,
+     other solutions could needlessly impact the GPU that has larger
+     addressing capabilities.
+
+  2. Configure the system's IOMMU to the GPU's addressing capabilities.
+
+     This is a solution targeted at developers and system builders. The use of
+     IOMMU may be an option, depending on system configuration and IOMMU
+     capabilities. Please contact NVIDIA to discuss solutions for specific
+     configurations.
+
+  3. Limit the amount of memory seen by the Operating System to match your
+     GPU's addressing capabilities with kernel configuration.
+
+     This is best used in the scenario where RAM is mapped to addresses that
+     slightly exceeds a GPU's capabilities and other solutions are either not
+     achievable or more intrusive. A good example is the 512 GB RAM scenario
+     outlined above with a GPU capable of addressing 512 GB. The kernel
+     parameter can be used to ignore the RAM mapped above 512 GB.
+
+     This can be achieved in Linux by use of the "mem" kernel parameter. See
+     the kernel-parameters.txt documentation for more details on this
+     parameter.
+
+     This solution does affect the entire system and will limit how much
+     memory the OS and other devices can use. In scenarios where there is a
+     large discrepancy between the system configuration and GPU capabilities,
+     this is not a desirable solution.
+
+  4. Remove RAM from the system to align with the GPU's addressing
+     capabilities.
+
+     This is the most heavy-handed, but may ultimately be the most reliable
+     solution.
+
+
+______________________________________________________________________________
+
+Chapter 42. GPUDirect RDMA Peer Memory Client
+______________________________________________________________________________
+
+
+42A. BACKGROUND
+
+GPUDirect RDMA (Remote Direct Memory Access) is a technology that enables a
+direct path for data exchange between the GPU and a third-party peer device
+using standard features of PCI Express.
+
+The NVIDIA GPU driver package provides a kernel module, 'nvidia-peermem.ko',
+which provides Mellanox InfiniBand based HCAs (Host Channel Adapters) direct
+peer-to-peer read and write access to the NVIDIA GPU's video memory. It allows
+GPUDirect RDMA-based applications to use GPU computing power with the RDMA
+interconnect without needing to copy data to host memory.
+
+This capability is supported with Mellanox ConnectX-3 VPI or newer adapters.
+It works with both InfiniBand and RoCE (RDMA over Converged Ethernet)
+technologies.
+
+Mellanox OFED (Open Fabrics Enterprise Distribution) or MOFED, introduces an
+API between the InfiniBand Core and peer memory clients such as NVIDIA GPUs,
+called PeerDirect, see
+https://community.mellanox.com/s/article/howto-implement-peerdirect-client-using-mlnx-ofed.
+
+The 'nvidia-peermem.ko' module registers the NVIDIA GPU with the InfiniBand
+subsystem by using peer-to-peer APIs provided by the NVIDIA GPU driver.
+
+This module, originally maintained by Mellanox on GitHub, is now included with
+the NVIDIA Linux GPU driver. The original GitHub project at
+https://github.com/Mellanox/nv_peer_memory should be considered deprecated and
+only critical bugs will be addressed for existing installations.
+
+
+42B. USAGE
+
+The kernel must have the required support for RDMA peer memory either through
+additional patches to the kernel or via Mellanox OFED package (MOFED) as a
+prerequisite for loading and using 'nvidia-peermem.ko'.
+
+It is possible that the 'nv_peer_mem' module from the GitHub project may be
+installed and loaded on the system. Installation of 'nvidia-peermem.ko' will
+not affect the functionality of the existing 'nv_peer_mem' module. But, to
+load and use 'nvidia-peermem.ko', users must disable the 'nv_peer_mem'
+service. Additionally, it is encouraged to uninstall the 'nv_peer_mem' package
+to avoid any conflict with 'nvidia-peermem.ko' since only one module can be
+loaded at any time.
+
+Stop the 'nv_peer_mem' service:
+
+    # service nv_peer_mem stop
+
+
+Check if 'nv_peer_mem.ko' is still loaded after stopping the service:
+
+    # lsmod | grep nv_peer_mem
+
+If 'nv_peer_mem.ko' is still loaded, unload it with:
+
+    # rmmod nv_peer_mem
+
+
+Uninstall 'nv_peer_mem' package:
+
+For DEB based OS:
+
+    # dpkg -P nvidia-peer-memory
+
+
+
+    # dpkg -P nvidia-peer-memory-dkms
+
+For RPM based OS:
+
+    # rpm -e nvidia_peer_memory
+
+
+After ensuring kernel support and installing the GPU driver,
+'nvidia-peermem.ko' can be loaded with the following command with root
+privileges in a terminal window:
+
+    # modprobe nvidia-peermem
+
+Note: If the NVIDIA GPU driver is installed before MOFED, the GPU driver must
+be uninstalled and installed again to make sure 'nvidia-peermem.ko' is
+compiled with the RDMA APIs that are provided by MOFED.
+
+
+42C. MODULE PARAMETERS
+ "peerdirect_support": this parameter takes the following integer values:
+
+   o 0, which is the default and is appropriate for a kernel that has the
+     PeerDirect APIs roughly corresponding to MOFED 5.1.
+
+   o 1, which is required in combination with the legacy PeerDirect APIs, as
+     currently shipping in MOFED 5.0 and older releases, notably in MOFED LTS.
+
+
+As a reference, in the legacy PeerDirect APIs, the 'peer_memory_client'
+structure declared in 'peer_mem.h' has the two extra function pointers shown
+below:
+
+
+  void* (*get_context_private_data)(u64 peer_id);
+  void  (*put_context_private_data)(void *context);
+
+
+Note that MOFED LTS as well as MOFED 5.0 and previous releases ship with
+legacy PeerDirect APIs. So for example, when using MOFED LTS, GPUDirect RDMA
+support for the Mellanox HCAs will not work correctly unless
+"peerdirect_support" is set to one.
+
+Instead for MOFED 5.1 or newer, the default value of zero is appropriate, so
+no special actions are needed.
+
+
+42D. KNOWN ISSUES
+
+
+   o Currently, there is no service to automatically load 'nvidia-peermem.ko'.
+     Users need to load the module manually.
+
+   o When loading 'nvidia-peermem.ko' on a kernel with legacy PeerDirect APIs,
+     the module parameter "peerdirect_support" has to be set to one.
+
+   o The "PeerDirect" APIs shipping in MOFED releases 5.1 and later are
+     affected by a lock inversion bug which may lead to a kernel-side
+     deadlock. This is tracked by the NVIDIA-internal reference number
+     "2696789". PeerDirect APIs in newer MOFED releases belonging to some
+     branches, like "5.3-1.0.0.1.43", offer an opt-in feature to mitigate that
+     problem. Starting from this release the 'nvidia-peermem.ko' kernel module
+     explicitly enables it, unless "peerdirect_support" is set to one.
+
+
+______________________________________________________________________________
+
+Chapter 43. GSP Firmware
+______________________________________________________________________________
+
+Some GPUs include a GPU System Processor (GSP) which can be used to offload
+GPU initialization and management tasks. This processor is driven by firmware
+files distributed with the driver. The GSP firmware is used by default on GPUs
+which support it.
+
+Offloading tasks which were traditionally performed by the driver on the CPU
+can improve performance due to lower latency access to GPU hardware internals.
+
+Firmware files 'gsp_*.bin' are installed in
+'/lib/firmware/nvidia/565.77/'. Each GSP firmware file is named after a
+GPU architecture (for example, 'gsp_tu10x.bin' is named after Turing) and
+supports GPUs from one or more architectures.
+
+
+43A. QUERY MODE
+
+The nvidia-smi utility can be used to query the current use of GSP firmware.
+It will display a valid version if GSP firmware is enabled, or "N/A" if
+disabled:
+
+
+    $ nvidia-smi -q
+    ...
+       GSP Firmware Version                  : 565.77
+    ...
+
+
+This information is also present in the per-GPU information file in the
+'/proc' file system.
+
+    $ cat /proc/driver/nvidia/gpus/domain:bus:device.function/information
+    ...
+       GSP Firmware:    565.77
+
+
+
+43B. DISABLING GSP MODE
+
+The driver can be forced to disable use of GSP firmware by setting the kernel
+module parameter NVreg_EnableGpuFirmware=0.
+
+
+43C. ENABLING GSP MODE
+
+The GSP firmware will be used by default for all Turing and later GPUs. The
+driver can be explicitly configured to use the GSP firmware by setting the
+kernel module parameter NVreg_EnableGpuFirmware=1.
+
+______________________________________________________________________________
+
+Chapter 44. Open Linux Kernel Modules
+______________________________________________________________________________
+
+
+44A. INTRODUCTION
+
+The NVIDIA Linux GPU Driver contains several kernel modules: nvidia.ko,
+nvidia-modeset.ko, nvidia-uvm.ko, nvidia-drm.ko, and nvidia-peermem.ko.
+
+Two "flavors" of these kernel modules are provided:
+
+
+   o Open, i.e. source-published, kernel modules that are dual licensed
+     MIT/GPLv2. With every driver release, the source code to the open kernel
+     modules is published on https://github.com/NVIDIA/open-gpu-kernel-modules
+     and a tarball is provided on https://download.nvidia.com/XFree86/.
+
+   o Proprietary. This is the flavor that NVIDIA has historically shipped.
+
+
+We recommend the use of open kernel modules on all GPUs that support it.
+
+Though the kernel modules in the two flavors are different, they are based on
+the same underlying source code. The two flavors are mutually exclusive: they
+cannot be used within the kernel at the same time, and they should not be
+installed on the filesystem at the same time.
+
+The user space components of the NVIDIA Linux GPU driver are identical and
+behave in the same way, regardless of which flavor of kernel module is used.
+
+
+44B. SUPPORTED FEATURES
+
+The proprietary flavor supports the GPU architectures Maxwell, Pascal, Volta,
+Turing, and later GPUs until Blackwell. Blackwell and later are only supported
+by the open kernel modules.
+
+The open flavor of kernel modules supports Turing and later GPUs. The open
+kernel modules cannot support GPUs before Turing, because the open kernel
+modules depend on the GPU System Processor (GSP) first introduced in Turing.
+
+The following features will only work with the open kernel modules flavor of
+the driver:
+
+
+   o NVIDIA Confidential Computing
+
+   o Magnum IO GPUDirect Storage (GDS)
+
+   o Heterogeneous Memory Management (HMM)
+
+   o CPU affinity for GPU fault handlers
+
+   o DMABUF support for CUDA allocations
+
+
+
+44C. KNOWN ISSUES
+
+The following are some known limitations of the open kernel modules versus the
+proprietary kernel modules with GSP firmware mode disabled:
+
+
+   o GPU initialization is slower. One possible mitigation is to use
+     nvidia-persistenced to initialize the GPU(s) in advance, before running
+     applications that use the GPU.
+
+   o Enter and exit latencies for power-saving modes like S3, S4 and Run Time
+     D3 (RTD3) can be longer due to additional GSP state being restored.
+
+   o GPU power consumption can be marginally impacted in some scenarios.
+
+   o Run Time D3 (RTD3) is only supported on Ampere and above GPUs.
+
+
+
+44D. INSTALLATION
+
+Because the two flavors of kernel modules are mutually exclusive, one or the
+other must be chosen at install time. By default, installation will choose
+which flavor of kernel modules to install, based on the GPUs detected in the
+system. If a pre-Turing GPU is detected, installation will default to the
+proprietary flavor of kernel modules. Otherwise, installation will default to
+the open flavor of kernel modules.
+
+This default can be overridden with the "--kernel-module-type" .run file
+option, or its short form "-M". Use "-M=proprietary" to force installation of
+the proprietary flavor of kernel modules, or "-M=open" to force installation
+of the open flavor of kernel modules.
+
+E.g.,
+
+
+    sh ./NVIDIA-Linux-[...].run -m=kernel-open
+
+
+
+As a convenience, the open kernel modules distributed in the .run file are
+pre-compiled.
+
+Advanced users, who want to instead build the open kernel modules from source,
+should do the following:
+
+
+   o Uninstall any existing driver with `nvidia-uninstall`.
+
+   o Install from the .run file with "--no-kernel-modules" option, to install
+     everything except the kernel modules.
+
+   o Fetch, build, and install the open kernel module source from
+     https://github.com/NVIDIA/open-gpu-kernel-modules. See
+     https://github.com/NVIDIA/open-gpu-kernel-modules/blob/main/README.md for
+     details on building.
+
+
+Note that you must use the same version of the .run file and the open kernel
+module source from https://github.com/NVIDIA/open-gpu-kernel-modules
+
+You can determine which flavor of kernel modules is installed using either
+`modinfo` or looking at /proc/driver/nvidia/version.
+
+E.g., the proprietary flavor will report:
+
+
+    # modinfo nvidia | grep license
+    license:        NVIDIA
+
+    # cat /proc/driver/nvidia/version
+    NVRM version: NVIDIA UNIX x86_64 Kernel Module  [...]
+
+
+The open flavor will report:
+
+
+    # modinfo nvidia | grep license
+    license:        Dual MIT/GPL
+
+    # cat /proc/driver/nvidia/version
+    NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  [...]
+
+
+
+______________________________________________________________________________
+
+Chapter 45. NVIDIA Contact Info and Additional Resources
+______________________________________________________________________________
+
+
+45A. GENERAL SUPPORT
+
+There is an NVIDIA Linux Driver web forum. You can access it by going to
+http://forums.developer.nvidia.com and following the "Linux" link in the "GPU
+Unix Graphics" section. This is the preferable tool for seeking help; users
+can post questions, answer other users' questions, and search the archives of
+previous postings.
+
+If all else fails, you can contact NVIDIA for support at:
+linux-bugs@nvidia.com. But please, only send email to this address after you
+have explored the Chapter 7 and Chapter 8 chapters of this document, and asked
+for help on the forums.developer.nvidia.com web forum. When emailing
+linux-bugs@nvidia.com, please include the 'nvidia-bug-report.log.gz' file
+generated by the 'nvidia-bug-report.sh' script (which is installed as part of
+driver installation), along with a detailed description of your problem.
+
+
+45B. SECURITY ISSUES
+
+To report a potential security vulnerability in any NVIDIA product, please use
+either:
+
+   o this web form:
+     https://www.nvidia.com/object/submit-security-vulnerability.html, or
+
+   o send email to: psirt@nvidia.com
+
+
+If reporting a potential vulnerability via email, please encrypt it using
+NVIDIA's public PGP key (see https://www.nvidia.com/en-us/security/pgp-key/)
+and include the following information:
+
+   o Product/Driver name and version/branch that contains the vulnerability
+
+   o Type of vulnerability (code execution, denial of service, buffer
+     overflow, etc.)
+
+   o Instructions to reproduce the vulnerability
+
+   o Proof-of-concept or exploit code
+
+   o Potential impact of the vulnerability, including how an attacker could
+     exploit the vulnerability
+
+
+
+45C. ADDITIONAL RESOURCES
+
+
+Linux OpenGL ABI
+
+     http://www.opengl.org/registry/ABI/
+
+The X.Org Project
+
+     https://www.x.org/
+
+XFree86 Video Timings HOWTO
+
+     http://www.tldp.org/HOWTO/XFree86-Video-Timings-HOWTO/index.html
+
+The X.Org Foundation
+
+     http://www.x.org/
+
+OpenGL
+
+     http://www.opengl.org/
+
+
+______________________________________________________________________________
+
+Chapter 46. Acknowledgements
+______________________________________________________________________________
+
+
+loki_update
+
+    'nvidia-installer' was inspired by the 'loki_update' tool:
+    http://icculus.org/loki_setup/
+
+makeself
+
+    The self-extracting archive (also known as the '.run' file) is generated
+    using 'makeself.sh': http://www.megastep.org/makeself/
+
+    The version of makeself.sh used to create the .run is bundled within the
+    .run file, and can retrieved by extracting the .run file's contents, e.g.:
+    
+    
+    $ sh NVIDIA-Linux-x86_64-565.77.run --extract-only
+    $ ls -l NVIDIA-Linux-x86_64-565.77/makeself.sh
+    
+    
+    
+LLVM
+
+    Portions of the NVIDIA OpenCL implementation contain components licensed
+    from third parties under the following terms:
+
+    Clang & LLVM:
+    Copyright (c) 2003-2008 University of Illinois at Urbana-Champaign.
+    All rights reserved.
+
+    Portions of LLVM's System library:
+    Copyright (C) 2004 eXtensible Systems, Inc.
+
+    Developed by:
+    LLVM Team
+    University of Illinois at Urbana-Champaign
+     http://llvm.org
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal with the Software without restriction, including without
+    limitation the rights to use, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell copies of the Software, and to permit persons to
+    whom the Software is furnished to do so, subject to the following
+    conditions:
+
+
+   o Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimers.
+
+   o Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimers in the
+     documentation and/or other materials provided with the distribution.
+
+   o Neither the names of the LLVM Team, University of Illinois at
+     Urbana-Champaign, nor the names of its contributors may be used to
+     endorse or promote products derived from this Software without specific
+     prior written permission.
+
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+    OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+    OTHER DEALINGS WITH THE SOFTWARE.
+
+xz-embedded
+
+    The self-installing .run package is compressed using xz, and includes a
+    decompressor built from the xz-embedded project, available at
+    http://tukaani.org/xz/embedded.html.
+
+jansson
+
+    nvidia-settings uses jansson for parsing configuration files, available at
+    http://www.digip.org/jansson/.
+
+    This library carries the following copyright notice:
+
+    Copyright (c) 2009-2012 Petri Lehtinen <petri@digip.org>
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+lz4
+
+    The NVIDIA GPU driver uses the lz4 compression algorithm as implemented by
+    the lz4 library, available at https://code.google.com/p/lz4/.
+
+    This library carries the following copyright notice:
+
+    LZ4 - Fast LZ compression algorithm
+    Copyright (C) 2011-2013, Yann Collet.
+    BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+
+   o Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+   o Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    You can contact the author at :
+    
+       o LZ4 source repository : http://code.google.com/p/lz4/
+    
+       o LZ4 public forum : https://groups.google.com/forum/#!forum/lz4c
+    
+    
+libtirpc
+
+    The libnvidia-ml (NVML) and nvidia-persistenced components rely on
+    libtirpc for communication, available at
+    https://sourceforge.net/projects/libtirpc/.
+
+    This library carries the following copyright notice:
+
+    Copyright (c) Copyright (c) Bull S.A. 2005 All Rights Reserved.
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+    
+    
+       o Redistributions of source code must retain the above copyright
+         notice, this list of conditions and the following disclaimer.
+    
+       o Redistributions in binary form must reproduce the above copyright
+         notice, this list of conditions and the following disclaimer in the
+         documentation and/or other materials provided with the distribution.
+    
+       o The name of the author may not be used to endorse or promote products
+         derived from this software without specific prior written permission.
+    
+    
+    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN
+    NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+OpenSSL
+
+    Portions of the NVIDIA NGX implementation contain components licensed from
+    OpenSSL under the following terms:
+
+    Apache License Version 2.0, January 2004 http://www.apache.org/licenses/
+
+    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+    1. Definitions.
+
+    "License" shall mean the terms and conditions for use, reproduction, and
+    distribution as defined by Sections 1 through 9 of this document.
+
+    "Licensor" shall mean the copyright owner or entity authorized by the
+    copyright owner that is granting the License.
+
+    "Legal Entity" shall mean the union of the acting entity and all other
+    entities that control, are controlled by, or are under common control with
+    that entity. For the purposes of this definition, "control" means (i) the
+    power, direct or indirect, to cause the direction or management of such
+    entity, whether by contract or otherwise, or (ii) ownership of fifty
+    percent (50%) or more of the outstanding shares, or (iii) beneficial
+    ownership of such entity.
+
+    "You" (or "Your") shall mean an individual or Legal Entity exercising
+    permissions granted by this License.
+
+    "Source" form shall mean the preferred form for making modifications,
+    including but not limited to software source code, documentation source,
+    and configuration files.
+
+    "Object" form shall mean any form resulting from mechanical transformation
+    or translation of a Source form, including but not limited to compiled
+    object code, generated documentation, and conversions to other media
+    types.
+
+    "Work" shall mean the work of authorship, whether in Source or Object
+    form, made available under the License, as indicated by a copyright notice
+    that is included in or attached to the work (an example is provided in the
+    Appendix below).
+
+    "Derivative Works" shall mean any work, whether in Source or Object form,
+    that is based on (or derived from) the Work and for which the editorial
+    revisions, annotations, elaborations, or other modifications represent, as
+    a whole, an original work of authorship. For the purposes of this License,
+    Derivative Works shall not include works that remain separable from, or
+    merely link (or bind by name) to the interfaces of, the Work and
+    Derivative Works thereof.
+
+    "Contribution" shall mean any work of authorship, including the original
+    version of the Work and any modifications or additions to that Work or
+    Derivative Works thereof, that is intentionally submitted to Licensor for
+    inclusion in the Work by the copyright owner or by an individual or Legal
+    Entity authorized to submit on behalf of the copyright owner. For the
+    purposes of this definition, "submitted" means any form of electronic,
+    verbal, or written communication sent to the Licensor or its
+    representatives, including but not limited to communication on electronic
+    mailing lists, source code control systems, and issue tracking systems
+    that are managed by, or on behalf of, the Licensor for the purpose of
+    discussing and improving the Work, but excluding communication that is
+    conspicuously marked or otherwise designated in writing by the copyright
+    owner as "Not a Contribution."
+
+    "Contributor" shall mean Licensor and any individual or Legal Entity on
+    behalf of whom a Contribution has been received by Licensor and
+    subsequently incorporated within the Work.
+
+    2. Grant of Copyright License. Subject to the terms and conditions of this
+    License, each Contributor hereby grants to You a perpetual, worldwide,
+    non-exclusive, no-charge, royalty-free, irrevocable copyright license to
+    reproduce, prepare Derivative Works of, publicly display, publicly
+    perform, sublicense, and distribute the Work and such Derivative Works in
+    Source or Object form.
+
+    3. Grant of Patent License. Subject to the terms and conditions of this
+    License, each Contributor hereby grants to You a perpetual, worldwide,
+    non-exclusive, no-charge, royalty-free, irrevocable (except as stated in
+    this section) patent license to make, have made, use, offer to sell, sell,
+    import, and otherwise transfer the Work, where such license applies only
+    to those patent claims licensable by such Contributor that are necessarily
+    infringed by their Contribution(s) alone or by combination of their
+    Contribution(s) with the Work to which such Contribution(s) was submitted.
+    If You institute patent litigation against any entity (including a
+    cross-claim or counterclaim in a lawsuit) alleging that the Work or a
+    Contribution incorporated within the Work constitutes direct or
+    contributory patent infringement, then any patent licenses granted to You
+    under this License for that Work shall terminate as of the date such
+    litigation is filed.
+
+    4. Redistribution. You may reproduce and distribute copies of the Work or
+    Derivative Works thereof in any medium, with or without modifications, and
+    in Source or Object form, provided that You meet the following conditions:
+
+    (a) You must give any other recipients of the Work or Derivative Works a
+    copy of this License; and
+
+    (b) You must cause any modified files to carry prominent notices stating
+    that You changed the files; and
+
+    (c) You must retain, in the Source form of any Derivative Works that You
+    distribute, all copyright, patent, trademark, and attribution notices from
+    the Source form of the Work, excluding those notices that do not pertain
+    to any part of the Derivative Works; and
+
+    (d) If the Work includes a "NOTICE" text file as part of its distribution,
+    then any Derivative Works that You distribute must include a readable copy
+    of the attribution notices contained within such NOTICE file, excluding
+    those notices that do not pertain to any part of the Derivative Works, in
+    at least one of the following places: within a NOTICE text file
+    distributed as part of the Derivative Works; within the Source form or
+    documentation, if provided along with the Derivative Works; or, within a
+    display generated by the Derivative Works, if and wherever such
+    third-party notices normally appear. The contents of the NOTICE file are
+    for informational purposes only and do not modify the License. You may add
+    Your own attribution notices within Derivative Works that You distribute,
+    alongside or as an addendum to the NOTICE text from the Work, provided
+    that such additional attribution notices cannot be construed as modifying
+    the License.
+
+    You may add Your own copyright statement to Your modifications and may
+    provide additional or different license terms and conditions for use,
+    reproduction, or distribution of Your modifications, or for any such
+    Derivative Works as a whole, provided Your use, reproduction, and
+    distribution of the Work otherwise complies with the conditions stated in
+    this License.
+
+    5. Submission of Contributions. Unless You explicitly state otherwise, any
+    Contribution intentionally submitted for inclusion in the Work by You to
+    the Licensor shall be under the terms and conditions of this License,
+    without any additional terms or conditions. Notwithstanding the above,
+    nothing herein shall supersede or modify the terms of any separate license
+    agreement you may have executed with Licensor regarding such
+    Contributions.
+
+    6. Trademarks. This License does not grant permission to use the trade
+    names, trademarks, service marks, or product names of the Licensor, except
+    as required for reasonable and customary use in describing the origin of
+    the Work and reproducing the content of the NOTICE file.
+
+    7. Disclaimer of Warranty. Unless required by applicable law or agreed to
+    in writing, Licensor provides the Work (and each Contributor provides its
+    Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+    ANY KIND, either express or implied, including, without limitation, any
+    warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or
+    FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for
+    determining the appropriateness of using or redistributing the Work and
+    assume any risks associated with Your exercise of permissions under this
+    License.
+
+    8. Limitation of Liability. In no event and under no legal theory, whether
+    in tort (including negligence), contract, or otherwise, unless required by
+    applicable law (such as deliberate and grossly negligent acts) or agreed
+    to in writing, shall any Contributor be liable to You for damages,
+    including any direct, indirect, special, incidental, or consequential
+    damages of any character arising as a result of this License or out of the
+    use or inability to use the Work (including but not limited to damages for
+    loss of goodwill, work stoppage, computer failure or malfunction, or any
+    and all other commercial damages or losses), even if such Contributor has
+    been advised of the possibility of such damages.
+
+    9. Accepting Warranty or Additional Liability. While redistributing the
+    Work or Derivative Works thereof, You may choose to offer, and charge a
+    fee for, acceptance of support, warranty, indemnity, or other liability
+    obligations and/or rights consistent with this License. However, in
+    accepting such obligations, You may act only on Your own behalf and on
+    Your sole responsibility, not on behalf of any other Contributor, and only
+    if You agree to indemnify, defend, and hold each Contributor harmless for
+    any liability incurred by, or claims asserted against, such Contributor by
+    reason of your accepting any such warranty or additional liability.
+
+    END OF TERMS AND CONDITIONS
+
+libbele
+
+    Portions of the NVIDIA NGX implementation contain components licensed from
+    libbele under the following terms:
+
+    Copyright (c) 2015-2016 David du Colombier
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+libelf
+
+    Portions of the NVIDIA NGX implementation contain components licensed from
+    libelf under the following terms:
+
+    Copyright (c) 2016 David du Colombier
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+libcurl
+
+    The NVIDIA NGX Updater implementation contains components licensed from
+    libcurl under the following terms:
+
+    COPYRIGHT AND PERMISSION NOTICE
+
+    Copyright (c) 1996 - 2023, Daniel Stenberg, daniel@haxx.se, and many
+    contributors, see the THANKS file.
+
+    All rights reserved.
+
+    Permission to use, copy, modify, and distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY
+    RIGHTS. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+    ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+    Except as contained in this notice, the name of a copyright holder shall
+    not be used in advertising or otherwise to promote the sale, use or other
+    dealings in this Software without prior written authorization of the
+    copyright holder.
+
+PKCS 11
+
+    This NVIDIA driver makes use of PKCS 11 header files from the OASIS Open
+    organization.
+
+    Copyright © OASIS Open 2023. All Rights Reserved. Distributed under the
+    terms of the OASIS IPR Policy,
+    [http://www.oasis-open.org/policies-guidelines/ipr], AS-IS, WITHOUT ANY
+    IMPLIED OR EXPRESS WARRANTY; there is no warranty of MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE or NONINFRINGEMENT of the rights of
+    others.
+
+Mbed TLS
+
+    The proprietary flavor of nvidia.ko (see Chapter 44) contains code from
+    Mbed TLS https://github.com/ARMmbed/mbedtls under the Apache License 2.0.
+
+    ===== APACHE LICENSE BEGIN =====
+
+    Apache License Version 2.0, January 2004 http://www.apache.org/licenses/
+
+    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+    1. Definitions.
+
+    "License" shall mean the terms and conditions for use, reproduction, and
+    distribution as defined by Sections 1 through 9 of this document.
+
+    "Licensor" shall mean the copyright owner or entity authorized by the
+    copyright owner that is granting the License.
+
+    "Legal Entity" shall mean the union of the acting entity and all other
+    entities that control, are controlled by, or are under common control with
+    that entity. For the purposes of this definition, "control" means (i) the
+    power, direct or indirect, to cause the direction or management of such
+    entity, whether by contract or otherwise, or (ii) ownership of fifty
+    percent (50%) or more of the outstanding shares, or (iii) beneficial
+    ownership of such entity.
+
+    "You" (or "Your") shall mean an individual or Legal Entity exercising
+    permissions granted by this License.
+
+    "Source" form shall mean the preferred form for making modifications,
+    including but not limited to software source code, documentation source,
+    and configuration files.
+
+    "Object" form shall mean any form resulting from mechanical transformation
+    or translation of a Source form, including but not limited to compiled
+    object code, generated documentation, and conversions to other media
+    types.
+
+    "Work" shall mean the work of authorship, whether in Source or Object
+    form, made available under the License, as indicated by a copyright notice
+    that is included in or attached to the work (an example is provided in the
+    Appendix below).
+
+    "Derivative Works" shall mean any work, whether in Source or Object form,
+    that is based on (or derived from) the Work and for which the editorial
+    revisions, annotations, elaborations, or other modifications represent, as
+    a whole, an original work of authorship. For the purposes of this License,
+    Derivative Works shall not include works that remain separable from, or
+    merely link (or bind by name) to the interfaces of, the Work and
+    Derivative Works thereof.
+
+    "Contribution" shall mean any work of authorship, including the original
+    version of the Work and any modifications or additions to that Work or
+    Derivative Works thereof, that is intentionally submitted to Licensor for
+    inclusion in the Work by the copyright owner or by an individual or Legal
+    Entity authorized to submit on behalf of the copyright owner. For the
+    purposes of this definition, "submitted" means any form of electronic,
+    verbal, or written communication sent to the Licensor or its
+    representatives, including but not limited to communication on electronic
+    mailing lists, source code control systems, and issue tracking systems
+    that are managed by, or on behalf of, the Licensor for the purpose of
+    discussing and improving the Work, but excluding communication that is
+    conspicuously marked or otherwise designated in writing by the copyright
+    owner as "Not a Contribution."
+
+    "Contributor" shall mean Licensor and any individual or Legal Entity on
+    behalf of whom a Contribution has been received by Licensor and
+    subsequently incorporated within the Work.
+
+    2. Grant of Copyright License. Subject to the terms and conditions of this
+    License, each Contributor hereby grants to You a perpetual, worldwide,
+    non-exclusive, no-charge, royalty-free, irrevocable copyright license to
+    reproduce, prepare Derivative Works of, publicly display, publicly
+    perform, sublicense, and distribute the Work and such Derivative Works in
+    Source or Object form.
+
+    3. Grant of Patent License. Subject to the terms and conditions of this
+    License, each Contributor hereby grants to You a perpetual, worldwide,
+    non-exclusive, no-charge, royalty-free, irrevocable (except as stated in
+    this section) patent license to make, have made, use, offer to sell, sell,
+    import, and otherwise transfer the Work, where such license applies only
+    to those patent claims licensable by such Contributor that are necessarily
+    infringed by their Contribution(s) alone or by combination of their
+    Contribution(s) with the Work to which such Contribution(s) was submitted.
+    If You institute patent litigation against any entity (including a
+    cross-claim or counterclaim in a lawsuit) alleging that the Work or a
+    Contribution incorporated within the Work constitutes direct or
+    contributory patent infringement, then any patent licenses granted to You
+    under this License for that Work shall terminate as of the date such
+    litigation is filed.
+
+    4. Redistribution. You may reproduce and distribute copies of the Work or
+    Derivative Works thereof in any medium, with or without modifications, and
+    in Source or Object form, provided that You meet the following conditions:
+
+    (a) You must give any other recipients of the Work or Derivative Works a
+    copy of this License; and
+
+    (b) You must cause any modified files to carry prominent notices stating
+    that You changed the files; and
+
+    (c) You must retain, in the Source form of any Derivative Works that You
+    distribute, all copyright, patent, trademark, and attribution notices from
+    the Source form of the Work, excluding those notices that do not pertain
+    to any part of the Derivative Works; and
+
+    (d) If the Work includes a "NOTICE" text file as part of its distribution,
+    then any Derivative Works that You distribute must include a readable copy
+    of the attribution notices contained within such NOTICE file, excluding
+    those notices that do not pertain to any part of the Derivative Works, in
+    at least one of the following places: within a NOTICE text file
+    distributed as part of the Derivative Works; within the Source form or
+    documentation, if provided along with the Derivative Works; or, within a
+    display generated by the Derivative Works, if and wherever such
+    third-party notices normally appear. The contents of the NOTICE file are
+    for informational purposes only and do not modify the License. You may add
+    Your own attribution notices within Derivative Works that You distribute,
+    alongside or as an addendum to the NOTICE text from the Work, provided
+    that such additional attribution notices cannot be construed as modifying
+    the License.
+
+    You may add Your own copyright statement to Your modifications and may
+    provide additional or different license terms and conditions for use,
+    reproduction, or distribution of Your modifications, or for any such
+    Derivative Works as a whole, provided Your use, reproduction, and
+    distribution of the Work otherwise complies with the conditions stated in
+    this License.
+
+    5. Submission of Contributions. Unless You explicitly state otherwise, any
+    Contribution intentionally submitted for inclusion in the Work by You to
+    the Licensor shall be under the terms and conditions of this License,
+    without any additional terms or conditions. Notwithstanding the above,
+    nothing herein shall supersede or modify the terms of any separate license
+    agreement you may have executed with Licensor regarding such
+    Contributions.
+
+    6. Trademarks. This License does not grant permission to use the trade
+    names, trademarks, service marks, or product names of the Licensor, except
+    as required for reasonable and customary use in describing the origin of
+    the Work and reproducing the content of the NOTICE file.
+
+    7. Disclaimer of Warranty. Unless required by applicable law or agreed to
+    in writing, Licensor provides the Work (and each Contributor provides its
+    Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+    ANY KIND, either express or implied, including, without limitation, any
+    warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or
+    FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for
+    determining the appropriateness of using or redistributing the Work and
+    assume any risks associated with Your exercise of permissions under this
+    License.
+
+    8. Limitation of Liability. In no event and under no legal theory, whether
+    in tort (including negligence), contract, or otherwise, unless required by
+    applicable law (such as deliberate and grossly negligent acts) or agreed
+    to in writing, shall any Contributor be liable to You for damages,
+    including any direct, indirect, special, incidental, or consequential
+    damages of any character arising as a result of this License or out of the
+    use or inability to use the Work (including but not limited to damages for
+    loss of goodwill, work stoppage, computer failure or malfunction, or any
+    and all other commercial damages or losses), even if such Contributor has
+    been advised of the possibility of such damages.
+
+    9. Accepting Warranty or Additional Liability. While redistributing the
+    Work or Derivative Works thereof, You may choose to offer, and charge a
+    fee for, acceptance of support, warranty, indemnity, or other liability
+    obligations and/or rights consistent with this License. However, in
+    accepting such obligations, You may act only on Your own behalf and on
+    Your sole responsibility, not on behalf of any other Contributor, and only
+    if You agree to indemnify, defend, and hold each Contributor harmless for
+    any liability incurred by, or claims asserted against, such Contributor by
+    reason of your accepting any such warranty or additional liability.
+
+    END OF TERMS AND CONDITIONS
+
+    ===== APACHE LICENSE END =====
+
+boost
+
+    Portions of the NVIDIA Linux GPU driver contain components licensed from
+    boost under the following terms:
+
+    Boost Software License - Version 1.0 - August 17th, 2003
+
+    Permission is hereby granted, free of charge, to any person or
+    organization obtaining a copy of the software and accompanying
+    documentation covered by this license (the "Software") to use, reproduce,
+    display, distribute, execute, and transmit the Software, and to prepare
+    derivative works of the Software, and to permit third-parties to whom the
+    Software is furnished to do so, all subject to the following:
+
+    The copyright notices in the Software and this entire statement, including
+    the above license grant, this restriction and the following disclaimer,
+    must be included in all copies of the Software, in whole or in part, and
+    all derivative works of the Software, unless such copies or derivative
+    works are solely in the form of machine-executable object code generated
+    by a source language processor.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+    SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+    FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR
+    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+    USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+gsl-lite
+
+    Portions of the NVIDIA CUDA Debugger implementation, libcudadebugger.so,
+    contain components licensed from gsl-lite under the following terms:
+
+    The MIT License (MIT)
+
+    Copyright (c) 2015 Martin Moene
+
+    Copyright (c) 2015 Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+Protocol Buffer
+
+    Portions of the NVIDIA CUDA Debugger implementation, libcudadebugger.so,
+    contain components licensed from Protocol Buffer under the following
+    terms:
+
+    Copyright 2008 Google Inc. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+
+   o Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+   o Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+   o Neither the name of Google Inc. nor the names of its contributors may be
+     used to endorse or promote products derived from this software without
+     specific prior written permission.
+
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    Code generated by the Protocol Buffer compiler is owned by the owner of
+    the input file used when generating it. This code is not standalone and
+    requires a support library to be linked with it. This support library is
+    itself covered by the above license.
+
+ThreadPool
+
+    Portions of the NVIDIA CUDA Debugger implementation, libcudadebugger.so,
+    contain components licensed from ThreadPool under the following terms:
+
+    Copyright (c) 2012 Jakob Progsch, Vaclav Zeman
+
+    This software is provided 'as-is', without any express or implied
+    warranty. In no event will the authors be held liable for any damages
+    arising from the use of this software.
+
+    Permission is granted to anyone to use this software for any purpose,
+    including commercial applications, and to alter it and redistribute it
+    freely, subject to the following restrictions:
+
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software in a
+     product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+
+  3. This notice may not be removed or altered from any source distribution.
+
+
+zlib
+
+    Portions of the NVIDIA CUDA Debugger implementation, libcudadebugger.so,
+    contain components licensed from zlib under the following terms:
+
+    Copyright (C) 1995-2017 Jean-loup Gailly and Mark Adler
+
+    This software is provided 'as-is', without any express or implied
+    warranty. In no event will the authors be held liable for any damages
+    arising from the use of this software.
+
+    Permission is granted to anyone to use this software for any purpose,
+    including commercial applications, and to alter it and redistribute it
+    freely, subject to the following restrictions:
+
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software in a
+     product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+
+  3. This notice may not be removed or altered from any source distribution.
+
+
+expected
+
+    Portions of the NVIDIA CUDA Debugger implementation, libcudadebugger.so,
+    contain components licensed from the software 'expected' under the
+    following terms:
+
+    Creative Commons Legal Code
+
+    CC0 1.0 Universal
+
+    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE LEGAL
+    SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN ATTORNEY-CLIENT
+    RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS INFORMATION ON AN "AS-IS"
+    BASIS. CREATIVE COMMONS MAKES NO WARRANTIES REGARDING THE USE OF THIS
+    DOCUMENT OR THE INFORMATION OR WORKS PROVIDED HEREUNDER, AND DISCLAIMS
+    LIABILITY FOR DAMAGES RESULTING FROM THE USE OF THIS DOCUMENT OR THE
+    INFORMATION OR WORKS PROVIDED HEREUNDER.
+
+    Statement of Purpose
+
+    The laws of most jurisdictions throughout the world automatically confer
+    exclusive Copyright and Related Rights (defined below) upon the creator
+    and subsequent owner(s) (each and all, an "owner") of an original work of
+    authorship and/or a database (each, a "Work").
+
+    Certain owners wish to permanently relinquish those rights to a Work for
+    the purpose of contributing to a commons of creative, cultural and
+    scientific works ("Commons") that the public can reliably and without fear
+    of later claims of infringement build upon, modify, incorporate in other
+    works, reuse and redistribute as freely as possible in any form whatsoever
+    and for any purposes, including without limitation commercial purposes.
+    These owners may contribute to the Commons to promote the ideal of a free
+    culture and the further production of creative, cultural and scientific
+    works, or to gain reputation or greater distribution for their Work in
+    part through the use and efforts of others.
+
+    For these and/or other purposes and motivations, and without any
+    expectation of additional consideration or compensation, the person
+    associating CC0 with a Work (the "Affirmer"), to the extent that he or she
+    is an owner of Copyright and Related Rights in the Work, voluntarily
+    elects to apply CC0 to the Work and publicly distribute the Work under its
+    terms, with knowledge of his or her Copyright and Related Rights in the
+    Work and the meaning and intended legal effect of CC0 on those rights.
+    
+      1. Copyright and Related Rights. A Work made available under CC0 may be
+         protected by copyright and related or neighboring rights ("Copyright
+         and Related Rights"). Copyright and Related Rights include, but are
+         not limited to, the following:
+         
+           1. the right to reproduce, adapt, distribute, perform, display,
+              communicate, and translate a Work;
+         
+           2. moral rights retained by the original author(s) and/or
+              performer(s);
+         
+           3. publicity and privacy rights pertaining to a person's image or
+              likeness depicted in a Work;
+         
+           4. rights protecting against unfair competition in regards to a
+              Work, subject to the limitations in paragraph 4(a), below;
+         
+           5. rights protecting the extraction, dissemination, use and reuse
+              of data in a Work;
+         
+           6. database rights (such as those arising under Directive 96/9/EC
+              of the European Parliament and of the Council of 11 March 1996
+              on the legal protection of databases, and under any national
+              implementation thereof, including any amended or successor
+              version of such directive); and
+         
+           7. other similar, equivalent or corresponding rights throughout the
+              world based on applicable law or treaty, and any national
+              implementations thereof.
+         
+         
+      2. Waiver. To the greatest extent permitted by, but not in contravention
+         of, applicable law, Affirmer hereby overtly, fully, permanently,
+         irrevocably and unconditionally waives, abandons, and surrenders all
+         of Affirmer's Copyright and Related Rights and associated claims and
+         causes of action, whether now known or unknown (including existing as
+         well as future claims and causes of action), in the Work (i) in all
+         territories worldwide, (ii) for the maximum duration provided by
+         applicable law or treaty (including future time extensions), (iii) in
+         any current or future medium and for any number of copies, and (iv)
+         for any purpose whatsoever, including without limitation commercial,
+         advertising or promotional purposes (the "Waiver"). Affirmer makes
+         the Waiver for the benefit of each member of the public at large and
+         to the detriment of Affirmer's heirs and successors, fully intending
+         that such Waiver shall not be subject to revocation, rescission,
+         cancellation, termination, or any other legal or equitable action to
+         disrupt the quiet enjoyment of the Work by the public as contemplated
+         by Affirmer's express Statement of Purpose.
+    
+      3. Public License Fallback. Should any part of the Waiver for any reason
+         be judged legally invalid or ineffective under applicable law, then
+         the Waiver shall be preserved to the maximum extent permitted taking
+         into account Affirmer's express Statement of Purpose. In addition, to
+         the extent the Waiver is so judged Affirmer hereby grants to each
+         affected person a royalty-free, non transferable, non sublicensable,
+         non exclusive, irrevocable and unconditional license to exercise
+         Affirmer's Copyright and Related Rights in the Work (i) in all
+         territories worldwide, (ii) for the maximum duration provided by
+         applicable law or treaty (including future time extensions), (iii) in
+         any current or future medium and for any number of copies, and (iv)
+         for any purpose whatsoever, including without limitation commercial,
+         advertising or promotional purposes (the "License"). The License
+         shall be deemed effective as of the date CC0 was applied by Affirmer
+         to the Work. Should any part of the License for any reason be judged
+         legally invalid or ineffective under applicable law, such partial
+         invalidity or ineffectiveness shall not invalidate the remainder of
+         the License, and in such case Affirmer hereby affirms that he or she
+         will not (i) exercise any of his or her remaining Copyright and
+         Related Rights in the Work or (ii) assert any associated claims and
+         causes of action with respect to the Work, in either case contrary to
+         Affirmer's express Statement of Purpose.
+    
+      4. Limitations and Disclaimers.
+         
+           1. No trademark or patent rights held by Affirmer are waived,
+              abandoned, surrendered, licensed or otherwise affected by this
+              document.
+         
+           2. Affirmer offers the Work as-is and makes no representations or
+              warranties of any kind concerning the Work, express, implied,
+              statutory or otherwise, including without limitation warranties
+              of title, merchantability, fitness for a particular purpose, non
+              infringement, or the absence of latent or other defects,
+              accuracy, or the present or absence of errors, whether or not
+              discoverable, all to the greatest extent permissible under
+              applicable law.
+         
+           3. Affirmer disclaims responsibility for clearing rights of other
+              persons that may apply to the Work or any use thereof, including
+              without limitation any person's Copyright and Related Rights in
+              the Work. Further, Affirmer disclaims responsibility for
+              obtaining any necessary consents, permissions or other rights
+              required for any use of the Work.
+         
+           4. Affirmer understands and acknowledges that Creative Commons is
+              not a party to this document and has no duty or obligation with
+              respect to this CC0 or use of the Work.
+         
+         
+    
+Linux kernel headers
+
+    The NVIDIA Linux GPU driver makes use of various Linux kernel header files
+    licensed under GPL-2.0 WITH Linux-syscall-note:
+
+    SPDX-Exception-Identifier: Linux-syscall-note
+
+    SPDX-URL: https://spdx.org/licenses/Linux-syscall-note.html
+
+    SPDX-Licenses: GPL-2.0, GPL-2.0+, GPL-1.0+, LGPL-2.0, LGPL-2.0+, LGPL-2.1,
+    LGPL-2.1+, GPL-2.0-only, GPL-2.0-or-later
+
+    Usage-Guide:
+
+    This exception is used together with one of the above SPDX-Licenses to
+    mark user space API (uapi) header files so they can be included into non
+    GPL compliant user space application code. To use this exception add it
+    with the keyword WITH to one of the identifiers in the SPDX-Licenses tag:
+
+    SPDX-License-Identifier: <SPDX-License> WITH Linux-syscall-note
+
+    License-Text:
+
+    NOTE! This copyright does *not* cover user programs that use kernel
+    services by normal system calls - this is merely considered normal use of
+    the kernel, and does *not* fall under the heading of "derived work". Also
+    note that the GPL below is copyrighted by the Free Software Foundation,
+    but the instance of code that it refers to (the Linux kernel) is
+    copyrighted by me and others who actually wrote it.
+
+    Also note that the only valid version of the GPL as far as the kernel is
+    concerned is _this_ particular version of the license (ie v2, not v2.2 or
+    v3.x or whatever), unless explicitly otherwise stated.
+
+    Linus Torvalds
+
+X.Org
+
+    This NVIDIA Linux driver contains code from the X.Org project.
+
+    Source code from the X.Org project is available from
+    http://cgit.freedesktop.org/xorg/xserver
+
+JSMN
+
+    This NVIDIA Linux driver uses a JSON parser based on 'jsmn':
+    http://zserge.bitbucket.org/jsmn.html
+
+    This library carries the following copyright notice:
+
+    Copyright (c) 2010 Serge A. Zaitsev
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+SHA-256
+
+    Portions of the driver use the SHA-256 algorithm derived from sha2.c:
+    https://github.com/ouah/sha2/blob/master/sha2.c
+
+    This library carries the following copyright notice:
+
+    Copyright (C) 2005, 2007 Olivier Gay <olivier.gay@a3.epfl.ch> All rights
+    reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+  3. Neither the name of the project nor the names of its contributors may be
+     used to endorse or promote products derived from this software without
+     specific prior written permission.
+
+
+    THIS SOFTWARE IS PROVIDED BY THE PROJECT AND CONTRIBUTORS ``AS IS'' AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    ARE DISCLAIMED. IN NO EVENT SHALL THE PROJECT OR CONTRIBUTORS BE LIABLE
+    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+    OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+
+libselinux
+
+    This NVIDIA Linux driver contains code from libselinux, which is released
+    in the public domain.
+
+SoftFloat
+
+    Portions of the driver use the SoftFloat floating point emulation library:
+    http://www.jhauser.us/arithmetic/SoftFloat.html
+
+    SoftFloat has the following license terms:
+
+    John R. Hauser
+
+    2017 August 10
+
+    The following applies to the whole of SoftFloat Release 3d as well as to
+    each source file individually.
+
+    Copyright 2011, 2012, 2013, 2014, 2015, 2016, 2017 The Regents of the
+    University of California. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions, and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions, and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+
+  3. Neither the name of the University nor the names of its contributors may
+     be used to endorse or promote products derived from this software without
+     specific prior written permission.
+
+
+    THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS", AND ANY
+    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE
+    DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+    OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+
+musl libc
+
+    This NVIDIA Linux driver uses code from 'musl libc': http://musl.libc.org
+
+    This code carries the following copyright notice:
+
+    musl as a whole is licensed under the following standard MIT license:
+
+    ----------------------------------------------------------------------
+
+    Copyright © 2005-2014 Rich Felker, et al.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+    ----------------------------------------------------------------------
+
+    Authors/contributors include:
+
+    A. Wilcox
+
+    Alex Dowad
+
+    Alexander Monakov
+
+    Andrew Kelley
+
+    Anthony G. Basile
+
+    Arvid Picciani
+
+    Bartosz Brachaczek
+
+    Bobby Bingham
+
+    Boris Brezillon
+
+    Brent Cook
+
+    Chris Spiegel
+
+    Clément Vasseur
+
+    Daniel Micay
+
+    Daniel Sabogal
+
+    Daurnimator
+
+    David Edelsohn
+
+    Denys Vlasenko
+
+    Dmitry Ivanov
+
+    Dmitry V. Levin
+
+    Emil Renner Berthing
+
+    Felix Fietkau
+
+    Felix Janda
+
+    Gianluca Anzolin
+
+    Hauke Mehrtens
+
+    He X
+
+    Hiltjo Posthuma
+
+    Isaac Dunham
+
+    Jaydeep Patil
+
+    Jens Gustedt
+
+    Jeremy Huntwork
+
+    Jo-Philipp Wich
+
+    Joakim Sindholt
+
+    John Spencer
+
+    Josiah Worcester
+
+    Julien Ramseier
+
+    Justin Cormack
+
+    Khem Raj
+
+    Kylie McClain
+
+    Leah Neukirchen
+
+    Luca Barbato
+
+    Luka Perkov
+
+    M Farkas-Dyck (Strake)
+
+    Mahesh Bodapati
+
+    Masanori Ogino
+
+    Michael Forney
+
+    Mikhail Kremnyov
+
+    Natanael Copa
+
+    Nicholas J. Kain
+
+    orc
+
+    Pascal Cuoq
+
+    Petr Hosek
+
+    Petr Skocik
+
+    Pierre Carrier
+
+    Reini Urban
+
+    Rich Felker
+
+    Richard Pennington
+
+    Samuel Holland
+
+    Shiz
+
+    sin
+
+    Solar Designer
+
+    Stefan Kristiansson
+
+    Szabolcs Nagy
+
+    Timo Teräs
+
+    Trutz Behn
+
+    Valentin Ochs
+
+    William Haddon
+
+    William Pitcock
+
+    Portions of this software are derived from third-party works licensed
+    under terms compatible with the above MIT license:
+
+    The TRE regular expression implementation (src/regex/reg* and
+    src/regex/tre*) is Copyright © 2001-2008 Ville Laurikari and licensed
+    under a 2-clause BSD license (license text in the source files). The
+    included version has been heavily modified by Rich Felker in 2012, in the
+    interests of size, simplicity, and namespace cleanliness.
+
+    Much of the math library code (src/math/* and src/complex/*) is
+
+    Copyright © 1993,2004 Sun Microsystems or
+
+    Copyright © 2003-2011 David Schultz or
+
+    Copyright © 2003-2009 Steven G. Kargl or
+
+    Copyright © 2003-2009 Bruce D. Evans or
+
+    Copyright © 2008 Stephen L. Moshier
+
+    and labelled as such in comments in the individual source files. All have
+    been licensed under extremely permissive terms.
+
+    The ARM memcpy code (src/string/arm/memcpy_el.S) is Copyright © 2008 The
+    Android Open Source Project and is licensed under a two-clause BSD
+    license. It was taken from Bionic libc, used on Android.
+
+    The implementation of DES for crypt (src/crypt/crypt_des.c) is Copyright ©
+    1994 David Burren. It is licensed under a BSD license.
+
+    The implementation of blowfish crypt (src/crypt/crypt_blowfish.c) was
+    originally written by Solar Designer and placed into the public domain.
+    The code also comes with a fallback permissive license for use in
+    jurisdictions that may not recognize the public domain.
+
+    The smoothsort implementation (src/stdlib/qsort.c) is Copyright © 2011
+    Valentin Ochs and is licensed under an MIT-style license.
+
+    The x86_64 port was written by Nicholas J. Kain and is licensed under the
+    standard MIT terms.
+
+    The mips and microblaze ports were originally written by Richard
+    Pennington for use in the ellcc project. The original code was adapted by
+    Rich Felker for build system and code conventions during upstream
+    integration. It is licensed under the standard MIT terms.
+
+    The mips64 port was contributed by Imagination Technologies and is
+    licensed under the standard MIT terms.
+
+    The powerpc port was also originally written by Richard Pennington, and
+    later supplemented and integrated by John Spencer. It is licensed under
+    the standard MIT terms.
+
+    All other files which have no copyright comments are original works
+    produced specifically for use as part of this library, written either by
+    Rich Felker, the main author of the library, or by one or more contibutors
+    listed above. Details on authorship of individual files can be found in
+    the git version control history of the project. The omission of copyright
+    and license comments in each file is in the interest of source tree size.
+
+    In addition, permission is hereby granted for all public header files
+    (include/* and arch/*/bits/*) and crt files intended to be linked into
+    applications (crt/*, ldso/dlstart.c, and arch/*/crt_arch.h) to omit the
+    copyright notice and permission notice otherwise required by the license,
+    and to use these files without any requirement of attribution. These files
+    include substantial contributions from:
+
+    Bobby Bingham
+
+    John Spencer
+
+    Nicholas J. Kain
+
+    Rich Felker
+
+    Richard Pennington
+
+    Stefan Kristiansson
+
+    Szabolcs Nagy
+
+    all of whom have explicitly granted such permission.
+
+    This file previously contained text expressing a belief that most of the
+    files covered by the above exception were sufficiently trivial not to be
+    subject to copyright, resulting in confusion over whether it negated the
+    permissions granted in the license. In the spirit of permissive licensing,
+    and of not having licensing issues being an obstacle to adoption, that
+    text has been removed.
+
+Zstandard
+
+    This NVIDIA Linux driver uses the 'Zstandard' library for compression:
+    https://github.com/facebook/zstd
+
+    BSD License
+
+    For Zstandard software
+
+    Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+    
+       o Redistributions of source code must retain the above copyright
+         notice, this list of conditions and the following disclaimer.
+    
+       o Redistributions in binary form must reproduce the above copyright
+         notice, this list of conditions and the following disclaimer in the
+         documentation and/or other materials provided with the distribution.
+    
+       o Neither the name Facebook nor the names of its contributors may be
+         used to endorse or promote products derived from this software
+         without specific prior written permission.
+    
+    
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+libspdm
+
+    This NVIDIA Linux driver uses code from 'libspdm':
+    https://github.com/DMTF/libspdm
+
+    This code carries the following license:
+
+    The Distributed Management Task Force (DMTF) grants rights under copyright
+    in this software on the terms of the BSD 3-Clause License as set forth
+    below; no other rights are granted by DMTF. This software might be subject
+    to other rights (such as patent rights) of other parties.
+
+    Copyrights.
+
+    Copyright (c) 2021-2022, Contributing Member(s) of Distributed Management
+    Task Force, Inc.. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+  3. Neither the name of the Distributed Management Task Force (DMTF) nor the
+     names of its contributors may be used to endorse or promote products
+     derived from this software without specific prior written permission.
+
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    Patents.
+
+    This software may be subject to third party patent rights, including
+    provisional patent rights ("patent rights"). DMTF makes no representations
+    to users of the standard as to the existence of such rights, and is not
+    responsible to recognize, disclose, or identify any or all such third
+    party patent right, owners or claimants, nor for any incomplete or
+    inaccurate identification or disclosure of such rights, owners or
+    claimants. DMTF shall have no liability to any party, in any manner or
+    circumstance, under any legal theory whatsoever, for failure to recognize,
+    disclose, or identify any such third party patent rights, or for such
+    party's reliance on the software or incorporation thereof in its product,
+    protocols or testing procedures. DMTF shall have no liability to any party
+    using such software, whether such use is foreseeable or not, nor to any
+    patent owner or claimant, and shall have no liability or responsibility
+    for costs or losses incurred if software is withdrawn or modified after
+    publication, and shall be indemnified and held harmless by any party using
+    the software from any and all claims of infringement by a patent owner for
+    such use.
+
+    DMTF Members that contributed to this software source code might have made
+    patent licensing commitments in connection with their participation in the
+    DMTF. For details, see
+    http://dmtf.org/sites/default/files/patent-10-18-01.pdf and
+    http://www.dmtf.org/about/policies/disclosures.
+
+Mesa
+
+    This NVIDIA Linux driver uses code from the 'Mesa' project:
+    https://gitlab.freedesktop.org/mesa/mesa
+
+    The code used carries the following copyright notices:
+
+    Copyright (c) 2011 Intel Corporation
+
+    Copyright (c) 2021 NVIDIA Corporation
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the next
+    paragraph) shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+    Authors:
+    
+       o Benjamin Franzke <benjaminfranzke@googlemail.com>
+    
+       o James Jones <jajones@nvidia.com>
+    
+    
+    ---
+
+    Copyright (c) 2008-2011 Kristian Høgsberg
+
+    Copyright (c) 2010-2011 Intel Corporation
+
+    Permission to use, copy, modify, distribute, and sell this software and
+    its documentation for any purpose is hereby granted without fee, provided
+    that\n the above copyright notice appear in all copies and that both that
+    copyright notice and this permission notice appear in supporting
+    documentation, and that the name of the copyright holders not be used in
+    advertising or publicity pertaining to distribution of the software
+    without specific, written prior permission. The copyright holders make no
+    representations about the suitability of this software for any purpose. It
+    is provided "as is" without express or implied warranty.
+
+    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS,
+    IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY SPECIAL,
+    INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+    OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.
+
+Wayland protocols
+
+    This NVIDIA Linux driver uses code from the 'Wayland protocols' project:
+    https://gitlab.freedesktop.org/wayland/wayland-protocols
+
+    The project carries the following copyright notice:
+
+    Copyright (c) 2008-2013 Kristian Høgsberg
+
+    Copyright (c) 2010-2013 Intel Corporation
+
+    Copyright (c) 2013 Rafael Antognolli
+
+    Copyright (c) 2013 Jasper St. Pierre
+
+    Copyright (c) 2014 Jonas Ådahl
+
+    Copyright (c) 2014 Jason Ekstrand
+
+    Copyright (c) 2014-2015 Collabora, Ltd.
+
+    Copyright (c) 2015 Red Hat Inc.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the next
+    paragraph) shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+    ---
+
+    The above is the version of the MIT "Expat" License used by X.org:
+    http://cgit.freedesktop.org/xorg/xserver/tree/COPYING
+
+virglrenderer
+
+    This NVIDIA Linux driver contains code from the virglrenderer project
+
+    Source code for the virglrenderer project is available from
+    http://gitlab.freedesktop.org/virgl/virglrenderer
+
+    The project carries the following copyright notice:
+
+    virglrenderer is under MIT license and derived from mesa in many parts.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+fdlibm
+
+    This NVIDIA Linux driver uses code from the fdlibm project:
+    https://www.netlib.org/fdlibm/
+
+    The code used carries the following copyright notices:
+
+    Copyright (C) 2004 by Sun Microsystems, Inc. All rights reserved.
+
+    Permission to use, copy, modify, and distribute this software is freely
+    granted, provided that this notice is preserved.
+
+    Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+
+    Developed at SunSoft, a Sun Microsystems, Inc. business. Permission to
+    use, copy, modify, and distribute this software is freely granted,
+    provided that this notice is preserved.
+
+libpciaccess
+
+    This NVIDIA Linux driver contains code from the libpciaccess project
+
+    Source code for the libpciaccess project is available from
+    https://gitlab.freedesktop.org/xorg/lib/libpciaccess
+
+    The project carries the following copyright notices:
+
+    (C) Copyright IBM Corporation 2006, 2007 (C) Copyright Eric Anholt 2006
+    (C) Copyright Mark Kettenis 2011 (C) Copyright Robert Millan 2012
+    Copyright (c) 2007, 2008, 2009, 2011, 2012, 2013 Oracle and/or its
+    affiliates. Copyright 2009, 2012 Red Hat, Inc. All Rights Reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    on the rights to use, copy, modify, merge, publish, distribute, sub
+    license, and/or sell copies of the Software, and to permit persons to whom
+    the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the next
+    paragraph) shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
+    IBM AND/OR THEIR SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+    Copyright (c) 2008 Juan Romero Pardines Copyright (c) 2008, 2011 Mark
+    Kettenis Copyright (c) 2009 Michael Lorenz Copyright (c) 2009, 2012 Samuel
+    Thibault
+
+    Permission to use, copy, modify, and distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+    IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+    Copyright (C) 2000 The XFree86 Project, Inc. All Rights Reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE XFREE86 PROJECT BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+    OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+    Except as contained in this notice, the name of the XFree86 Project shall
+    not be used in advertising or otherwise to promote the sale, use or other
+    dealings in this Software without prior written authorization from the
+    XFree86 Project.
+
+    Copyright (c) 2007 Paulo R. Zanoni, Tiago Vignatti Copyright (c) 2009
+    Tiago Vignatti
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+hwloc
+
+    This NVIDIA Linux driver uses the Portable Hardware Locality (hwloc)
+    library from https://www.open-mpi.org/software/hwloc
+
+    This library carries the following copyright notice:
+
+    Copyright © 2004-2006 The Trustees of Indiana University and Indiana
+    University Research and Technology Corporation. All rights reserved.
+
+    Copyright © 2004-2005 The University of Tennessee and The University of
+    Tennessee Research Foundation. All rights reserved.
+
+    Copyright © 2004-2005 High Performance Computing Center Stuttgart,
+    University of Stuttgart. All rights reserved.
+
+    Copyright © 2004-2005 The Regents of the University of California. All
+    rights reserved.
+
+    Copyright © 2009 CNRS
+
+    Copyright © 2009-2016 Inria. All rights reserved.
+
+    Copyright © 2009-2015 Université Bordeaux
+
+    Copyright © 2009-2015 Cisco Systems, Inc. All rights reserved.
+
+    Copyright © 2009-2012 Oracle and/or its affiliates. All rights reserved.
+
+    Copyright © 2010 IBM
+
+    Copyright © 2010 Jirka Hladky
+
+    Copyright © 2012 Aleksej Saushev, The NetBSD Foundation
+
+    Copyright © 2012 Blue Brain Project, EPFL. All rights reserved.
+
+    Copyright © 2013-2014 University of Wisconsin-La Crosse. All rights
+    reserved.
+
+    Copyright © 2015 Research Organization for Information Science and
+    Technology (RIST). All rights reserved.
+
+    Copyright © 2015-2016 Intel, Inc. All rights reserved.
+
+    See COPYING in top-level directory.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+  3. The name of the author may not be used to endorse or promote products
+     derived from this software without specific prior written permission.
+
+
+    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN
+    NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+______________________________________________________________________________
+
+Appendix A. Supported NVIDIA GPU Products
+______________________________________________________________________________
+
+For the most complete and accurate listing of supported GPUs, please see the
+Supported Products List, available from the NVIDIA Linux x86_64 Graphics
+Driver download page. Please go to http://www.nvidia.com/object/unix.html,
+follow the Archive link under the Linux x86_64 heading, follow the link for
+the 565.77 driver, and then go to the Supported Products List.
+
+For an explanation of the VDPAU features column, please refer to the section
+called "VdpDecoder" of Appendix G.
+
+Note that the list of supported GPU products provided below and on the driver
+download page is provided to indicate which GPUs are supported by a particular
+driver version. Some designs incorporating supported GPUs may not be
+compatible with the NVIDIA Linux driver: in particular, notebook and
+all-in-one desktop designs with switchable (hybrid) or Optimus graphics will
+not work if means to disable the integrated graphics in hardware are not
+available. Hardware designs will vary from manufacturer to manufacturer, so
+please consult with a system's manufacturer to determine whether that
+particular system is compatible.
+
+
+A1. CURRENT NVIDIA GPUS
+
+
+ NVIDIA GPU product                               Device PCI ID*  VDPAU features
+ -----------------------------------------------  --------------  --------------
+ NVIDIA GeForce 830M                              1340            E
+ NVIDIA GeForce 830A                              1340 103C 2B2B  E
+ NVIDIA GeForce 840M                              1341            E
+ NVIDIA GeForce 840A                              1341 17AA 3697  E
+ NVIDIA GeForce 840A                              1341 17AA 3699  E
+ NVIDIA GeForce 840A                              1341 17AA 369C  E
+ NVIDIA GeForce 840A                              1341 17AA 36AF  E
+ NVIDIA GeForce 845M                              1344            E
+ NVIDIA GeForce 930M                              1346            E
+ NVIDIA GeForce 930A                              1346 17AA 30BA  E
+ NVIDIA GeForce 930A                              1346 17AA 362C  E
+ NVIDIA GeForce 930A                              1346 17AA 362F  E
+ NVIDIA GeForce 930A                              1346 17AA 3636  E
+ NVIDIA GeForce 940M                              1347            E
+ NVIDIA GeForce 940A                              1347 17AA 36B9  E
+ NVIDIA GeForce 940A                              1347 17AA 36BA  E
+ NVIDIA GeForce 945M                              1348            E
+ NVIDIA GeForce 945A                              1348 103C 2B5C  E
+ NVIDIA GeForce 930M                              1349            E
+ NVIDIA GeForce 930A                              1349 17AA 3124  E
+ NVIDIA GeForce 930A                              1349 17AA 364B  E
+ NVIDIA GeForce 930A                              1349 17AA 36C3  E
+ NVIDIA GeForce 930A                              1349 17AA 36D1  E
+ NVIDIA GeForce 930A                              1349 17AA 36D8  E
+ NVIDIA GeForce 940MX                             134B            E
+ NVIDIA GeForce 940MX                             134D            E
+ NVIDIA GeForce 930MX                             134E            E
+ NVIDIA GeForce 920MX                             134F            E
+ Quadro K620M                                     137A 17AA 2225  E
+ Quadro M500M                                     137A 17AA 2232  E
+ Quadro M500M                                     137A 17AA 505A  E
+ Quadro M520                                      137B            E
+ NVIDIA GeForce GTX 750 Ti                        1380            E
+ NVIDIA GeForce GTX 750                           1381            E
+ NVIDIA GeForce GTX 745                           1382            E
+ NVIDIA GeForce 845M                              1390            E
+ NVIDIA GeForce GTX 850M                          1391            E
+ NVIDIA GeForce GTX 850A                          1391 17AA 3697  E
+ NVIDIA GeForce GTX 860M                          1392            E
+ NVIDIA GeForce GPU                               1392 1028 066A  E
+ NVIDIA GeForce GTX 750 Ti                        1392 1043 861E  E
+ NVIDIA GeForce GTX 750 Ti                        1392 1043 86D9  E
+ NVIDIA GeForce 840M                              1393            E
+ NVIDIA GeForce 845M                              1398            E
+ NVIDIA GeForce 945M                              1399            E
+ NVIDIA GeForce GTX 950M                          139A            E
+ NVIDIA GeForce GTX 950A                          139A 17AA 362C  E
+ NVIDIA GeForce GTX 950A                          139A 17AA 362F  E
+ NVIDIA GeForce GTX 950A                          139A 17AA 363F  E
+ NVIDIA GeForce GTX 950A                          139A 17AA 3640  E
+ NVIDIA GeForce GTX 950A                          139A 17AA 3647  E
+ NVIDIA GeForce GTX 950A                          139A 17AA 36B9  E
+ NVIDIA GeForce GTX 960M                          139B            E
+ NVIDIA GeForce GTX 750 Ti                        139B 1025 107A  E
+ NVIDIA GeForce GTX 860M                          139B 1028 06A3  E
+ NVIDIA GeForce GTX 960A                          139B 103C 2B4C  E
+ NVIDIA GeForce GTX 750Ti                         139B 17AA 3649  E
+ NVIDIA GeForce GTX 960A                          139B 17AA 36BF  E
+ NVIDIA GeForce GTX 750 Ti                        139B 19DA C248  E
+ NVIDIA GeForce GTX 750Ti                         139B 1AFA 8A75  E
+ NVIDIA GeForce 940M                              139C            E
+ NVIDIA GeForce GTX 750 Ti                        139D            E
+ Quadro M2000M                                    13B0            E
+ Quadro M1000M                                    13B1            E
+ Quadro M600M                                     13B2            E
+ Quadro K2200M                                    13B3            E
+ Quadro M620                                      13B4            E
+ Quadro M1200                                     13B6            E
+ NVS 810                                          13B9            E
+ Quadro K2200                                     13BA            E
+ Quadro K620                                      13BB            E
+ Quadro K1200                                     13BC            E
+ NVIDIA GeForce GTX 980                           13C0            E
+ NVIDIA GeForce GTX 970                           13C2            E
+ NVIDIA GeForce GTX 980M                          13D7            E
+ NVIDIA GeForce GTX 970M                          13D8            E
+ NVIDIA GeForce GTX 960                           13D8 1462 1198  E
+ NVIDIA GeForce GTX 960                           13D8 1462 1199  E
+ NVIDIA GeForce GTX 960                           13D8 19DA B282  E
+ NVIDIA GeForce GTX 960                           13D8 19DA B284  E
+ NVIDIA GeForce GTX 960                           13D8 19DA B286  E
+ NVIDIA GeForce GTX 965M                          13D9            E
+ NVIDIA GeForce GTX 980                           13DA            E
+ Quadro M5000                                     13F0            E
+ Quadro M4000                                     13F1            E
+ Tesla M60                                        13F2            E
+ Tesla M6                                         13F3            E
+ Quadro M5000M                                    13F8            E
+ Quadro M5000 SE                                  13F8 10DE 11DD  E
+ Quadro M4000M                                    13F9            E
+ Quadro M3000M                                    13FA            E
+ Quadro M3000 SE                                  13FA 10DE 11C9  E
+ Quadro M5500                                     13FB            E
+ NVIDIA GeForce GTX 960                           1401            E
+ NVIDIA GeForce GTX 950                           1402            F
+ NVIDIA GeForce GTX 960                           1406            E
+ NVIDIA GeForce GTX 750                           1407            E
+ NVIDIA GeForce GTX 965M                          1427            E
+ NVIDIA GeForce GTX 950                           1427 1458 D003  F
+ Quadro M2000                                     1430            F
+ Tesla M4                                         1431            F
+ Quadro M2200                                     1436            F
+ Quadro GP100                                     15F0            G
+ Tesla P100-PCIE-12GB                             15F7            G
+ Tesla P100-PCIE-16GB                             15F8            G
+ Tesla P100-SXM2-16GB                             15F9            G
+ NVIDIA GeForce GTX 980M                          1617            E
+ NVIDIA GeForce GTX 970M                          1618            E
+ NVIDIA GeForce GTX 965M                          1619            E
+ NVIDIA GeForce GTX 980                           161A            E
+ NVIDIA GeForce GTX 965M                          1667            E
+ NVIDIA GeForce MX130                             174D            E
+ NVIDIA GeForce MX110                             174E            E
+ NVIDIA GeForce 940MX                             179C            E
+ NVIDIA GeForce GTX TITAN X                       17C2            E
+ NVIDIA GeForce GTX 980 Ti                        17C8            E
+ Quadro M6000                                     17F0            E
+ Quadro M6000 24GB                                17F1            E
+ Tesla M40                                        17FD            E
+ Tesla M40 24GB                                   17FD 10DE 1173  E
+ NVIDIA TITAN X (Pascal)                          1B00            H
+ NVIDIA TITAN Xp                                  1B02            H
+ NVIDIA TITAN Xp COLLECTORS EDITION               1B02 10DE 123E  H
+ NVIDIA TITAN Xp COLLECTORS EDITION               1B02 10DE 123F  H
+ NVIDIA GeForce GTX 1080 Ti                       1B06            H
+ Quadro P6000                                     1B30            H
+ Tesla P40                                        1B38            H
+ NVIDIA GeForce GTX 1080                          1B80            H 2
+ NVIDIA GeForce GTX 1070                          1B81            H 2
+ NVIDIA GeForce GTX 1070 Ti                       1B82            H 2
+ NVIDIA GeForce GTX 1060 6GB                      1B83            H 2
+ NVIDIA GeForce GTX 1060 3GB                      1B84            H 2
+ NVIDIA P104-100                                  1B87            H 2
+ NVIDIA GeForce GTX 1080                          1BA0            H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BA0 1028 0887  H 2
+ NVIDIA GeForce GTX 1070                          1BA1            H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1028 08A1  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1028 08A2  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1043 1CCE  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1458 1651  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1458 1653  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1462 11E8  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1462 11E9  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1462 1225  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1462 1226  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1462 1227  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1558 9501  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1558 95E1  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1A58 2000  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BA1 1D05 1032  H 2
+ NVIDIA GeForce GTX 1070                          1BA2            H 2
+ Quadro P5000                                     1BB0            H 2
+ Quadro P4000                                     1BB1            H 2
+ Tesla P6                                         1BB4            H 2
+ Quadro P5200                                     1BB5            H 2
+ Quadro P5200 with Max-Q Design                   1BB5 17AA 2268  H 2
+ Quadro P5200 with Max-Q Design                   1BB5 17AA 2269  H 2
+ Quadro P5000                                     1BB6            H 2
+ Quadro P4000                                     1BB7            H 2
+ Quadro P4000 with Max-Q Design                   1BB7 1462 11E9  H 2
+ Quadro P4000 with Max-Q Design                   1BB7 1558 9501  H 2
+ Quadro P3000                                     1BB8            H 2
+ Quadro P4200                                     1BB9            H 2
+ Quadro P4200 with Max-Q Design                   1BB9 1558 95E1  H 2
+ Quadro P4200 with Max-Q Design                   1BB9 17AA 2268  H 2
+ Quadro P4200 with Max-Q Design                   1BB9 17AA 2269  H 2
+ Quadro P3200                                     1BBB            H 2
+ Quadro P3200 with Max-Q Design                   1BBB 17AA 225F  H 2
+ Quadro P3200 with Max-Q Design                   1BBB 17AA 2262  H 2
+ NVIDIA P104-101                                  1BC7            H 2
+ NVIDIA GeForce GTX 1080                          1BE0            H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1025 1221  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1025 123E  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1028 07C0  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1028 0876  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1028 088B  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1043 1031  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1043 1BF0  H 2
+ NVIDIA GeForce GTX 1080 with Max-Q Design        1BE0 1458 355B  H 2
+ NVIDIA GeForce GTX 1070                          1BE1            H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BE1 103C 84DB  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BE1 1043 16F0  H 2
+ NVIDIA GeForce GTX 1070 with Max-Q Design        1BE1 3842 2009  H 2
+ NVIDIA GeForce GTX 1060 3GB                      1C02            H 2
+ NVIDIA GeForce GTX 1060 6GB                      1C03            H 2
+ NVIDIA GeForce GTX 1060 5GB                      1C04            H
+ NVIDIA GeForce GTX 1060 6GB                      1C06            H 2
+ NVIDIA P106-100                                  1C07            H
+ NVIDIA P106-090                                  1C09            H
+ NVIDIA GeForce GTX 1060                          1C20            H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1028 0802  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1028 0803  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1028 0825  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1028 0827  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1028 0885  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1028 0886  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 103C 8467  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 103C 8478  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 103C 8581  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1462 1244  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1558 95E5  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 17AA 39B9  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1A58 2000  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1A58 2001  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C20 1D05 1059  H
+ NVIDIA GeForce GTX 1050 Ti                       1C21            H
+ NVIDIA GeForce GTX 1050                          1C22            H
+ NVIDIA GeForce GTX 1060                          1C23            H
+ Quadro P2000                                     1C30            H
+ Quadro P2200                                     1C31            H
+ NVIDIA GeForce GTX 1060                          1C60            H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C60 103C 8390  H
+ NVIDIA GeForce GTX 1060 with Max-Q Design        1C60 103C 8467  H
+ NVIDIA GeForce GTX 1050 Ti                       1C61            H
+ NVIDIA GeForce GTX 1050                          1C62            H
+ NVIDIA GeForce GTX 1050                          1C81            H
+ NVIDIA GeForce GTX 1050 Ti                       1C82            H
+ NVIDIA GeForce GTX 1050                          1C83            H
+ NVIDIA GeForce GTX 1050 Ti                       1C8C            H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 1028 087C  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 103C 8519  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 103C 856A  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 1462 123C  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 1462 126C  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 17AA 2266  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 17AA 2267  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8C 17AA 39FF  H
+ NVIDIA GeForce GTX 1050                          1C8D            H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 103C 84E9  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 103C 84EB  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 103C 856A  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 114F  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 1341  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 1351  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 1481  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 14A1  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 18C1  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1043 1B5E  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1462 126C  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 152D 1217  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C8D 1D72 1707  H
+ NVIDIA GeForce GTX 1050 Ti                       1C8F            H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8F 1462 123C  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8F 1462 126C  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8F 1462 126D  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8F 1462 1284  H
+ NVIDIA GeForce GTX 1050 Ti with Max-Q Design     1C8F 1462 1297  H
+ NVIDIA GeForce MX150                             1C90            H
+ NVIDIA GeForce MX250                             1C90 1028 09C1  H
+ NVIDIA GeForce GTX 1050                          1C91            H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C91 103C 856A  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C91 103C 86E3  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C91 152D 1232  H
+ NVIDIA GeForce GTX 1050                          1C92            H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C92 1043 149F  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C92 1043 1B31  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C92 1462 1245  H
+ NVIDIA GeForce GTX 1050 with Max-Q Design        1C92 1462 126C  H
+ NVIDIA GeForce MX350                             1C94            H
+ NVIDIA GeForce MX350                             1C96            H
+ Quadro P1000                                     1CB1            H
+ Quadro P600                                      1CB2            H
+ Quadro P400                                      1CB3            H
+ Quadro P620                                      1CB6            H
+ Quadro P2000                                     1CBA            H
+ Quadro P2000 with Max-Q Design                   1CBA 17AA 2266  H
+ Quadro P2000 with Max-Q Design                   1CBA 17AA 2267  H
+ Quadro P1000                                     1CBB            H
+ Quadro P600                                      1CBC            H
+ Quadro P620                                      1CBD            H
+ Quadro P2000                                     1CFA            H
+ Quadro P1000                                     1CFB            H
+ Matrox D-Series D1480                            1CFB 102B 2600  H
+ Matrox D-Series D1450                            1CFB 102B 2700  H
+ NVIDIA GeForce GT 1030                           1D01            H
+ NVIDIA GeForce GT 1010                           1D02            H
+ NVIDIA GeForce MX150                             1D10            H
+ NVIDIA GeForce MX230                             1D11            H
+ NVIDIA GeForce MX150                             1D12            H
+ NVIDIA GeForce MX250                             1D13            H
+ NVIDIA GeForce MX330                             1D16            H
+ Quadro P500                                      1D33            H
+ Quadro P520                                      1D34            H
+ NVIDIA GeForce MX250                             1D52            H
+ NVIDIA TITAN V                                   1D81            I
+ Tesla V100-SXM2-16GB                             1DB1            I
+ Tesla V100-SXM2-16GB-LS                          1DB1 10DE 1307  I
+ Tesla V100-FHHL-16GB                             1DB3            I
+ Tesla V100-PCIE-16GB                             1DB4            I
+ Tesla V100-PCIE-16GB-LS                          1DB4 10DE 1306  I
+ Tesla V100-SXM2-32GB                             1DB5            I
+ Tesla V100-SXM2-32GB-LS                          1DB5 10DE 1308  I
+ Tesla V100-PCIE-32GB                             1DB6            I
+ Tesla V100-DGXS-32GB                             1DB7            I
+ Tesla V100-SXM3-32GB                             1DB8            I
+ Tesla V100-SXM3-32GB-H                           1DB8 10DE 131D  I
+ Quadro GV100                                     1DBA            I
+ NVIDIA TITAN V JHH Special Edition               1DBA 10DE 12EB  I
+ Tesla PG500-216                                  1DF0            I
+ Tesla PG503-216                                  1DF2            I
+ Tesla V100S-PCIE-32GB                            1DF6            I
+ NVIDIA TITAN RTX                                 1E02            J
+ NVIDIA GeForce RTX 2080 Ti                       1E04            J
+ NVIDIA GeForce RTX 2080 Ti                       1E07            J
+ NVIDIA CMP 50HX                                  1E09            -
+ Quadro RTX 6000                                  1E30            J
+ Quadro RTX 8000                                  1E30 1028 129E  J
+ Quadro RTX 8000                                  1E30 103C 129E  J
+ Quadro RTX 8000                                  1E30 10DE 129E  J
+ Quadro RTX 6000                                  1E36            J
+ Quadro RTX 8000                                  1E78 10DE 13D8  J
+ Quadro RTX 6000                                  1E78 10DE 13D9  J
+ NVIDIA GeForce RTX 2080 SUPER                    1E81            J
+ NVIDIA GeForce RTX 2080                          1E82            J
+ NVIDIA GeForce RTX 2070 SUPER                    1E84            J
+ NVIDIA GeForce RTX 2080                          1E87            J
+ NVIDIA GeForce RTX 2060                          1E89            J
+ NVIDIA GeForce RTX 2080                          1E90            J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1025 1375  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08A1  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08A2  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08EA  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08EB  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08EC  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08ED  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08EE  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 08EF  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 093B  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1028 093C  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 8572  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 8573  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 8602  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 8606  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 86C6  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 86C7  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 87A6  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 103C 87A7  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1043 131F  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1043 137F  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1043 141F  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1043 1751  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 1660  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 1661  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 1662  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 75A6  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 75A7  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 86A6  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1458 86A7  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1462 1274  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1462 1277  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 152D 1220  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1558 95E1  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1558 97E1  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1A58 2002  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1A58 2005  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1A58 2007  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1A58 3000  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1A58 3001  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1E90 1D05 1069  J
+ NVIDIA GeForce RTX 2070 Super                    1E91            J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 103C 8607  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 103C 8736  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 103C 8738  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 103C 8772  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 103C 878A  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 103C 878B  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1043 1E61  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 1511  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 75B3  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 75B4  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 76B2  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 76B3  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 78A2  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 78A3  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 86B2  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1458 86B3  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1462 12AE  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1462 12B0  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1462 12C6  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 17AA 22C3  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 17AA 22C5  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1A58 2009  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1A58 200A  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 1A58 3002  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1E91 8086 3012  J
+ NVIDIA GeForce RTX 2080 Super                    1E93            J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1025 1401  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1025 149C  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1028 09D2  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 8607  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 86C7  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 8736  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 8738  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 8772  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 87A6  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 103C 87A7  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 75B1  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 75B2  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 76B0  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 76B1  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 78A0  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 78A1  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 86B0  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1458 86B1  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1462 12AE  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1462 12B0  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1462 12B4  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1462 12C6  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1558 50D3  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1558 70D1  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 17AA 22C3  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 17AA 22C5  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1A58 2009  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1A58 200A  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1A58 3002  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1E93 1D05 1089  J
+ Quadro RTX 5000                                  1EB0            J
+ Quadro RTX 4000                                  1EB1            J
+ Quadro RTX 5000                                  1EB5            J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1025 1375  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1025 1401  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1025 149C  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1028 09C3  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8736  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8738  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8772  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8780  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8782  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8783  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 103C 8785  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1043 1DD1  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1462 1274  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1462 12B0  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1462 12C6  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 17AA 22B8  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 17AA 22BA  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1A58 2005  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1A58 2007  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1A58 2008  J
+ Quadro RTX 5000 with Max-Q Design                1EB5 1A58 200A  J
+ Quadro RTX 4000                                  1EB6            J
+ Quadro RTX 4000 with Max-Q Design                1EB6 1028 09C3  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8736  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8738  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8772  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8780  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8782  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8783  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 103C 8785  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 1462 1274  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 1462 1277  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 1462 12B0  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 1462 12C6  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 17AA 22B8  J
+ Quadro RTX 4000 with Max-Q Design                1EB6 17AA 22BA  J
+ NVIDIA GeForce RTX 2070 SUPER                    1EC2            J
+ NVIDIA GeForce RTX 2070 SUPER                    1EC7            J
+ NVIDIA GeForce RTX 2080                          1ED0            J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 1025 132D  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 1028 08ED  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 1028 08EE  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 1028 08EF  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 103C 8572  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 103C 8573  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 103C 8600  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 103C 8605  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 1043 138F  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 1043 15C1  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 17AA 3FEE  J
+ NVIDIA GeForce RTX 2080 with Max-Q Design        1ED0 17AA 3FFE  J
+ NVIDIA GeForce RTX 2070 Super                    1ED1            J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 1025 1432  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 103C 8746  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 103C 878A  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 1043 165F  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 144D C192  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 17AA 3FCE  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 17AA 3FCF  J
+ NVIDIA GeForce RTX 2070 Super with Max-Q Design  1ED1 17AA 3FD0  J
+ NVIDIA GeForce RTX 2080 Super                    1ED3            J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 1025 1432  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 1028 09D1  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 103C 8746  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 103C 878A  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 1043 1D61  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 1043 1E51  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 1043 1F01  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 17AA 3FCE  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 17AA 3FCF  J
+ NVIDIA GeForce RTX 2080 Super with Max-Q Design  1ED3 17AA 3FD0  J
+ Quadro RTX 5000                                  1EF5            J
+ NVIDIA GeForce RTX 2070                          1F02            J
+ NVIDIA GeForce RTX 2060                          1F03            J
+ NVIDIA GeForce RTX 2060 SUPER                    1F06            J
+ NVIDIA GeForce RTX 2070                          1F07            J
+ NVIDIA GeForce RTX 2060                          1F08            J
+ NVIDIA GeForce GTX 1650                          1F0A            J
+ NVIDIA CMP 40HX                                  1F0B            -
+ NVIDIA GeForce RTX 2070                          1F10            J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1025 132D  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1025 1342  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08A1  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08A2  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08EA  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08EB  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08EC  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08ED  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08EE  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 08EF  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 093B  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1028 093C  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 103C 8572  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 103C 8573  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 103C 8602  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 103C 8606  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1043 132F  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1043 136F  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1043 1881  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1043 1E6E  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 1658  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 1663  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 1664  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 75A4  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 75A5  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 86A4  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1458 86A5  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1462 1274  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1462 1277  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1558 95E1  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1558 97E1  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1A58 2002  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1A58 2005  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1A58 2007  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1A58 3000  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1A58 3001  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1D05 105E  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1D05 1070  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 1D05 2087  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F10 8086 2087  J
+ NVIDIA GeForce RTX 2060                          1F11            J
+ NVIDIA GeForce RTX 2060                          1F12            J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 1028 098F  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 103C 8741  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 103C 8744  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 103C 878E  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 103C 880E  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 1043 1E11  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 1043 1F11  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 1462 12D9  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 17AA 3801  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 17AA 3802  J
+ NVIDIA GeForce RTX 2060 with Max-Q Design        1F12 17AA 3803  J
+ NVIDIA GeForce RTX 2070                          1F14            J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1025 1401  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1025 1432  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1025 1442  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1025 1446  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1025 147D  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1028 09E2  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1028 09F3  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 8607  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 86C6  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 86C7  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 8736  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 8738  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 8746  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 8772  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 878A  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 878B  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 87A6  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 103C 87A7  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1043 174F  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 1512  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 75B5  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 75B6  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 76B4  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 76B5  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 78A4  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 78A5  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 86B4  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1458 86B5  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1462 12AE  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1462 12B0  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1462 12C6  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1558 50D3  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1558 70D1  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1A58 200C  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1A58 2011  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F14 1A58 3002  J
+ NVIDIA GeForce RTX 2060                          1F15            J
+ Quadro RTX 3000                                  1F36            J
+ Quadro RTX 3000 with Max-Q Design                1F36 1028 0990  J
+ Quadro RTX 3000 with Max-Q Design                1F36 103C 8736  J
+ Quadro RTX 3000 with Max-Q Design                1F36 103C 8738  J
+ Quadro RTX 3000 with Max-Q Design                1F36 103C 8772  J
+ Quadro RTX 3000 with Max-Q Design                1F36 1043 13CF  J
+ Quadro RTX 3000 with Max-Q Design                1F36 1414 0032  J
+ NVIDIA GeForce RTX 2060 SUPER                    1F42            J
+ NVIDIA GeForce RTX 2060 SUPER                    1F47            J
+ NVIDIA GeForce RTX 2070                          1F50            J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 1028 08ED  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 1028 08EE  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 1028 08EF  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 103C 8572  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 103C 8573  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 103C 8574  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 103C 8600  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 103C 8605  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 17AA 3FEE  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F50 17AA 3FFE  J
+ NVIDIA GeForce RTX 2060                          1F51            J
+ NVIDIA GeForce RTX 2070                          1F54            J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F54 103C 878A  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F54 17AA 3FCE  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F54 17AA 3FCF  J
+ NVIDIA GeForce RTX 2070 with Max-Q Design        1F54 17AA 3FD0  J
+ NVIDIA GeForce RTX 2060                          1F55            J
+ Quadro RTX 3000                                  1F76            J
+ Matrox D-Series D2450                            1F76 102B 2800  J
+ Matrox D-Series D2480                            1F76 102B 2900  J
+ NVIDIA GeForce GTX 1650                          1F82            J
+ NVIDIA GeForce GTX 1630                          1F83            J
+ NVIDIA GeForce GTX 1650                          1F91            J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 103C 863E  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 103C 86E7  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 103C 86E8  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1043 12CF  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1043 156F  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1414 0032  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 144D C822  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1462 127E  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1462 1281  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1462 1284  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1462 1285  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1462 129C  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 17AA 229F  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 17AA 3802  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 17AA 3806  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 17AA 3F1A  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F91 1A58 1001  J
+ NVIDIA GeForce GTX 1650 Ti                       1F95            J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1025 1479  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1025 147A  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1025 147B  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1025 147C  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 103C 86E7  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 103C 86E8  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 103C 8815  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1043 1DFF  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1043 1E1F  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 144D C838  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1462 12BD  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1462 12C5  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1462 12D2  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 17AA 22C0  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 17AA 22C1  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 17AA 3837  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 17AA 3F95  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1A58 1003  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1A58 1006  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1A58 1007  J
+ NVIDIA GeForce GTX 1650 Ti with Max-Q Design     1F95 1E83 3E30  J
+ NVIDIA GeForce GTX 1650                          1F96            J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F96 1462 1297  J
+ NVIDIA GeForce MX450                             1F97            J
+ NVIDIA GeForce MX450                             1F98            J
+ NVIDIA GeForce GTX 1650                          1F99            J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1025 1479  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1025 147A  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1025 147B  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1025 147C  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 103C 8815  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1043 13B2  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1043 1402  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1043 1902  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1462 12BD  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1462 12C5  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1462 12D2  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 17AA 22DA  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 17AA 3F93  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F99 1E83 3E30  J
+ NVIDIA GeForce MX450                             1F9C            J
+ NVIDIA GeForce GTX 1650                          1F9D            J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1043 128D  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1043 130D  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1043 149C  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1043 185C  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1043 189C  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1462 12F4  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1462 1302  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1462 131B  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1462 1326  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1462 132A  J
+ NVIDIA GeForce GTX 1650 with Max-Q Design        1F9D 1462 132E  J
+ NVIDIA GeForce MX550                             1F9F            J
+ NVIDIA GeForce MX550                             1FA0            J
+ NVIDIA T1000                                     1FB0 1028 12DB  J
+ NVIDIA T1000                                     1FB0 103C 12DB  J
+ NVIDIA T1000                                     1FB0 103C 8A80  J
+ NVIDIA T1000                                     1FB0 10DE 12DB  J
+ NVIDIA DGX Display                               1FB0 10DE 1485  J
+ NVIDIA T1000                                     1FB0 17AA 12DB  J
+ NVIDIA T600                                      1FB1 1028 1488  J
+ NVIDIA T600                                      1FB1 103C 1488  J
+ NVIDIA T600                                      1FB1 103C 8A80  J
+ NVIDIA T600                                      1FB1 10DE 1488  J
+ NVIDIA T600                                      1FB1 17AA 1488  J
+ NVIDIA T400                                      1FB2 1028 1489  J
+ NVIDIA T400                                      1FB2 103C 1489  J
+ NVIDIA T400                                      1FB2 103C 8A80  J
+ NVIDIA T400                                      1FB2 10DE 1489  J
+ NVIDIA T400                                      1FB2 17AA 1489  J
+ NVIDIA T600 Laptop GPU                           1FB6            J
+ NVIDIA T550 Laptop GPU                           1FB7            J
+ Quadro T2000                                     1FB8            J
+ Quadro T2000 with Max-Q Design                   1FB8 1028 097E  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8736  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8738  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8772  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8780  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8782  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8783  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 8785  J
+ Quadro T2000 with Max-Q Design                   1FB8 103C 87F0  J
+ Quadro T2000 with Max-Q Design                   1FB8 1462 1281  J
+ Quadro T2000 with Max-Q Design                   1FB8 1462 12BD  J
+ Quadro T2000 with Max-Q Design                   1FB8 17AA 22C0  J
+ Quadro T2000 with Max-Q Design                   1FB8 17AA 22C1  J
+ Quadro T1000                                     1FB9            J
+ Quadro T1000 with Max-Q Design                   1FB9 1025 1479  J
+ Quadro T1000 with Max-Q Design                   1FB9 1025 147A  J
+ Quadro T1000 with Max-Q Design                   1FB9 1025 147B  J
+ Quadro T1000 with Max-Q Design                   1FB9 1025 147C  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8736  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8738  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8772  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8780  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8782  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8783  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 8785  J
+ Quadro T1000 with Max-Q Design                   1FB9 103C 87F0  J
+ Quadro T1000 with Max-Q Design                   1FB9 1462 12BD  J
+ Quadro T1000 with Max-Q Design                   1FB9 17AA 22C0  J
+ Quadro T1000 with Max-Q Design                   1FB9 17AA 22C1  J
+ NVIDIA T600 Laptop GPU                           1FBA            J
+ NVIDIA T500                                      1FBB            J
+ NVIDIA T1200 Laptop GPU                          1FBC            J
+ NVIDIA GeForce GTX 1650                          1FDD            J
+ NVIDIA T1000 8GB                                 1FF0 1028 1612  J
+ NVIDIA T1000 8GB                                 1FF0 103C 1612  J
+ NVIDIA T1000 8GB                                 1FF0 103C 8A80  J
+ NVIDIA T1000 8GB                                 1FF0 10DE 1612  J
+ NVIDIA T1000 8GB                                 1FF0 17AA 1612  J
+ NVIDIA T400 4GB                                  1FF2 1028 1613  J
+ NVIDIA T400 4GB                                  1FF2 103C 1613  J
+ NVIDIA T400E                                     1FF2 103C 18FF  J
+ NVIDIA T400 4GB                                  1FF2 103C 8A80  J
+ NVIDIA T400 4GB                                  1FF2 10DE 1613  J
+ NVIDIA T400E                                     1FF2 10DE 18FF  J
+ NVIDIA T400 4GB                                  1FF2 17AA 1613  J
+ NVIDIA T400E                                     1FF2 17AA 18FF  J
+ Quadro T1000                                     1FF9            J
+ NVIDIA A100-SXM4-40GB                            20B0            J
+ NVIDIA A100-PG509-200                            20B0 10DE 1450  J
+ NVIDIA A100-SXM4-80GB                            20B2 10DE 1463  J
+ NVIDIA A100-SXM4-80GB                            20B2 10DE 147F  J
+ NVIDIA A100-SXM4-80GB                            20B2 10DE 1622  J
+ NVIDIA A100-SXM4-80GB                            20B2 10DE 1623  J
+ NVIDIA PG509-210                                 20B2 10DE 1625  J
+ NVIDIA A100-SXM-64GB                             20B3 10DE 14A7  J
+ NVIDIA A100-SXM-64GB                             20B3 10DE 14A8  J
+ NVIDIA A100 80GB PCIe                            20B5 10DE 1533  J
+ NVIDIA A100 80GB PCIe                            20B5 10DE 1642  J
+ NVIDIA PG506-232                                 20B6 10DE 1492  J
+ NVIDIA A30                                       20B7 10DE 1532  J
+ NVIDIA A30                                       20B7 10DE 1804  J
+ NVIDIA A30                                       20B7 10DE 1852  J
+ NVIDIA A800-SXM4-40GB                            20BD 10DE 17F4  J
+ NVIDIA A100-PCIE-40GB                            20F1 10DE 145F  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 179B  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 179C  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 179D  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 179E  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 179F  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 17A0  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 17A1  J
+ NVIDIA A800-SXM4-80GB                            20F3 10DE 17A2  J
+ NVIDIA A800 80GB PCIe                            20F5 10DE 1799  J
+ NVIDIA A800 80GB PCIe LC                         20F5 10DE 179A  J
+ NVIDIA A800 40GB Active                          20F6 1028 180A  J
+ NVIDIA A800 40GB Active                          20F6 103C 180A  J
+ NVIDIA A800 40GB Active                          20F6 10DE 180A  J
+ NVIDIA A800 40GB Active                          20F6 17AA 180A  J
+ NVIDIA AX800                                     20FD 10DE 17F8  J
+ NVIDIA GeForce GTX 1660 Ti                       2182            J
+ NVIDIA GeForce GTX 1660                          2184            J
+ NVIDIA GeForce GTX 1650 SUPER                    2187            J
+ NVIDIA GeForce GTX 1650                          2188            J
+ NVIDIA CMP 30HX                                  2189            -
+ NVIDIA GeForce GTX 1660 Ti                       2191            J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1028 0949  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 85FB  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 85FE  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 86D6  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 8741  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 8744  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 878D  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 87AF  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 103C 87B3  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1043 171F  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1043 17EF  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1043 18D1  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1414 0032  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1462 128A  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1462 128B  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1462 12C6  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1462 12CB  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1462 12CC  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 1462 12D9  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 17AA 380C  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 17AA 381D  J
+ NVIDIA GeForce GTX 1660 Ti with Max-Q Design     2191 17AA 381E  J
+ NVIDIA GeForce GTX 1650 Ti                       2192            J
+ NVIDIA GeForce GTX 1660 SUPER                    21C4            J
+ NVIDIA GeForce GTX 1660 Ti                       21D1            J
+ NVIDIA GeForce RTX 3090 Ti                       2203            K
+ NVIDIA GeForce RTX 3090                          2204            K
+ NVIDIA GeForce RTX 3080                          2206            K
+ NVIDIA GeForce RTX 3070 Ti                       2207            K
+ NVIDIA GeForce RTX 3080 Ti                       2208            K
+ NVIDIA GeForce RTX 3080                          220A            K
+ NVIDIA CMP 90HX                                  220D            K
+ NVIDIA GeForce RTX 3080                          2216            K
+ NVIDIA RTX A6000                                 2230 1028 1459  K
+ NVIDIA RTX A6000                                 2230 103C 1459  K
+ NVIDIA RTX A6000                                 2230 10DE 1459  K
+ NVIDIA RTX A6000                                 2230 17AA 1459  K
+ NVIDIA RTX A5000                                 2231 1028 147E  K
+ NVIDIA RTX A5000                                 2231 103C 147E  K
+ NVIDIA RTX A5000                                 2231 10DE 147E  K
+ NVIDIA RTX A5000                                 2231 17AA 147E  K
+ NVIDIA RTX A4500                                 2232 1028 163C  K
+ NVIDIA RTX A4500                                 2232 103C 163C  K
+ NVIDIA RTX A4500                                 2232 10DE 163C  K
+ NVIDIA RTX A4500                                 2232 17AA 163C  K
+ NVIDIA RTX A5500                                 2233 1028 165A  K
+ NVIDIA RTX A5500                                 2233 103C 165A  K
+ NVIDIA RTX A5500                                 2233 10DE 165A  K
+ NVIDIA RTX A5500                                 2233 17AA 165A  K
+ NVIDIA A40                                       2235 10DE 145A  K
+ NVIDIA A10                                       2236 10DE 1482  K
+ NVIDIA A10G                                      2237 10DE 152F  K
+ NVIDIA A10M                                      2238 10DE 1677  K
+ NVIDIA H100 NVL                                  2321 10DE 1839  K
+ NVIDIA H800 PCIe                                 2322 10DE 17A4  K
+ NVIDIA H800                                      2324 10DE 17A6  K
+ NVIDIA H800                                      2324 10DE 17A8  K
+ NVIDIA H20                                       2329 10DE 198B  K
+ NVIDIA H20                                       2329 10DE 198C  K
+ NVIDIA H20-3e                                    232C 10DE 2063  K
+ NVIDIA H20-3e                                    232C 10DE 2064  K
+ NVIDIA H100 80GB HBM3                            2330 10DE 16C0  K
+ NVIDIA H100 80GB HBM3                            2330 10DE 16C1  K
+ NVIDIA H100 PCIe                                 2331 10DE 1626  K
+ NVIDIA H200                                      2335 10DE 18BE  K
+ NVIDIA H200                                      2335 10DE 18BF  K
+ NVIDIA H100                                      2339 10DE 17FC  K
+ NVIDIA H800 NVL                                  233A 10DE 183A  K
+ NVIDIA H200 NVL                                  233B 10DE 1996  K
+ NVIDIA GH200 120GB                               2342 10DE 16EB  K
+ NVIDIA GH200 120GB                               2342 10DE 1805  K
+ NVIDIA GH200 480GB                               2342 10DE 1809  K
+ NVIDIA GH200 144G HBM3e                          2348 10DE 18D2  K
+ NVIDIA GeForce RTX 3060 Ti                       2414            K
+ NVIDIA GeForce RTX 3080 Ti Laptop GPU            2420            K
+ NVIDIA RTX A5500 Laptop GPU                      2438            K
+ NVIDIA GeForce RTX 3080 Ti Laptop GPU            2460            K
+ NVIDIA GeForce RTX 3070 Ti                       2482            K
+ NVIDIA GeForce RTX 3070                          2484            K
+ NVIDIA GeForce RTX 3060 Ti                       2486            K
+ NVIDIA GeForce RTX 3060                          2487            K
+ NVIDIA GeForce RTX 3070                          2488            K
+ NVIDIA GeForce RTX 3060 Ti                       2489            K
+ NVIDIA CMP 70HX                                  248A            K
+ NVIDIA GeForce RTX 3080 Laptop GPU               249C            K
+ NVIDIA GeForce RTX 3060 Laptop GPU               249C 1D05 1194  K
+ NVIDIA GeForce RTX 3070 Laptop GPU               249D            K
+ NVIDIA GeForce RTX 3070 Ti Laptop GPU            24A0            K
+ NVIDIA GeForce RTX 3060 Laptop GPU               24A0 1D05 1192  K
+ NVIDIA RTX A4000                                 24B0 1028 14AD  K
+ NVIDIA RTX A4000                                 24B0 103C 14AD  K
+ NVIDIA RTX A4000                                 24B0 10DE 14AD  K
+ NVIDIA RTX A4000                                 24B0 17AA 14AD  K
+ NVIDIA RTX A4000H                                24B1 10DE 1658  K
+ NVIDIA RTX A5000 Laptop GPU                      24B6            K
+ NVIDIA RTX A4000 Laptop GPU                      24B7            K
+ NVIDIA RTX A3000 Laptop GPU                      24B8            K
+ NVIDIA RTX A3000 12GB Laptop GPU                 24B9            K
+ NVIDIA RTX A4500 Laptop GPU                      24BA            K
+ NVIDIA RTX A3000 12GB Laptop GPU                 24BB            K
+ NVIDIA GeForce RTX 3060                          24C7            K
+ NVIDIA GeForce RTX 3060 Ti                       24C9            K
+ NVIDIA GeForce RTX 3080 Laptop GPU               24DC            K
+ NVIDIA GeForce RTX 3070 Laptop GPU               24DD            K
+ NVIDIA GeForce RTX 3070 Ti Laptop GPU            24E0            K
+ NVIDIA RTX A4500 Embedded GPU                    24FA            K
+ NVIDIA GeForce RTX 3060                          2503            K
+ NVIDIA GeForce RTX 3060                          2504            K
+ NVIDIA GeForce RTX 3050                          2507            K
+ NVIDIA GeForce RTX 3050 OEM                      2508            K
+ NVIDIA GeForce RTX 3060 Laptop GPU               2520            K
+ NVIDIA GeForce RTX 3060 Laptop GPU               2521            K
+ NVIDIA GeForce RTX 3050 Ti Laptop GPU            2523            K
+ NVIDIA RTX A2000                                 2531 1028 151D  K
+ NVIDIA RTX A2000                                 2531 103C 151D  K
+ NVIDIA RTX A2000                                 2531 10DE 151D  K
+ NVIDIA RTX A2000                                 2531 17AA 151D  K
+ NVIDIA GeForce RTX 3060                          2544            K
+ NVIDIA GeForce RTX 3060 Laptop GPU               2560            K
+ NVIDIA GeForce RTX 3050 Ti Laptop GPU            2563            K
+ NVIDIA RTX A2000 12GB                            2571 1028 1611  K
+ NVIDIA RTX A2000 12GB                            2571 103C 1611  K
+ NVIDIA RTX A2000 12GB                            2571 10DE 1611  K
+ NVIDIA RTX A2000 12GB                            2571 17AA 1611  K
+ NVIDIA GeForce RTX 3050                          2582            K
+ NVIDIA GeForce RTX 3050                          2584            K
+ NVIDIA GeForce RTX 3050 Ti Laptop GPU            25A0            K
+ NVIDIA GeForce RTX 3050Ti Laptop GPU             25A0 103C 8928  K
+ NVIDIA GeForce RTX 3050Ti Laptop GPU             25A0 103C 89F9  K
+ NVIDIA GeForce RTX 3060 Laptop GPU               25A0 1D05 1196  K
+ NVIDIA GeForce RTX 3050 Laptop GPU               25A2            K
+ NVIDIA GeForce RTX 3050 Ti Laptop GPU            25A2 1028 0BAF  K
+ NVIDIA GeForce RTX 3060 Laptop GPU               25A2 1D05 1195  K
+ NVIDIA GeForce RTX 3050 Laptop GPU               25A5            K
+ NVIDIA GeForce MX570                             25A6            K
+ NVIDIA GeForce RTX 2050                          25A7            K
+ NVIDIA GeForce RTX 2050                          25A9            K
+ NVIDIA GeForce MX570 A                           25AA            K
+ NVIDIA GeForce RTX 3050 4GB Laptop GPU           25AB            K
+ NVIDIA GeForce RTX 3050 6GB Laptop GPU           25AC            K
+ NVIDIA GeForce RTX 2050                          25AD            K
+ NVIDIA RTX A1000                                 25B0 1028 1878  K
+ NVIDIA RTX A1000                                 25B0 103C 1878  K
+ NVIDIA RTX A1000                                 25B0 103C 8D96  K
+ NVIDIA RTX A1000                                 25B0 10DE 1878  K
+ NVIDIA RTX A1000                                 25B0 17AA 1878  K
+ NVIDIA RTX A400                                  25B2 1028 1879  K
+ NVIDIA RTX A400                                  25B2 103C 1879  K
+ NVIDIA RTX A400                                  25B2 103C 8D95  K
+ NVIDIA RTX A400                                  25B2 10DE 1879  K
+ NVIDIA RTX A400                                  25B2 17AA 1879  K
+ NVIDIA A16                                       25B6 10DE 14A9  K
+ NVIDIA A2                                        25B6 10DE 157E  K
+ NVIDIA RTX A2000 Laptop GPU                      25B8            K
+ NVIDIA RTX A1000 Laptop GPU                      25B9            K
+ NVIDIA RTX A2000 8GB Laptop GPU                  25BA            K
+ NVIDIA RTX A500 Laptop GPU                       25BB            K
+ NVIDIA RTX A1000 6GB Laptop GPU                  25BC            K
+ NVIDIA RTX A500 Laptop GPU                       25BD            K
+ NVIDIA GeForce RTX 3050 Ti Laptop GPU            25E0            K
+ NVIDIA GeForce RTX 3050 Laptop GPU               25E2            K
+ NVIDIA GeForce RTX 3050 Laptop GPU               25E5            K
+ NVIDIA GeForce RTX 3050 6GB Laptop GPU           25EC            K
+ NVIDIA GeForce RTX 2050                          25ED            K
+ NVIDIA RTX A1000 Embedded GPU                    25F9            K
+ NVIDIA RTX A2000 Embedded GPU                    25FA            K
+ NVIDIA RTX A500 Embedded GPU                     25FB            K
+ NVIDIA GeForce RTX 4090                          2684            K
+ NVIDIA GeForce RTX 4090 D                        2685            K
+ NVIDIA GeForce RTX 4070 Ti SUPER                 2689            K
+ NVIDIA RTX 6000 Ada Generation                   26B1 1028 16A1  K
+ NVIDIA RTX 6000 Ada Generation                   26B1 103C 16A1  K
+ NVIDIA RTX 6000 Ada Generation                   26B1 10DE 16A1  K
+ NVIDIA RTX 6000 Ada Generation                   26B1 17AA 16A1  K
+ NVIDIA RTX 5000 Ada Generation                   26B2 1028 17FA  K
+ NVIDIA RTX 5000 Ada Generation                   26B2 103C 17FA  K
+ NVIDIA RTX 5000 Ada Generation                   26B2 10DE 17FA  K
+ NVIDIA RTX 5000 Ada Generation                   26B2 17AA 17FA  K
+ NVIDIA RTX 5880 Ada Generation                   26B3 1028 1934  K
+ NVIDIA RTX 5880 Ada Generation                   26B3 103C 1934  K
+ NVIDIA RTX 5880 Ada Generation                   26B3 10DE 1934  K
+ NVIDIA RTX 5880 Ada Generation                   26B3 17AA 1934  K
+ NVIDIA L40                                       26B5 10DE 169D  K
+ NVIDIA L40                                       26B5 10DE 17DA  K
+ NVIDIA L40S                                      26B9 10DE 1851  K
+ NVIDIA L40S                                      26B9 10DE 18CF  K
+ NVIDIA L20                                       26BA 10DE 1957  K
+ NVIDIA L20                                       26BA 10DE 1990  K
+ NVIDIA GeForce RTX 4080 SUPER                    2702            K
+ NVIDIA GeForce RTX 4080                          2704            K
+ NVIDIA GeForce RTX 4070 Ti SUPER                 2705            K
+ NVIDIA GeForce RTX 4070                          2709            K
+ NVIDIA GeForce RTX 4090 Laptop GPU               2717            K
+ NVIDIA RTX 5000 Ada Generation Laptop GPU        2730            K
+ NVIDIA GeForce RTX 4090 Laptop GPU               2757            K
+ NVIDIA RTX 5000 Ada Generation Embedded GPU      2770            K
+ NVIDIA GeForce RTX 4070 Ti                       2782            K
+ NVIDIA GeForce RTX 4070 SUPER                    2783            K
+ NVIDIA GeForce RTX 4070                          2786            K
+ NVIDIA GeForce RTX 4060 Ti                       2788            K
+ NVIDIA GeForce RTX 4080 Laptop GPU               27A0            K
+ NVIDIA RTX 4000 SFF Ada Generation               27B0 1028 16FA  K
+ NVIDIA RTX 4000 SFF Ada Generation               27B0 103C 16FA  K
+ NVIDIA RTX 4000 SFF Ada Generation               27B0 10DE 16FA  K
+ NVIDIA RTX 4000 SFF Ada Generation               27B0 17AA 16FA  K
+ NVIDIA RTX 4500 Ada Generation                   27B1 1028 180C  K
+ NVIDIA RTX 4500 Ada Generation                   27B1 103C 180C  K
+ NVIDIA RTX 4500 Ada Generation                   27B1 10DE 180C  K
+ NVIDIA RTX 4500 Ada Generation                   27B1 17AA 180C  K
+ NVIDIA RTX 4000 Ada Generation                   27B2 1028 181B  K
+ NVIDIA RTX 4000 Ada Generation                   27B2 103C 181B  K
+ NVIDIA RTX 4000 Ada Generation                   27B2 10DE 181B  K
+ NVIDIA RTX 4000 Ada Generation                   27B2 17AA 181B  K
+ NVIDIA L2                                        27B6 10DE 1933  K
+ NVIDIA L4                                        27B8 10DE 16CA  K
+ NVIDIA L4                                        27B8 10DE 16EE  K
+ NVIDIA RTX 4000 Ada Generation Laptop GPU        27BA            K
+ NVIDIA RTX 3500 Ada Generation Laptop GPU        27BB            K
+ NVIDIA GeForce RTX 4080 Laptop GPU               27E0            K
+ NVIDIA RTX 3500 Ada Generation Embedded GPU      27FB            K
+ NVIDIA GeForce RTX 4060 Ti                       2803            K
+ NVIDIA GeForce RTX 4060 Ti                       2805            K
+ NVIDIA GeForce RTX 4060                          2808            K
+ NVIDIA GeForce RTX 4070 Laptop GPU               2820            K
+ NVIDIA GeForce RTX 3050 A Laptop GPU             2822            K
+ NVIDIA RTX 3000 Ada Generation Laptop GPU        2838            K
+ NVIDIA GeForce RTX 4070 Laptop GPU               2860            K
+ NVIDIA GeForce RTX 4060                          2882            K
+ NVIDIA GeForce RTX 4060 Laptop GPU               28A0            K
+ NVIDIA GeForce RTX 4050 Laptop GPU               28A1            K
+ NVIDIA RTX 2000 Ada Generation                   28B0 1028 1870  K
+ NVIDIA RTX 2000 Ada Generation                   28B0 103C 1870  K
+ NVIDIA RTX 2000E Ada Generation                  28B0 103C 1871  K
+ NVIDIA RTX 2000 Ada Generation                   28B0 10DE 1870  K
+ NVIDIA RTX 2000E Ada Generation                  28B0 10DE 1871  K
+ NVIDIA RTX 2000 Ada Generation                   28B0 17AA 1870  K
+ NVIDIA RTX 2000E Ada Generation                  28B0 17AA 1871  K
+ NVIDIA RTX 2000 Ada Generation Laptop GPU        28B8            K
+ NVIDIA RTX 1000 Ada Generation Laptop GPU        28B9            K
+ NVIDIA RTX 500 Ada Generation Laptop GPU         28BA            K
+ NVIDIA RTX 500 Ada Generation Laptop GPU         28BB            K
+ NVIDIA GeForce RTX 4060 Laptop GPU               28E0            K
+ NVIDIA GeForce RTX 4050 Laptop GPU               28E1            K
+ NVIDIA RTX 2000 Ada Generation Embedded GPU      28F8            K
+
+
+Below are the legacy GPUs that are no longer supported in the unified driver.
+These GPUs will continue to be maintained through the special legacy NVIDIA
+GPU driver releases.
+
+The 470.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID*  VDPAU features
+ -----------------------------------------------  --------------  --------------
+ GeForce GTX 650                                  0FC6            D
+ GeForce GT 740                                   0FC8            D
+ GeForce GT 730                                   0FC9            C
+ GeForce GT 755M                                  0FCD            D
+ GeForce GT 640M LE                               0FCE            C
+ GeForce GT 650M                                  0FD1            D
+ GeForce GT 640M                                  0FD2            D
+ GeForce GT 640M LE                               0FD2 1028 0595  C
+ GeForce GT 640M LE                               0FD2 1028 05B2  C
+ GeForce GT 640M LE                               0FD3            C
+ GeForce GTX 660M                                 0FD4            D
+ GeForce GT 650M                                  0FD5            D
+ GeForce GT 640M                                  0FD8            D
+ GeForce GT 645M                                  0FD9            D
+ GeForce GT 740M                                  0FDF            D
+ GeForce GTX 660M                                 0FE0            D
+ GeForce GT 730M                                  0FE1            D
+ GeForce GT 745M                                  0FE2            D
+ GeForce GT 745M                                  0FE3            D
+ GeForce GT 745A                                  0FE3 103C 2B16  D
+ GeForce GT 745A                                  0FE3 17AA 3675  D
+ GeForce GT 750M                                  0FE4            D
+ GeForce GT 750M                                  0FE9            D
+ GeForce GT 755M                                  0FEA            D
+ GeForce 710A                                     0FEC            C
+ GeForce 820M                                     0FED            C
+ GeForce 810M                                     0FEE            C
+ Quadro K1100M                                    0FF6            D
+ Quadro K500M                                     0FF8            D
+ Quadro K2000D                                    0FF9            D
+ Quadro K600                                      0FFA            D
+ Quadro K2000M                                    0FFB            D
+ Quadro K1000M                                    0FFC            D
+ NVS 510                                          0FFD            D
+ Quadro K2000                                     0FFE            D
+ Quadro 410                                       0FFF            D
+ GeForce GTX TITAN Z                              1001            D
+ GeForce GTX 780                                  1004            D
+ GeForce GTX TITAN                                1005            D
+ GeForce GTX 780                                  1007            D
+ GeForce GTX 780 Ti                               1008            D
+ GeForce GTX 780 Ti                               100A            D
+ GeForce GTX TITAN Black                          100C            D
+ Tesla K20Xm                                      1021            D
+ Tesla K20c                                       1022            D
+ Tesla K40m                                       1023            D
+ Tesla K40c                                       1024            D
+ Tesla K20s                                       1026            D
+ Tesla K40st                                      1027            D
+ Tesla K20m                                       1028            D
+ Tesla K40s                                       1029            D
+ Tesla K40t                                       102A            D
+ Tesla K80                                        102D            D
+ Quadro K6000                                     103A            D
+ Quadro K5200                                     103C            D
+ GeForce GTX 680                                  1180            D
+ GeForce GTX 660 Ti                               1183            D
+ GeForce GTX 770                                  1184            D
+ GeForce GTX 660                                  1185            D
+ GeForce GTX 760                                  1185 10DE 106F  D
+ GeForce GTX 760                                  1187            D
+ GeForce GTX 690                                  1188            D
+ GeForce GTX 670                                  1189            D
+ GeForce GTX 760 Ti OEM                           1189 10DE 1074  D
+ GRID K520                                        118A            D
+ GeForce GTX 760 (192-bit)                        118E            D
+ Tesla K10                                        118F            D
+ GeForce GTX 760 Ti OEM                           1193            D
+ Tesla K8                                         1194            D
+ GeForce GTX 660                                  1195            D
+ GeForce GTX 880M                                 1198            D
+ GeForce GTX 870M                                 1199            D
+ GeForce GTX 760                                  1199 1458 D001  D
+ GeForce GTX 860M                                 119A            D
+ GeForce GTX 775M                                 119D            D
+ GeForce GTX 780M                                 119E            D
+ GeForce GTX 780M                                 119F            D
+ GeForce GTX 680M                                 11A0            D
+ GeForce GTX 670MX                                11A1            D
+ GeForce GTX 675MX                                11A2            D
+ GeForce GTX 680MX                                11A3            D
+ GeForce GTX 675MX                                11A7            D
+ Quadro K4200                                     11B4            D
+ Quadro K3100M                                    11B6            D
+ Quadro K4100M                                    11B7            D
+ Quadro K5100M                                    11B8            D
+ Quadro K5000                                     11BA            D
+ Quadro K5000M                                    11BC            D
+ Quadro K4000M                                    11BD            D
+ Quadro K3000M                                    11BE            D
+ GeForce GTX 660                                  11C0            D
+ GeForce GTX 650 Ti BOOST                         11C2            D
+ GeForce GTX 650 Ti                               11C3            D
+ GeForce GTX 645                                  11C4            D
+ GeForce GT 740                                   11C5            D
+ GeForce GTX 650 Ti                               11C6            D
+ GeForce GTX 650                                  11C8            D
+ GeForce GT 740                                   11CB            D
+ GeForce GTX 770M                                 11E0            D
+ GeForce GTX 765M                                 11E1            D
+ GeForce GTX 765M                                 11E2            D
+ GeForce GTX 760M                                 11E3            D
+ GeForce GTX 760A                                 11E3 17AA 3683  D
+ Quadro K4000                                     11FA            D
+ Quadro K2100M                                    11FC            D
+ GeForce GT 635                                   1280            D
+ GeForce GT 710                                   1281            D
+ GeForce GT 640                                   1282            C
+ GeForce GT 630                                   1284            C
+ GeForce GT 720                                   1286            D
+ GeForce GT 730                                   1287            C
+ GeForce GT 720                                   1288            D
+ GeForce GT 710                                   1289            D
+ GeForce GT 710                                   128B            D
+ GeForce GT 730M                                  1290            D
+ GeForce GT 730A                                  1290 103C 2AFA  D
+ GeForce GT 735M                                  1291            D
+ GeForce GT 740M                                  1292            D
+ GeForce GT 740A                                  1292 17AA 3675  D
+ GeForce GT 740A                                  1292 17AA 367C  D
+ GeForce GT 740A                                  1292 17AA 3684  D
+ GeForce GT 730M                                  1293            D
+ GeForce 710M                                     1295            C
+ GeForce 710A                                     1295 103C 2B0D  C
+ GeForce 710A                                     1295 103C 2B0F  C
+ GeForce 810A                                     1295 103C 2B20  D
+ GeForce 810A                                     1295 103C 2B21  D
+ GeForce 805A                                     1295 17AA 367A  D
+ GeForce 710A                                     1295 17AA 367C  C
+ GeForce 825M                                     1296            D
+ GeForce GT 720M                                  1298            C
+ GeForce 920M                                     1299            D
+ GeForce 920A                                     1299 17AA 30BB  D
+ GeForce 920A                                     1299 17AA 30DA  D
+ GeForce 920A                                     1299 17AA 30DC  D
+ GeForce 920A                                     1299 17AA 30DD  D
+ GeForce 920A                                     1299 17AA 30DF  D
+ GeForce 920A                                     1299 17AA 3117  D
+ GeForce 920A                                     1299 17AA 361B  D
+ GeForce 920A                                     1299 17AA 362D  D
+ GeForce 920A                                     1299 17AA 362E  D
+ GeForce 920A                                     1299 17AA 3630  D
+ GeForce 920A                                     1299 17AA 3637  D
+ GeForce 920A                                     1299 17AA 369B  D
+ GeForce 920A                                     1299 17AA 36A7  D
+ GeForce 920A                                     1299 17AA 36AF  D
+ GeForce 920A                                     1299 17AA 36F0  D
+ GeForce GT 730                                   1299 1B0A 01C6  C
+ GeForce 910M                                     129A            D
+ Quadro K610M                                     12B9            D
+ Quadro K510M                                     12BA            D
+
+
+The 390.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID*  VDPAU features
+ -----------------------------------------------  --------------  --------------
+ GeForce GTX 480                                  06C0            C
+ GeForce GTX 465                                  06C4            C
+ GeForce GTX 480M                                 06CA            C
+ GeForce GTX 470                                  06CD            C
+ Tesla C2050 / C2070                              06D1            C
+ Tesla C2050                                      06D1 10DE 0771  C
+ Tesla C2070                                      06D1 10DE 0772  C
+ Tesla M2070                                      06D2            C
+ Tesla X2070                                      06D2 10DE 088F  C
+ Quadro 6000                                      06D8            C
+ Quadro 5000                                      06D9            C
+ Quadro 5000M                                     06DA            C
+ Quadro 6000                                      06DC            C
+ Quadro 4000                                      06DD            C
+ Tesla T20 Processor                              06DE            C
+ Tesla S2050                                      06DE 10DE 0773  C
+ Tesla M2050                                      06DE 10DE 082F  C
+ Tesla X2070                                      06DE 10DE 0840  C
+ Tesla M2050                                      06DE 10DE 0842  C
+ Tesla M2050                                      06DE 10DE 0846  C
+ Tesla M2050                                      06DE 10DE 0866  C
+ Tesla M2050                                      06DE 10DE 0907  C
+ Tesla M2050                                      06DE 10DE 091E  C
+ Tesla M2070-Q                                    06DF            C
+ GeForce GT 440                                   0DC0            C
+ GeForce GTS 450                                  0DC4            C
+ GeForce GTS 450                                  0DC5            C
+ GeForce GTS 450                                  0DC6            C
+ GeForce GT 555M                                  0DCD            C
+ GeForce GT 555M                                  0DCE            C
+ GeForce GTX 460M                                 0DD1            C
+ GeForce GT 445M                                  0DD2            C
+ GeForce GT 435M                                  0DD3            C
+ GeForce GT 550M                                  0DD6            C
+ Quadro 2000                                      0DD8            C
+ Quadro 2000D                                     0DD8 10DE 0914  C
+ Quadro 2000M                                     0DDA            C
+ GeForce GT 440                                   0DE0            C
+ GeForce GT 430                                   0DE1            C
+ GeForce GT 420                                   0DE2            C
+ GeForce GT 635M                                  0DE3            C
+ GeForce GT 520                                   0DE4            C
+ GeForce GT 530                                   0DE5            C
+ GeForce GT 610                                   0DE7            C
+ GeForce GT 620M                                  0DE8            C
+ GeForce GT 630M                                  0DE9            C
+ GeForce GT 620M                                  0DE9 1025 0692  C
+ GeForce GT 620M                                  0DE9 1025 0725  C
+ GeForce GT 620M                                  0DE9 1025 0728  C
+ GeForce GT 620M                                  0DE9 1025 072B  C
+ GeForce GT 620M                                  0DE9 1025 072E  C
+ GeForce GT 620M                                  0DE9 1025 0753  C
+ GeForce GT 620M                                  0DE9 1025 0754  C
+ GeForce GT 640M LE                               0DE9 17AA 3977  C
+ GeForce GT 635M                                  0DE9 1B0A 2210  C
+ GeForce 610M                                     0DEA            C
+ GeForce 615                                      0DEA 17AA 365A  C
+ GeForce 615                                      0DEA 17AA 365B  C
+ GeForce 615                                      0DEA 17AA 365E  C
+ GeForce 615                                      0DEA 17AA 3660  C
+ GeForce 615                                      0DEA 17AA 366C  C
+ GeForce GT 555M                                  0DEB            C
+ GeForce GT 525M                                  0DEC            C
+ GeForce GT 520M                                  0DED            C
+ GeForce GT 415M                                  0DEE            C
+ NVS 5400M                                        0DEF            C
+ GeForce GT 425M                                  0DF0            C
+ GeForce GT 420M                                  0DF1            C
+ GeForce GT 435M                                  0DF2            C
+ GeForce GT 420M                                  0DF3            C
+ GeForce GT 540M                                  0DF4            C
+ GeForce GT 630M                                  0DF4 152D 0952  C
+ GeForce GT 630M                                  0DF4 152D 0953  C
+ GeForce GT 525M                                  0DF5            C
+ GeForce GT 550M                                  0DF6            C
+ GeForce GT 520M                                  0DF7            C
+ Quadro 600                                       0DF8            C
+ Quadro 500M                                      0DF9            C
+ Quadro 1000M                                     0DFA            C
+ NVS 5200M                                        0DFC            C
+ GeForce GTX 460                                  0E22            C
+ GeForce GTX 460 SE                               0E23            C
+ GeForce GTX 460                                  0E24            C
+ GeForce GTX 470M                                 0E30            C
+ GeForce GTX 485M                                 0E31            C
+ Quadro 3000M                                     0E3A            C
+ Quadro 4000M                                     0E3B            C
+ GeForce GT 630                                   0F00            C
+ GeForce GT 620                                   0F01            C
+ GeForce GT 730                                   0F02            C
+ GeForce GT 610                                   0F03            C
+ GeForce GT 520                                   1040            C
+ GeForce 510                                      1042            D
+ GeForce 605                                      1048            D
+ GeForce GT 620                                   1049            C
+ GeForce GT 610                                   104A            C
+ GeForce GT 625 (OEM)                             104B            D
+ GeForce GT 625                                   104B 1043 844C  D
+ GeForce GT 625                                   104B 1043 846B  D
+ GeForce GT 625                                   104B 1462 B590  D
+ GeForce GT 625                                   104B 174B 0625  D
+ GeForce GT 625                                   104B 174B A625  D
+ GeForce GT 705                                   104C            D
+ GeForce GT 520M                                  1050            C
+ GeForce GT 520MX                                 1051            D
+ GeForce GT 520M                                  1052            C
+ GeForce 410M                                     1054            D
+ GeForce 410M                                     1055            D
+ NVS 4200M                                        1056            D
+ NVS 4200M                                        1057            D
+ GeForce 610M                                     1058            C
+ GeForce 610                                      1058 103C 2AF1  D
+ GeForce 800A                                     1058 17AA 3682  D
+ GeForce 705A                                     1058 17AA 3692  C
+ GeForce 800A                                     1058 17AA 3695  D
+ GeForce 800A                                     1058 17AA 36A8  D
+ GeForce 800A                                     1058 17AA 36AC  D
+ GeForce 800A                                     1058 17AA 36AD  D
+ GeForce 800A                                     1058 705A 3682  D
+ GeForce 610M                                     1059            C
+ GeForce 610M                                     105A            C
+ GeForce 705M                                     105B            C
+ GeForce 705A                                     105B 103C 2AFB  C
+ GeForce 800A                                     105B 17AA 30B1  D
+ GeForce 705A                                     105B 17AA 30F3  C
+ GeForce 800A                                     105B 17AA 36A1  D
+ NVS 315                                          107C            D
+ NVS 310                                          107D            D
+ GeForce GTX 580                                  1080            C
+ GeForce GTX 570                                  1081            C
+ GeForce GTX 560 Ti                               1082            C
+ GeForce GTX 560                                  1084            C
+ GeForce GTX 570                                  1086            C
+ GeForce GTX 560 Ti                               1087            C
+ GeForce GTX 590                                  1088            C
+ GeForce GTX 580                                  1089            C
+ GeForce GTX 580                                  108B            C
+ Tesla M2090                                      1091            C
+ Tesla X2090                                      1091 10DE 088E  C
+ Tesla X2090                                      1091 10DE 0891  C
+ Tesla X2090                                      1091 10DE 0974  C
+ Tesla X2090                                      1091 10DE 098D  C
+ Tesla M2075                                      1094            C
+ Tesla C2075                                      1096            C
+ Tesla C2050                                      1096 10DE 0911  C
+ Quadro 5010M                                     109A            C
+ Quadro 7000                                      109B            C
+ GeForce 820M                                     1140 1019 0799  C
+ GeForce GT 720M                                  1140 1019 999F  C
+ GeForce GT 620M                                  1140 1025 0600  C
+ GeForce GT 620M                                  1140 1025 0606  C
+ GeForce GT 620M                                  1140 1025 064A  C
+ GeForce GT 620M                                  1140 1025 064C  C
+ GeForce GT 620M                                  1140 1025 067A  C
+ GeForce GT 620M                                  1140 1025 0680  C
+ GeForce 710M                                     1140 1025 0686  C
+ GeForce 710M                                     1140 1025 0689  C
+ GeForce 710M                                     1140 1025 068B  C
+ GeForce 710M                                     1140 1025 068D  C
+ GeForce 710M                                     1140 1025 068E  C
+ GeForce 710M                                     1140 1025 0691  C
+ GeForce GT 620M                                  1140 1025 0692  C
+ GeForce GT 620M                                  1140 1025 0694  C
+ GeForce GT 620M                                  1140 1025 0702  C
+ GeForce GT 620M                                  1140 1025 0719  C
+ GeForce GT 620M                                  1140 1025 0725  C
+ GeForce GT 620M                                  1140 1025 0728  C
+ GeForce GT 620M                                  1140 1025 072B  C
+ GeForce GT 620M                                  1140 1025 072E  C
+ GeForce GT 620M                                  1140 1025 0732  C
+ GeForce GT 720M                                  1140 1025 0763  C
+ GeForce 710M                                     1140 1025 0773  C
+ GeForce 710M                                     1140 1025 0774  C
+ GeForce GT 720M                                  1140 1025 0776  C
+ GeForce 710M                                     1140 1025 077A  C
+ GeForce 710M                                     1140 1025 077B  C
+ GeForce 710M                                     1140 1025 077C  C
+ GeForce 710M                                     1140 1025 077D  C
+ GeForce 710M                                     1140 1025 077E  C
+ GeForce 710M                                     1140 1025 077F  C
+ GeForce GT 720M                                  1140 1025 0781  C
+ GeForce GT 720M                                  1140 1025 0798  C
+ GeForce GT 720M                                  1140 1025 0799  C
+ GeForce GT 720M                                  1140 1025 079B  C
+ GeForce GT 720M                                  1140 1025 079C  C
+ GeForce GT 720M                                  1140 1025 0807  C
+ GeForce 820M                                     1140 1025 0821  C
+ GeForce GT 720M                                  1140 1025 0823  C
+ GeForce GT 720M                                  1140 1025 0830  C
+ GeForce GT 720M                                  1140 1025 0833  C
+ GeForce GT 720M                                  1140 1025 0837  C
+ GeForce 820M                                     1140 1025 083E  C
+ GeForce 710M                                     1140 1025 0841  C
+ GeForce 820M                                     1140 1025 0853  C
+ GeForce 820M                                     1140 1025 0854  C
+ GeForce 820M                                     1140 1025 0855  C
+ GeForce 820M                                     1140 1025 0856  C
+ GeForce 820M                                     1140 1025 0857  C
+ GeForce 820M                                     1140 1025 0858  C
+ GeForce 820M                                     1140 1025 0863  C
+ GeForce 820M                                     1140 1025 0868  C
+ GeForce 810M                                     1140 1025 0869  C
+ GeForce 820M                                     1140 1025 0873  C
+ GeForce 820M                                     1140 1025 0878  C
+ GeForce 820M                                     1140 1025 087B  C
+ GeForce 820M                                     1140 1025 087F  C
+ GeForce 820M                                     1140 1025 0881  C
+ GeForce 820M                                     1140 1025 0885  C
+ GeForce 820M                                     1140 1025 088A  C
+ GeForce 820M                                     1140 1025 089B  C
+ GeForce 820M                                     1140 1025 0921  C
+ GeForce 810M                                     1140 1025 092E  C
+ GeForce 820M                                     1140 1025 092F  C
+ GeForce 820M                                     1140 1025 0932  C
+ GeForce 820M                                     1140 1025 093A  C
+ GeForce 820M                                     1140 1025 093C  C
+ GeForce 820M                                     1140 1025 093F  C
+ GeForce 820M                                     1140 1025 0941  C
+ GeForce 820M                                     1140 1025 0945  C
+ GeForce 820M                                     1140 1025 0954  C
+ GeForce 820M                                     1140 1025 0965  C
+ GeForce GT 630M                                  1140 1028 054D  C
+ GeForce GT 630M                                  1140 1028 054E  C
+ GeForce GT 620M                                  1140 1028 0554  C
+ GeForce GT 620M                                  1140 1028 0557  C
+ GeForce GT 625M                                  1140 1028 0562  C
+ GeForce GT 630M                                  1140 1028 0565  C
+ GeForce GT 630M                                  1140 1028 0568  C
+ GeForce GT 630M                                  1140 1028 0590  C
+ GeForce GT 625M                                  1140 1028 0592  C
+ GeForce GT 625M                                  1140 1028 0594  C
+ GeForce GT 625M                                  1140 1028 0595  C
+ GeForce GT 625M                                  1140 1028 05A2  C
+ GeForce GT 625M                                  1140 1028 05B1  C
+ GeForce GT 625M                                  1140 1028 05B3  C
+ GeForce GT 630M                                  1140 1028 05DA  C
+ GeForce GT 720M                                  1140 1028 05DE  C
+ GeForce GT 720M                                  1140 1028 05E0  C
+ GeForce GT 630M                                  1140 1028 05E8  C
+ GeForce GT 720M                                  1140 1028 05F4  C
+ GeForce GT 720M                                  1140 1028 060F  C
+ GeForce GT 720M                                  1140 1028 062F  C
+ GeForce 820M                                     1140 1028 064E  C
+ GeForce 820M                                     1140 1028 0652  C
+ GeForce 820M                                     1140 1028 0653  C
+ GeForce 820M                                     1140 1028 0655  C
+ GeForce 820M                                     1140 1028 065E  C
+ GeForce 820M                                     1140 1028 0662  C
+ GeForce 820M                                     1140 1028 068D  C
+ GeForce 820M                                     1140 1028 06AD  C
+ GeForce 820M                                     1140 1028 06AE  C
+ GeForce 820M                                     1140 1028 06AF  C
+ GeForce 820M                                     1140 1028 06B0  C
+ GeForce 820M                                     1140 1028 06C0  C
+ GeForce 820M                                     1140 1028 06C1  C
+ GeForce GT 630M                                  1140 103C 18EF  C
+ GeForce GT 630M                                  1140 103C 18F9  C
+ GeForce GT 630M                                  1140 103C 18FB  C
+ GeForce GT 630M                                  1140 103C 18FD  C
+ GeForce GT 630M                                  1140 103C 18FF  C
+ GeForce 820M                                     1140 103C 218A  C
+ GeForce 820M                                     1140 103C 21BB  C
+ GeForce 820M                                     1140 103C 21BC  C
+ GeForce 820M                                     1140 103C 220E  C
+ GeForce 820M                                     1140 103C 2210  C
+ GeForce 820M                                     1140 103C 2212  C
+ GeForce 820M                                     1140 103C 2214  C
+ GeForce 820M                                     1140 103C 2218  C
+ GeForce 820M                                     1140 103C 225B  C
+ GeForce 820M                                     1140 103C 225D  C
+ GeForce 820M                                     1140 103C 226D  C
+ GeForce 820M                                     1140 103C 226F  C
+ GeForce 820M                                     1140 103C 22D2  C
+ GeForce 820M                                     1140 103C 22D9  C
+ GeForce 820M                                     1140 103C 2335  C
+ GeForce 820M                                     1140 103C 2337  C
+ GeForce GT 720A                                  1140 103C 2AEF  C
+ GeForce 710A                                     1140 103C 2AF9  C
+ NVS 5200M                                        1140 1043 10DD  C
+ NVS 5200M                                        1140 1043 10ED  C
+ GeForce GT 720M                                  1140 1043 11FD  C
+ GeForce GT 720M                                  1140 1043 124D  C
+ GeForce GT 720M                                  1140 1043 126D  C
+ GeForce GT 720M                                  1140 1043 131D  C
+ GeForce GT 720M                                  1140 1043 13FD  C
+ GeForce GT 720M                                  1140 1043 14C7  C
+ GeForce GT 620M                                  1140 1043 1507  C
+ GeForce 820M                                     1140 1043 15AD  C
+ GeForce 820M                                     1140 1043 15ED  C
+ GeForce 820M                                     1140 1043 160D  C
+ GeForce 820M                                     1140 1043 163D  C
+ GeForce 820M                                     1140 1043 165D  C
+ GeForce 820M                                     1140 1043 166D  C
+ GeForce 820M                                     1140 1043 16CD  C
+ GeForce 820M                                     1140 1043 16DD  C
+ GeForce 820M                                     1140 1043 170D  C
+ GeForce 820M                                     1140 1043 176D  C
+ GeForce 820M                                     1140 1043 178D  C
+ GeForce 820M                                     1140 1043 179D  C
+ GeForce GT 620M                                  1140 1043 2132  C
+ NVS 5200M                                        1140 1043 2136  C
+ GeForce GT 720M                                  1140 1043 21BA  C
+ GeForce GT 720M                                  1140 1043 21FA  C
+ GeForce GT 720M                                  1140 1043 220A  C
+ GeForce GT 720M                                  1140 1043 221A  C
+ GeForce GT 710M                                  1140 1043 223A  C
+ GeForce GT 710M                                  1140 1043 224A  C
+ GeForce 820M                                     1140 1043 227A  C
+ GeForce 820M                                     1140 1043 228A  C
+ GeForce 820M                                     1140 1043 22FA  C
+ GeForce 820M                                     1140 1043 232A  C
+ GeForce 820M                                     1140 1043 233A  C
+ GeForce 820M                                     1140 1043 235A  C
+ GeForce 820M                                     1140 1043 236A  C
+ GeForce 820M                                     1140 1043 238A  C
+ GeForce GT 720M                                  1140 1043 8595  C
+ GeForce GT 720M                                  1140 1043 85EA  C
+ GeForce 820M                                     1140 1043 85EB  C
+ GeForce 820M                                     1140 1043 85EC  C
+ GeForce GT 720M                                  1140 1043 85EE  C
+ GeForce 820M                                     1140 1043 85F3  C
+ GeForce 820M                                     1140 1043 860E  C
+ GeForce 820M                                     1140 1043 861A  C
+ GeForce 820M                                     1140 1043 861B  C
+ GeForce 820M                                     1140 1043 8628  C
+ GeForce 820M                                     1140 1043 8643  C
+ GeForce 820M                                     1140 1043 864C  C
+ GeForce 820M                                     1140 1043 8652  C
+ GeForce 820M                                     1140 1043 8660  C
+ GeForce 820M                                     1140 1043 8661  C
+ GeForce GT 720M                                  1140 105B 0DAC  C
+ GeForce GT 720M                                  1140 105B 0DAD  C
+ GeForce GT 720M                                  1140 105B 0EF3  C
+ GeForce GT 720M                                  1140 10CF 17F5  C
+ GeForce 710M                                     1140 1179 FA01  C
+ GeForce 710M                                     1140 1179 FA02  C
+ GeForce 710M                                     1140 1179 FA03  C
+ GeForce 710M                                     1140 1179 FA05  C
+ GeForce 710M                                     1140 1179 FA11  C
+ GeForce 710M                                     1140 1179 FA13  C
+ GeForce 710M                                     1140 1179 FA18  C
+ GeForce 710M                                     1140 1179 FA19  C
+ GeForce 710M                                     1140 1179 FA21  C
+ GeForce 710M                                     1140 1179 FA23  C
+ GeForce 710M                                     1140 1179 FA2A  C
+ GeForce 710M                                     1140 1179 FA32  C
+ GeForce 710M                                     1140 1179 FA33  C
+ GeForce 710M                                     1140 1179 FA36  C
+ GeForce 710M                                     1140 1179 FA38  C
+ GeForce 710M                                     1140 1179 FA42  C
+ GeForce 710M                                     1140 1179 FA43  C
+ GeForce 710M                                     1140 1179 FA45  C
+ GeForce 710M                                     1140 1179 FA47  C
+ GeForce 710M                                     1140 1179 FA49  C
+ GeForce 710M                                     1140 1179 FA58  C
+ GeForce 710M                                     1140 1179 FA59  C
+ GeForce 710M                                     1140 1179 FA88  C
+ GeForce 710M                                     1140 1179 FA89  C
+ GeForce GT 620M                                  1140 144D B092  C
+ GeForce GT 630M                                  1140 144D C0D5  C
+ GeForce GT 620M                                  1140 144D C0D7  C
+ NVS 5200M                                        1140 144D C0E2  C
+ NVS 5200M                                        1140 144D C0E3  C
+ NVS 5200M                                        1140 144D C0E4  C
+ GeForce 820M                                     1140 144D C10D  C
+ GeForce GT 620M                                  1140 144D C652  C
+ GeForce 710M                                     1140 144D C709  C
+ GeForce 710M                                     1140 144D C711  C
+ GeForce 710M                                     1140 144D C736  C
+ GeForce 710M                                     1140 144D C737  C
+ GeForce 820M                                     1140 144D C745  C
+ GeForce 820M                                     1140 144D C750  C
+ GeForce GT 710M                                  1140 1462 10B8  C
+ GeForce GT 720M                                  1140 1462 10E9  C
+ GeForce 820M                                     1140 1462 1116  C
+ GeForce 720M                                     1140 1462 AA33  C
+ GeForce GT 720M                                  1140 1462 AAA2  C
+ GeForce 820M                                     1140 1462 AAA3  C
+ GeForce GT 720M                                  1140 1462 ACB2  C
+ GeForce GT 720M                                  1140 1462 ACC1  C
+ GeForce 720M                                     1140 1462 AE61  C
+ GeForce GT 720M                                  1140 1462 AE65  C
+ GeForce 820M                                     1140 1462 AE6A  C
+ GeForce GT 720M                                  1140 1462 AE71  C
+ GeForce 820M                                     1140 14C0 0083  C
+ GeForce 620M                                     1140 152D 0926  C
+ GeForce GT 630M                                  1140 152D 0982  C
+ GeForce GT 630M                                  1140 152D 0983  C
+ GeForce GT 820M                                  1140 152D 1005  C
+ GeForce 710M                                     1140 152D 1012  C
+ GeForce 820M                                     1140 152D 1019  C
+ GeForce GT 630M                                  1140 152D 1030  C
+ GeForce 710M                                     1140 152D 1055  C
+ GeForce GT 720M                                  1140 152D 1067  C
+ GeForce 820M                                     1140 152D 1092  C
+ NVS 5200M                                        1140 17AA 2200  C
+ GeForce GT 720M                                  1140 17AA 2213  C
+ GeForce GT 720M                                  1140 17AA 2220  C
+ GeForce GT 720A                                  1140 17AA 309C  C
+ GeForce 820A                                     1140 17AA 30B4  C
+ GeForce 720A                                     1140 17AA 30B7  C
+ GeForce 820A                                     1140 17AA 30E4  C
+ GeForce 820A                                     1140 17AA 361B  C
+ GeForce 820A                                     1140 17AA 361C  C
+ GeForce 820A                                     1140 17AA 361D  C
+ GeForce GT 620M                                  1140 17AA 3656  C
+ GeForce 705M                                     1140 17AA 365A  C
+ GeForce 800M                                     1140 17AA 365E  C
+ GeForce 820A                                     1140 17AA 3661  C
+ GeForce 800M                                     1140 17AA 366C  C
+ GeForce 800M                                     1140 17AA 3685  C
+ GeForce 800M                                     1140 17AA 3686  C
+ GeForce 705A                                     1140 17AA 3687  C
+ GeForce 820A                                     1140 17AA 3696  C
+ GeForce 820A                                     1140 17AA 369B  C
+ GeForce 820A                                     1140 17AA 369C  C
+ GeForce 820A                                     1140 17AA 369D  C
+ GeForce 820A                                     1140 17AA 369E  C
+ GeForce 820A                                     1140 17AA 36A6  C
+ GeForce 820A                                     1140 17AA 36A7  C
+ GeForce 820A                                     1140 17AA 36A9  C
+ GeForce 820A                                     1140 17AA 36AF  C
+ GeForce 820A                                     1140 17AA 36B0  C
+ GeForce 820A                                     1140 17AA 36B6  C
+ GeForce GT 720M                                  1140 17AA 3800  C
+ GeForce GT 720M                                  1140 17AA 3801  C
+ GeForce GT 720M                                  1140 17AA 3802  C
+ GeForce GT 720M                                  1140 17AA 3803  C
+ GeForce GT 720M                                  1140 17AA 3804  C
+ GeForce GT 720M                                  1140 17AA 3806  C
+ GeForce GT 720M                                  1140 17AA 3808  C
+ GeForce GT 820M                                  1140 17AA 380D  C
+ GeForce GT 820M                                  1140 17AA 380E  C
+ GeForce GT 820M                                  1140 17AA 380F  C
+ GeForce GT 820M                                  1140 17AA 3811  C
+ GeForce 820M                                     1140 17AA 3812  C
+ GeForce 820M                                     1140 17AA 3813  C
+ GeForce 820M                                     1140 17AA 3816  C
+ GeForce 820M                                     1140 17AA 3817  C
+ GeForce 820M                                     1140 17AA 3818  C
+ GeForce 820M                                     1140 17AA 381A  C
+ GeForce 820M                                     1140 17AA 381C  C
+ GeForce 820M                                     1140 17AA 381D  C
+ GeForce 610M                                     1140 17AA 3901  C
+ GeForce 710M                                     1140 17AA 3902  C
+ GeForce 710M                                     1140 17AA 3903  C
+ GeForce GT 625M                                  1140 17AA 3904  C
+ GeForce GT 720M                                  1140 17AA 3905  C
+ GeForce 820M                                     1140 17AA 3907  C
+ GeForce GT 720M                                  1140 17AA 3910  C
+ GeForce GT 720M                                  1140 17AA 3912  C
+ GeForce 820M                                     1140 17AA 3913  C
+ GeForce 820M                                     1140 17AA 3915  C
+ GeForce 610M                                     1140 17AA 3983  C
+ GeForce 610M                                     1140 17AA 5001  C
+ GeForce GT 720M                                  1140 17AA 5003  C
+ GeForce 705M                                     1140 17AA 5005  C
+ GeForce GT 620M                                  1140 17AA 500D  C
+ GeForce 710M                                     1140 17AA 5014  C
+ GeForce 710M                                     1140 17AA 5017  C
+ GeForce 710M                                     1140 17AA 5019  C
+ GeForce 710M                                     1140 17AA 501A  C
+ GeForce GT 720M                                  1140 17AA 501F  C
+ GeForce 710M                                     1140 17AA 5025  C
+ GeForce 710M                                     1140 17AA 5027  C
+ GeForce 710M                                     1140 17AA 502A  C
+ GeForce GT 720M                                  1140 17AA 502B  C
+ GeForce 710M                                     1140 17AA 502D  C
+ GeForce GT 720M                                  1140 17AA 502E  C
+ GeForce GT 720M                                  1140 17AA 502F  C
+ GeForce 705M                                     1140 17AA 5030  C
+ GeForce 705M                                     1140 17AA 5031  C
+ GeForce 820M                                     1140 17AA 5032  C
+ GeForce 820M                                     1140 17AA 5033  C
+ GeForce 710M                                     1140 17AA 503E  C
+ GeForce 820M                                     1140 17AA 503F  C
+ GeForce 820M                                     1140 17AA 5040  C
+ GeForce 710M                                     1140 1854 0177  C
+ GeForce 710M                                     1140 1854 0180  C
+ GeForce GT 720M                                  1140 1854 0190  C
+ GeForce GT 720M                                  1140 1854 0192  C
+ GeForce 820M                                     1140 1854 0224  C
+ GeForce 820M                                     1140 1B0A 01C0  C
+ GeForce GT 620M                                  1140 1B0A 20DD  C
+ GeForce GT 620M                                  1140 1B0A 20DF  C
+ GeForce 820M                                     1140 1B0A 210E  C
+ GeForce GT 720M                                  1140 1B0A 2202  C
+ GeForce 820M                                     1140 1B0A 90D7  C
+ GeForce 820M                                     1140 1B0A 90DD  C
+ GeForce 820M                                     1140 1B50 5530  C
+ GeForce GT 720M                                  1140 1B6C 5031  C
+ GeForce 820M                                     1140 1BAB 0106  C
+ GeForce 810M                                     1140 1D05 1013  C
+ GeForce GTX 560 Ti                               1200            C
+ GeForce GTX 560                                  1201            C
+ GeForce GTX 460 SE v2                            1203            C
+ GeForce GTX 460 v2                               1205            C
+ GeForce GTX 555                                  1206            C
+ GeForce GT 645                                   1207            C
+ GeForce GTX 560 SE                               1208            C
+ GeForce GTX 570M                                 1210            C
+ GeForce GTX 580M                                 1211            C
+ GeForce GTX 675M                                 1212            C
+ GeForce GTX 670M                                 1213            C
+ GeForce GT 545                                   1241            C
+ GeForce GT 545                                   1243            C
+ GeForce GTX 550 Ti                               1244            C
+ GeForce GTS 450                                  1245            C
+ GeForce GT 550M                                  1246            C
+ GeForce GT 555M                                  1247            C
+ GeForce GT 635M                                  1247 1043 212A  C
+ GeForce GT 635M                                  1247 1043 212B  C
+ GeForce GT 635M                                  1247 1043 212C  C
+ GeForce GT 555M                                  1248            C
+ GeForce GTS 450                                  1249            C
+ GeForce GT 640                                   124B            C
+ GeForce GT 555M                                  124D            C
+ GeForce GT 635M                                  124D 1462 10CC  C
+ GeForce GTX 560M                                 1251            C
+
+
+The 367.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID*  VDPAU features
+ -----------------------------------------------  --------------  --------------
+ GRID K340                                        0FEF            D
+ GRID K1                                          0FF2            D
+ GRID K2                                          11BF            D
+
+
+The 340.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID*  VDPAU features
+ -----------------------------------------------  --------------  --------------
+ GeForce 8800 GTX                                 0191            -
+ GeForce 8800 GTS                                 0193            -
+ GeForce 8800 Ultra                               0194            -
+ Tesla C870                                       0197            -
+ Quadro FX 5600                                   019D            -
+ Quadro FX 4600                                   019E            -
+ GeForce 8600 GTS                                 0400            A
+ GeForce 8600 GT                                  0401            A
+ GeForce 8600 GT                                  0402            A
+ GeForce 8600 GS                                  0403            A
+ GeForce 8400 GS                                  0404            A
+ GeForce 9500M GS                                 0405            A
+ GeForce 8300 GS                                  0406            -
+ GeForce 8600M GT                                 0407            A
+ GeForce 9650M GS                                 0408            A
+ GeForce 8700M GT                                 0409            A
+ Quadro FX 370                                    040A            A
+ Quadro NVS 320M                                  040B            A
+ Quadro FX 570M                                   040C            A
+ Quadro FX 1600M                                  040D            A
+ Quadro FX 570                                    040E            A
+ Quadro FX 1700                                   040F            A
+ GeForce GT 330                                   0410            A
+ GeForce 8400 SE                                  0420            -
+ GeForce 8500 GT                                  0421            A
+ GeForce 8400 GS                                  0422            A
+ GeForce 8300 GS                                  0423            -
+ GeForce 8400 GS                                  0424            A
+ GeForce 8600M GS                                 0425            A
+ GeForce 8400M GT                                 0426            A
+ GeForce 8400M GS                                 0427            A
+ GeForce 8400M G                                  0428            A
+ Quadro NVS 140M                                  0429            A
+ Quadro NVS 130M                                  042A            A
+ Quadro NVS 135M                                  042B            A
+ GeForce 9400 GT                                  042C            A
+ Quadro FX 360M                                   042D            A
+ GeForce 9300M G                                  042E            A
+ Quadro NVS 290                                   042F            A
+ GeForce GTX 295                                  05E0            A
+ GeForce GTX 280                                  05E1            A
+ GeForce GTX 260                                  05E2            A
+ GeForce GTX 285                                  05E3            A
+ GeForce GTX 275                                  05E6            A
+ Tesla C1060                                      05E7            A
+ Tesla T10 Processor                              05E7 10DE 0595  A
+ Tesla T10 Processor                              05E7 10DE 068F  A
+ Tesla M1060                                      05E7 10DE 0697  A
+ Tesla M1060                                      05E7 10DE 0714  A
+ Tesla M1060                                      05E7 10DE 0743  A
+ GeForce GTX 260                                  05EA            A
+ GeForce GTX 295                                  05EB            A
+ Quadroplex 2200 D2                               05ED            A
+ Quadroplex 2200 S4                               05F8            A
+ Quadro CX                                        05F9            A
+ Quadro FX 5800                                   05FD            A
+ Quadro FX 4800                                   05FE            A
+ Quadro FX 3800                                   05FF            A
+ GeForce 8800 GTS 512                             0600            A
+ GeForce 9800 GT                                  0601            A
+ GeForce 8800 GT                                  0602            A
+ GeForce GT 230                                   0603            A
+ GeForce 9800 GX2                                 0604            A
+ GeForce 9800 GT                                  0605            A
+ GeForce 8800 GS                                  0606            A
+ GeForce GTS 240                                  0607            A
+ GeForce 9800M GTX                                0608            A
+ GeForce 8800M GTS                                0609            A
+ GeForce 8800 GS                                  0609 106B 00A7  A
+ GeForce GTX 280M                                 060A            A
+ GeForce 9800M GT                                 060B            A
+ GeForce 8800M GTX                                060C            A
+ GeForce 8800 GS                                  060D            A
+ GeForce GTX 285M                                 060F            A
+ GeForce 9600 GSO                                 0610            A
+ GeForce 8800 GT                                  0611            A
+ GeForce 9800 GTX/9800 GTX+                       0612            A
+ GeForce 9800 GTX+                                0613            A
+ GeForce 9800 GT                                  0614            A
+ GeForce GTS 250                                  0615            A
+ GeForce 9800M GTX                                0617            A
+ GeForce GTX 260M                                 0618            A
+ Quadro FX 4700 X2                                0619            A
+ Quadro FX 3700                                   061A            A
+ Quadro VX 200                                    061B            A
+ Quadro FX 3600M                                  061C            A
+ Quadro FX 2800M                                  061D            A
+ Quadro FX 3700M                                  061E            A
+ Quadro FX 3800M                                  061F            A
+ GeForce GT 230                                   0621            A
+ GeForce 9600 GT                                  0622            A
+ GeForce 9600 GS                                  0623            A
+ GeForce 9600 GSO 512                             0625            A
+ GeForce GT 130                                   0626            A
+ GeForce GT 140                                   0627            A
+ GeForce 9800M GTS                                0628            A
+ GeForce 9700M GTS                                062A            A
+ GeForce 9800M GS                                 062B            A
+ GeForce 9800M GTS                                062C            A
+ GeForce 9600 GT                                  062D            A
+ GeForce 9600 GT                                  062E            A
+ GeForce GT 130                                   062E 106B 0605  A
+ GeForce 9700 S                                   0630            A
+ GeForce GTS 160M                                 0631            A
+ GeForce GTS 150M                                 0632            A
+ GeForce 9600 GSO                                 0635            A
+ GeForce 9600 GT                                  0637            A
+ Quadro FX 1800                                   0638            A
+ Quadro FX 2700M                                  063A            A
+ GeForce 9500 GT                                  0640            A
+ GeForce 9400 GT                                  0641            A
+ GeForce 9500 GT                                  0643            A
+ GeForce 9500 GS                                  0644            A
+ GeForce 9500 GS                                  0645            A
+ GeForce GT 120                                   0646            A
+ GeForce 9600M GT                                 0647            A
+ GeForce 9600M GS                                 0648            A
+ GeForce 9600M GT                                 0649            A
+ GeForce GT 220M                                  0649 1043 202D  A
+ GeForce 9700M GT                                 064A            A
+ GeForce 9500M G                                  064B            A
+ GeForce 9650M GT                                 064C            A
+ GeForce G 110M                                   0651            A
+ GeForce GT 130M                                  0652            A
+ GeForce GT 240M LE                               0652 152D 0850  A
+ GeForce GT 120M                                  0653            A
+ GeForce GT 220M                                  0654            A
+ GeForce GT 320M                                  0654 1043 14A2  A
+ GeForce GT 320M                                  0654 1043 14D2  A
+ GeForce GT 120                                   0655 106B 0633  A
+ GeForce GT 120                                   0656 106B 0693  A
+ Quadro FX 380                                    0658            A
+ Quadro FX 580                                    0659            A
+ Quadro FX 1700M                                  065A            A
+ GeForce 9400 GT                                  065B            A
+ Quadro FX 770M                                   065C            A
+ GeForce 9300 GE                                  06E0            B
+ GeForce 9300 GS                                  06E1            B
+ GeForce 8400                                     06E2            B
+ GeForce 8400 SE                                  06E3            -
+ GeForce 8400 GS                                  06E4            A
+ GeForce 9300M GS                                 06E5            B
+ GeForce G100                                     06E6            B
+ GeForce 9300 SE                                  06E7            -
+ GeForce 9200M GS                                 06E8            B
+ GeForce 9200M GE                                 06E8 103C 360B  B
+ GeForce 9300M GS                                 06E9            B
+ Quadro NVS 150M                                  06EA            B
+ Quadro NVS 160M                                  06EB            B
+ GeForce G 105M                                   06EC            B
+ GeForce G 103M                                   06EF            B
+ GeForce G105M                                    06F1            B
+ Quadro NVS 420                                   06F8            B
+ Quadro FX 370 LP                                 06F9            B
+ Quadro FX 370 Low Profile                        06F9 10DE 060D  B
+ Quadro NVS 450                                   06FA            B
+ Quadro FX 370M                                   06FB            B
+ Quadro NVS 295                                   06FD            B
+ HICx16 + Graphics                                06FF            B
+ HICx8 + Graphics                                 06FF 10DE 0711  B
+ GeForce 8200M                                    0840            B
+ GeForce 9100M G                                  0844            B
+ GeForce 8200M G                                  0845            B
+ GeForce 9200                                     0846            B
+ GeForce 9100                                     0847            B
+ GeForce 8300                                     0848            B
+ GeForce 8200                                     0849            B
+ nForce 730a                                      084A            B
+ GeForce 9200                                     084B            B
+ nForce 980a/780a SLI                             084C            B
+ nForce 750a SLI                                  084D            B
+ GeForce 8100 / nForce 720a                       084F            -
+ GeForce 9400                                     0860            B
+ GeForce 9400                                     0861            B
+ GeForce 9400M G                                  0862            B
+ GeForce 9400M                                    0863            B
+ GeForce 9300                                     0864            B
+ ION                                              0865            B
+ GeForce 9400M G                                  0866            B
+ GeForce 9400M                                    0866 106B 00B1  B
+ GeForce 9400                                     0867            B
+ nForce 760i SLI                                  0868            B
+ GeForce 9400                                     0869            B
+ GeForce 9400                                     086A            B
+ GeForce 9300 / nForce 730i                       086C            B
+ GeForce 9200                                     086D            B
+ GeForce 9100M G                                  086E            B
+ GeForce 8200M G                                  086F            B
+ GeForce 9400M                                    0870            B
+ GeForce 9200                                     0871            B
+ GeForce G102M                                    0872            B
+ GeForce G205M                                    0872 1043 1C42  B
+ GeForce G102M                                    0873            B
+ GeForce G205M                                    0873 1043 1C52  B
+ ION                                              0874            B
+ ION                                              0876            B
+ GeForce 9400                                     087A            B
+ ION                                              087D            B
+ ION LE                                           087E            B
+ ION LE                                           087F            B
+ GeForce 320M                                     08A0            C
+ GeForce 320M                                     08A2            C
+ GeForce 320M                                     08A3            C
+ GeForce 320M                                     08A4            C
+ GeForce 320M                                     08A5            C
+ GeForce GT 220                                   0A20            C
+ GeForce 315                                      0A22            -
+ GeForce 210                                      0A23            C
+ GeForce 405                                      0A26            C
+ GeForce 405                                      0A27            C
+ GeForce GT 230M                                  0A28            C
+ GeForce GT 330M                                  0A29            C
+ GeForce GT 230M                                  0A2A            C
+ GeForce GT 330M                                  0A2B            C
+ NVS 5100M                                        0A2C            C
+ GeForce GT 320M                                  0A2D            A
+ GeForce GT 415                                   0A32            C
+ GeForce GT 240M                                  0A34            C
+ GeForce GT 325M                                  0A35            C
+ Quadro 400                                       0A38            C
+ Quadro FX 880M                                   0A3C            C
+ GeForce G210                                     0A60            C
+ GeForce 205                                      0A62            C
+ GeForce 310                                      0A63            C
+ Second Generation ION                            0A64            C
+ GeForce 210                                      0A65            C
+ GeForce 310                                      0A66            C
+ GeForce 315                                      0A67            -
+ GeForce G105M                                    0A68            B
+ GeForce G105M                                    0A69            B
+ NVS 2100M                                        0A6A            C
+ NVS 3100M                                        0A6C            C
+ GeForce 305M                                     0A6E            C
+ Second Generation ION                            0A6E 17AA 3607  C
+ Second Generation ION                            0A6F            C
+ GeForce 310M                                     0A70            C
+ Second Generation ION                            0A70 17AA 3605  C
+ Second Generation ION                            0A70 17AA 3617  C
+ GeForce 305M                                     0A71            C
+ GeForce 310M                                     0A72            C
+ GeForce 305M                                     0A73            C
+ Second Generation ION                            0A73 17AA 3607  C
+ Second Generation ION                            0A73 17AA 3610  C
+ GeForce G210M                                    0A74            C
+ GeForce G210                                     0A74 17AA 903A  C
+ GeForce 310M                                     0A75            C
+ Second Generation ION                            0A75 17AA 3605  C
+ Second Generation ION                            0A76            C
+ Quadro FX 380 LP                                 0A78            C
+ GeForce 315M                                     0A7A            C
+ GeForce 405                                      0A7A 1462 AA51  C
+ GeForce 405                                      0A7A 1462 AA58  C
+ GeForce 405                                      0A7A 1462 AC71  C
+ GeForce 405                                      0A7A 1462 AC82  C
+ GeForce 405                                      0A7A 1642 3980  C
+ GeForce 405M                                     0A7A 17AA 3950  C
+ GeForce 405M                                     0A7A 17AA 397D  C
+ GeForce 405                                      0A7A 1B0A 90B4  C
+ GeForce 405                                      0A7A 1BFD 0003  C
+ GeForce 405                                      0A7A 1BFD 8006  C
+ Quadro FX 380M                                   0A7C            C
+ GeForce GT 330                                   0CA0            A
+ GeForce GT 320                                   0CA2            C
+ GeForce GT 240                                   0CA3            C
+ GeForce GT 340                                   0CA4            C
+ GeForce GT 220                                   0CA5            C
+ GeForce GT 330                                   0CA7            A
+ GeForce GTS 260M                                 0CA8            C
+ GeForce GTS 250M                                 0CA9            C
+ GeForce GT 220                                   0CAC            C
+ GeForce GT 335M                                  0CAF            C
+ GeForce GTS 350M                                 0CB0            C
+ GeForce GTS 360M                                 0CB1            C
+ Quadro FX 1800M                                  0CBC            C
+ GeForce 9300 GS                                  10C0            B
+ GeForce 8400GS                                   10C3            A
+ GeForce 405                                      10C5            C
+ NVS 300                                          10D8            C
+
+
+The 304.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID
+ -----------------------------------------------  --------------
+ GeForce 6800 Ultra                               0040
+ GeForce 6800                                     0041
+ GeForce 6800 LE                                  0042
+ GeForce 6800 XE                                  0043
+ GeForce 6800 XT                                  0044
+ GeForce 6800 GT                                  0045
+ GeForce 6800 GT                                  0046
+ GeForce 6800 GS                                  0047
+ GeForce 6800 XT                                  0048
+ Quadro FX 4000                                   004E
+ GeForce 7800 GTX                                 0090
+ GeForce 7800 GTX                                 0091
+ GeForce 7800 GT                                  0092
+ GeForce 7800 GS                                  0093
+ GeForce 7800 SLI                                 0095
+ GeForce Go 7800                                  0098
+ GeForce Go 7800 GTX                              0099
+ Quadro FX 4500                                   009D
+ GeForce 6800 GS                                  00C0
+ GeForce 6800                                     00C1
+ GeForce 6800 LE                                  00C2
+ GeForce 6800 XT                                  00C3
+ GeForce Go 6800                                  00C8
+ GeForce Go 6800 Ultra                            00C9
+ Quadro FX Go1400                                 00CC
+ Quadro FX 3450/4000 SDI                          00CD
+ Quadro FX 1400                                   00CE
+ GeForce 6600 GT                                  00F1
+ GeForce 6600                                     00F2
+ GeForce 6200                                     00F3
+ GeForce 6600 LE                                  00F4
+ GeForce 7800 GS                                  00F5
+ GeForce 6800 GS                                  00F6
+ Quadro FX 3400/Quadro FX 4000                    00F8
+ GeForce 6800 Ultra                               00F9
+ GeForce 6600 GT                                  0140
+ GeForce 6600                                     0141
+ GeForce 6600 LE                                  0142
+ GeForce 6600 VE                                  0143
+ GeForce Go 6600                                  0144
+ GeForce 6610 XL                                  0145
+ GeForce Go 6600 TE/6200 TE                       0146
+ GeForce 6700 XL                                  0147
+ GeForce Go 6600                                  0148
+ GeForce Go 6600 GT                               0149
+ Quadro NVS 440                                   014A
+ Quadro FX 540M                                   014C
+ Quadro FX 550                                    014D
+ Quadro FX 540                                    014E
+ GeForce 6200                                     014F
+ GeForce 6500                                     0160
+ GeForce 6200 TurboCache(TM)                      0161
+ GeForce 6200SE TurboCache(TM)                    0162
+ GeForce 6200 LE                                  0163
+ GeForce Go 6200                                  0164
+ Quadro NVS 285                                   0165
+ GeForce Go 6400                                  0166
+ GeForce Go 6200                                  0167
+ GeForce Go 6400                                  0168
+ GeForce 6250                                     0169
+ GeForce 7100 GS                                  016A
+ GeForce 7350 LE                                  01D0
+ GeForce 7300 LE                                  01D1
+ GeForce 7550 LE                                  01D2
+ GeForce 7300 SE/7200 GS                          01D3
+ GeForce Go 7200                                  01D6
+ GeForce Go 7300                                  01D7
+ GeForce Go 7400                                  01D8
+ Quadro NVS 110M                                  01DA
+ Quadro NVS 120M                                  01DB
+ Quadro FX 350M                                   01DC
+ GeForce 7500 LE                                  01DD
+ Quadro FX 350                                    01DE
+ GeForce 7300 GS                                  01DF
+ GeForce 6800                                     0211
+ GeForce 6800 LE                                  0212
+ GeForce 6800 GT                                  0215
+ GeForce 6800 XT                                  0218
+ GeForce 6200                                     0221
+ GeForce 6200 A-LE                                0222
+ GeForce 6150                                     0240
+ GeForce 6150 LE                                  0241
+ GeForce 6100                                     0242
+ GeForce Go 6150                                  0244
+ Quadro NVS 210S / GeForce 6150LE                 0245
+ GeForce Go 6100                                  0247
+ GeForce 7900 GTX                                 0290
+ GeForce 7900 GT/GTO                              0291
+ GeForce 7900 GS                                  0292
+ GeForce 7950 GX2                                 0293
+ GeForce 7950 GX2                                 0294
+ GeForce 7950 GT                                  0295
+ GeForce Go 7950 GTX                              0297
+ GeForce Go 7900 GS                               0298
+ Quadro NVS 510M                                  0299
+ Quadro FX 2500M                                  029A
+ Quadro FX 1500M                                  029B
+ Quadro FX 5500                                   029C
+ Quadro FX 3500                                   029D
+ Quadro FX 1500                                   029E
+ Quadro FX 4500 X2                                029F
+ GeForce 7600 GT                                  02E0
+ GeForce 7600 GS                                  02E1
+ GeForce 7300 GT                                  02E2
+ GeForce 7900 GS                                  02E3
+ GeForce 7950 GT                                  02E4
+ GeForce 7650 GS                                  038B
+ GeForce 7650 GS                                  0390
+ GeForce 7600 GT                                  0391
+ GeForce 7600 GS                                  0392
+ GeForce 7300 GT                                  0393
+ GeForce 7600 LE                                  0394
+ GeForce 7300 GT                                  0395
+ GeForce Go 7700                                  0397
+ GeForce Go 7600                                  0398
+ GeForce Go 7600 GT                               0399
+ Quadro FX 560M                                   039C
+ Quadro FX 560                                    039E
+ GeForce 6150SE nForce 430                        03D0
+ GeForce 6100 nForce 405                          03D1
+ GeForce 6100 nForce 400                          03D2
+ GeForce 6100 nForce 420                          03D5
+ GeForce 7025 / nForce 630a                       03D6
+ GeForce 7150M / nForce 630M                      0531
+ GeForce 7000M / nForce 610M                      0533
+ GeForce 7050 PV / nForce 630a                    053A
+ GeForce 7050 PV / nForce 630a                    053B
+ GeForce 7025 / nForce 630a                       053E
+ GeForce 7150 / nForce 630i                       07E0
+ GeForce 7100 / nForce 630i                       07E1
+ GeForce 7050 / nForce 630i                       07E2
+ GeForce 7050 / nForce 610i                       07E3
+ GeForce 7050 / nForce 620i                       07E5
+
+
+The 173.14.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID
+ -----------------------------------------------  --------------
+ GeForce PCX 5750                                 00FA
+ GeForce PCX 5900                                 00FB
+ Quadro FX 330/GeForce PCX 5300                   00FC
+ Quadro FX 330/Quadro NVS 280 PCI-E               00FD
+ Quadro FX 1300                                   00FE
+ GeForce FX 5800 Ultra                            0301
+ GeForce FX 5800                                  0302
+ Quadro FX 2000                                   0308
+ Quadro FX 1000                                   0309
+ GeForce FX 5600 Ultra                            0311
+ GeForce FX 5600                                  0312
+ GeForce FX 5600XT                                0314
+ GeForce FX Go5600                                031A
+ GeForce FX Go5650                                031B
+ Quadro FX Go700                                  031C
+ GeForce FX 5200                                  0320
+ GeForce FX 5200 Ultra                            0321
+ GeForce FX 5200                                  0322
+ GeForce FX 5200LE                                0323
+ GeForce FX Go5200                                0324
+ GeForce FX Go5250                                0325
+ GeForce FX 5500                                  0326
+ GeForce FX 5100                                  0327
+ GeForce FX Go5200 32M/64M                        0328
+ Quadro NVS 55/280 PCI                            032A
+ Quadro FX 500/FX 600                             032B
+ GeForce FX Go53xx                                032C
+ GeForce FX Go5100                                032D
+ GeForce FX 5900 Ultra                            0330
+ GeForce FX 5900                                  0331
+ GeForce FX 5900XT                                0332
+ GeForce FX 5950 Ultra                            0333
+ GeForce FX 5900ZT                                0334
+ Quadro FX 3000                                   0338
+ Quadro FX 700                                    033F
+ GeForce FX 5700 Ultra                            0341
+ GeForce FX 5700                                  0342
+ GeForce FX 5700LE                                0343
+ GeForce FX 5700VE                                0344
+ GeForce FX Go5700                                0347
+ GeForce FX Go5700                                0348
+ Quadro FX Go1000                                 034C
+ Quadro FX 1100                                   034E
+
+
+The 96.43.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID
+ -----------------------------------------------  --------------
+ GeForce2 MX/MX 400                               0110
+ GeForce2 MX 100/200                              0111
+ GeForce2 Go                                      0112
+ Quadro2 MXR/EX/Go                                0113
+ GeForce4 MX 460                                  0170
+ GeForce4 MX 440                                  0171
+ GeForce4 MX 420                                  0172
+ GeForce4 MX 440-SE                               0173
+ GeForce4 440 Go                                  0174
+ GeForce4 420 Go                                  0175
+ GeForce4 420 Go 32M                              0176
+ GeForce4 460 Go                                  0177
+ Quadro4 550 XGL                                  0178
+ GeForce4 440 Go 64M                              0179
+ Quadro NVS 400                                   017A
+ Quadro4 500 GoGL                                 017C
+ GeForce4 410 Go 16M                              017D
+ GeForce4 MX 440 with AGP8X                       0181
+ GeForce4 MX 440SE with AGP8X                     0182
+ GeForce4 MX 420 with AGP8X                       0183
+ GeForce4 MX 4000                                 0185
+ Quadro4 580 XGL                                  0188
+ Quadro NVS 280 SD                                018A
+ Quadro4 380 XGL                                  018B
+ Quadro NVS 50 PCI                                018C
+ GeForce2 Integrated GPU                          01A0
+ GeForce4 MX Integrated GPU                       01F0
+ GeForce3                                         0200
+ GeForce3 Ti 200                                  0201
+ GeForce3 Ti 500                                  0202
+ Quadro DCC                                       0203
+ GeForce4 Ti 4600                                 0250
+ GeForce4 Ti 4400                                 0251
+ GeForce4 Ti 4200                                 0253
+ Quadro4 900 XGL                                  0258
+ Quadro4 750 XGL                                  0259
+ Quadro4 700 XGL                                  025B
+ GeForce4 Ti 4800                                 0280
+ GeForce4 Ti 4200 with AGP8X                      0281
+ GeForce4 Ti 4800 SE                              0282
+ GeForce4 4200 Go                                 0286
+ Quadro4 980 XGL                                  0288
+ Quadro4 780 XGL                                  0289
+ Quadro4 700 GoGL                                 028C
+
+
+The 71.86.xx driver supports the following set of GPUs:
+
+
+ NVIDIA GPU product                               Device PCI ID
+ -----------------------------------------------  --------------
+ RIVA TNT                                         0020
+ RIVA TNT2/TNT2 Pro                               0028
+ RIVA TNT2 Ultra                                  0029
+ Vanta/Vanta LT                                   002C
+ RIVA TNT2 Model 64/Model 64 Pro                  002D
+ Aladdin TNT2                                     00A0
+ GeForce 256                                      0100
+ GeForce DDR                                      0101
+ Quadro                                           0103
+ GeForce2 GTS/GeForce2 Pro                        0150
+ GeForce2 Ti                                      0151
+ GeForce2 Ultra                                   0152
+ Quadro2 Pro                                      0153
+
+
+* If three IDs are listed, the first is the PCI Device ID, the second is the
+PCI Subsystem Vendor ID, and the third is the PCI Subsystem Device ID.
+
+______________________________________________________________________________
+
+Appendix B. X Config Options
+______________________________________________________________________________
+
+The following driver options are supported by the NVIDIA X driver. They may be
+specified either in the Screen or Device sections of the X config file.
+
+X Config Options
+
+Option "Accel" "boolean"
+
+    Controls whether the X driver uses the GPU for graphics processing.
+    Disabling acceleration is useful when another component, such as CUDA,
+    requires exclusive use of the GPU's processing cores. Performance of the X
+    server will be reduced when acceleration is disabled, and some features
+    may not be available.
+
+    OpenGL and VDPAU are not supported when Accel is disabled.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    Default: acceleration is enabled.
+
+Option "RenderAccel" "boolean"
+
+    Enable or disable hardware acceleration of the RENDER extension. Default:
+    hardware acceleration of the RENDER extension is enabled.
+
+Option "NoRenderExtension" "boolean"
+
+    Disable the RENDER extension. Other than recompiling it, the X server does
+    not seem to have another way of disabling this. Fortunately, we can
+    control this from the driver so we export this option. This is useful in
+    depth 8 where RENDER would normally steal most of the default colormap.
+    Default: RENDER is offered when possible.
+
+Option "UBB" "boolean"
+
+    Enable or disable the Unified Back Buffer on NVIDIA RTX/Quadro-based GPUs
+    (Quadro NVS excluded); see Chapter 19 for a description of UBB. This
+    option has no effect on non-NVIDIA RTX/Quadro GPU products. Default: UBB
+    is on for NVIDIA RTX/Quadro GPUs.
+
+Option "NoFlip" "boolean"
+
+    Disable OpenGL flipping; see Chapter 19 for a description. Default: OpenGL
+    will swap by flipping when possible.
+
+Option "GLShaderDiskCache" "boolean"
+
+    This option controls whether the OpenGL driver will utilize a disk cache
+    to save and reuse compiled shaders. See the description of the
+    __GL_SHADER_DISK_CACHE and __GL_SHADER_DISK_CACHE_PATH environment
+    variables in Chapter 11 for more details.
+
+Option "Overlay" "boolean"
+
+    Enables RGB workstation overlay visuals. This is only supported on NVIDIA
+    RTX/Quadro GPUs (Quadro NVS GPUs excluded) in depth 24. This option causes
+    the server to advertise the SERVER_OVERLAY_VISUALS root window property
+    and GLX will report single- and double-buffered, Z-buffered 16-bit overlay
+    visuals. The transparency key is pixel 0x0000 (hex). There is no gamma
+    correction support in the overlay plane. RGB workstation overlays are not
+    supported when the Composite extension is enabled.
+
+    UBB must be enabled when overlays are enabled (this is the default
+    behavior).
+
+Option "CIOverlay" "boolean"
+
+    Enables Color Index workstation overlay visuals with identical
+    restrictions to Option "Overlay" above. This option causes the server to
+    advertise the SERVER_OVERLAY_VISUALS root window property. Some of the
+    visuals advertised that way may be listed in the main plane (layer 0) for
+    compatibility purposes. They however belong to the overlay (layer 1). The
+    server will offer visuals both with and without a transparency key. These
+    are depth 8 PseudoColor visuals. Color Index workstation overlays are not
+    supported when the Composite extension is enabled. Default: off.
+
+    UBB must be enabled when overlays are enabled (this is the default
+    behavior).
+
+Option "TransparentIndex" "integer"
+
+    When color index overlays are enabled, use this option to choose which
+    pixel is used for the transparent pixel in visuals featuring transparent
+    pixels. This value is clamped between 0 and 255 (Note: some applications
+    such as Alias's Maya require this to be zero in order to work correctly).
+    Default: 0.
+
+Option "OverlayDefaultVisual" "boolean"
+
+    When overlays are used, this option sets the default visual to an overlay
+    visual thereby putting the root window in the overlay. This option is not
+    recommended for RGB overlays. Default: off.
+
+Option "EmulatedOverlaysTimerMs" "integer"
+
+    Enables the use of a timer within the X server to perform the updates to
+    the emulated overlay or CI overlay. This option can be used to improve the
+    performance of the emulated or CI overlays by reducing the frequency of
+    the updates. The value specified indicates the desired number of
+    milliseconds between overlay updates. To disable the use of the timer
+    either leave the option unset or set it to 0. Default: off.
+
+Option "EmulatedOverlaysThreshold" "boolean"
+
+    Enables the use of a threshold within the X server to perform the updates
+    to the emulated overlay or CI overlay. The emulated or CI overlay updates
+    can be deferred but this threshold will limit the number of deferred
+    OpenGL updates allowed before the overlay is updated. This option can be
+    used to trade off performance and animation quality. Default: on.
+
+Option "EmulatedOverlaysThresholdValue" "integer"
+
+    Controls the threshold used in updating the emulated or CI overlays. This
+    is used in conjunction with the EmulatedOverlaysThreshold option to trade
+    off performance and animation quality. Higher values for this option favor
+    performance over quality. Setting low values of this option will not cause
+    the overlay to be updated more often than the frequence specified by the
+    EmulatedOverlaysTimerMs option. Default: 5.
+
+Option "SWCursor" "boolean"
+
+    Enable or disable software rendering of the X cursor. Default: off.
+
+Option "HWCursor" "boolean"
+
+    Enable or disable hardware rendering of the X cursor. Default: on.
+
+Option "ConnectedMonitor" "string"
+
+    Allows you to override what the NVIDIA kernel module detects is connected
+    to your graphics card. This may be useful, for example, if you use a KVM
+    (keyboard, video, mouse) switch and you are switched away when X is
+    started. It may also be useful in situations where you wish to simulate
+    the presence of a monitor when none are connected. When simulating the
+    presence of a monitor, it may be useful to combine this option with the
+    "CustomEDID" option to provide the simulated display device with an EDID.
+
+    Valid values for this option are "CRT" (cathode ray tube) or "DFP"
+    (digital flat panel); if using multiple display devices, this option may
+    be a comma-separated list of display devices; e.g.: "CRT, CRT" or "CRT,
+    DFP". The display device name used in this option may also include a
+    numeric suffix (e.g., "DFP-1") to refer to a specific display connector;
+    check your X log to determine which display device identifiers are valid
+    for your particular GPU.
+
+    It is generally recommended to not use this option, but instead use the
+    "UseDisplayDevice" option.
+
+    NOTE: anything attached to a 15 pin VGA connector is regarded by the
+    driver as a CRT. "DFP" should only be used to refer to digital flat panels
+    connected via DVI, HDMI, or DisplayPort.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    Default: string is NULL (the NVIDIA driver will detect the connected
+    display devices).
+
+Option "UseDisplayDevice" "string"
+
+    The "UseDisplayDevice" X configuration option is a list of one or more
+    display devices, which limits the display devices the NVIDIA X driver will
+    consider for an X screen. The display device names used in the option may
+    be either specific (with a numeric suffix; e.g., "DFP-1") or general
+    (without a numeric suffix; e.g., "DFP").
+
+    When assigning display devices to X screens, the NVIDIA X driver walks
+    through the list of all (not already assigned) display devices detected as
+    connected. When the "UseDisplayDevice" X configuration option is
+    specified, the X driver will only consider connected display devices which
+    are also included in the "UseDisplayDevice" list. This can be thought of
+    as a "mask" against the connected (and not already assigned) display
+    devices.
+
+    Note the subtle difference between this option and the "ConnectedMonitor"
+    option: the "ConnectedMonitor" option overrides which display devices are
+    actually detected, while the "UseDisplayDevice" option controls which of
+    the detected display devices will be used on this X screen.
+
+    Of the list of display devices considered for this X screen (either all
+    connected display devices, or a subset limited by the "UseDisplayDevice"
+    option), the NVIDIA X driver first looks at CRTs, then at DFPs. For
+    example, if both a CRT and a DFP are connected, by default the X driver
+    would assign the CRT to this X screen. However, by specifying:
+    
+        Option "UseDisplayDevice" "DFP"
+    
+    the X screen would use the DFP instead. Or, if CRT-0, DFP-0, and DFP-1 are
+    connected, the X driver would assign CRT-0 and DFP-0 to the X screen.
+    However, by specifying:
+    
+        Option "UseDisplayDevice" "CRT-0, DFP-1"
+    
+    the X screen would use CRT-0 and DFP-1 instead.
+
+    Additionally, the special value "none" can be specified for the
+    "UseDisplayDevice" option. When this value is given, any programming of
+    the display hardware is disabled. The NVIDIA driver will not perform any
+    mode validation or mode setting for this X screen. This is intended for
+    use in conjunction with CUDA or in remote graphics solutions such as VNC
+    or Hewlett Packard's Remote Graphics Software (RGS); however, note that
+    this configuration option may not interact well with some desktop
+    environments or window managers (See "Q. My remote desktop software
+    doesn't work when no displays are attached." in Chapter 8 for more
+    information).
+
+    "UseDisplayDevice" defaults to "none" on GPUs that have no display
+    capabilities, such as some Tesla GPUs and some mobile GPUs used in Optimus
+    notebook configurations.
+
+    Note the following restrictions for setting the "UseDisplayDevice" to
+    "none":
+    
+       o OpenGL SyncToVBlank will have no effect.
+    
+       o None of Stereo, Overlay, CIOverlay, or SLI are allowed when
+         "UseDisplayDevice" is set to "none".
+    
+    
+Option "UseEdidFreqs" "boolean"
+
+    This option controls whether the NVIDIA X driver will use the HorizSync
+    and VertRefresh ranges given in a display device's EDID, if any. When
+    UseEdidFreqs is set to True, EDID-provided range information will override
+    the HorizSync and VertRefresh ranges specified in the Monitor section. If
+    a display device does not provide an EDID, or the EDID does not specify an
+    hsync or vrefresh range, then the X server will default to the HorizSync
+    and VertRefresh ranges specified in the Monitor section of your X config
+    file. These frequency ranges are used when validating modes for your
+    display device.
+
+    Default: True (EDID frequencies will be used)
+
+Option "UseEDID" "boolean"
+
+    By default, the NVIDIA X driver makes use of a display device's EDID, when
+    available, during construction of its mode pool. The EDID is used as a
+    source for possible modes, for valid frequency ranges, and for collecting
+    data on the physical dimensions of the display device for computing the
+    DPI (see Appendix E). However, if you wish to disable the driver's use of
+    the EDID, you can set this option to False:
+    
+        Option "UseEDID" "FALSE"
+    
+    Note that, rather than globally disable all uses of the EDID, you can
+    individually disable each particular use of the EDID; e.g.,
+    
+        Option "UseEDIDFreqs" "FALSE"
+        Option "UseEDIDDpi" "FALSE"
+        Option "ModeValidation" "NoEdidModes"
+    
+    
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    Default: True (use EDID).
+
+Option "MetaModeOrientation" "string"
+
+    Controls the default relationship between display devices when using
+    multiple display devices on a single X screen. Takes one of the following
+    values: "RightOf" "LeftOf" "Above" "Below" "SamePositionAs". For backwards
+    compatibility, "TwinViewOrientation" is a synonym for
+    "MetaModeOrientation", and "Clone" is a synonym for "SamePositionAs". See
+    Chapter 12 for details. Default: string is NULL.
+
+Option "MetaModes" "string"
+
+    This option describes the combination of modes to use on each monitor. See
+    Chapter 12 and Chapter 31 for details. Default: string is NULL.
+
+Option "nvidiaXineramaInfo" "boolean"
+
+    The NVIDIA X driver normally provides a Xinerama extension that X clients
+    (such as window managers) can use to discover the current layout of
+    display devices within an X screen. Some window mangers get confused by
+    this information, so this option is provided to disable this behavior.
+    Default: true (NVIDIA Xinerama information is provided).
+
+    On X servers with RandR 1.2 support, the X server's RandR implementation
+    may provide its own Xinerama implementation if NVIDIA Xinerama information
+    is not provided. So, on X servers with RandR 1.2, disabling
+    "nvidiaXineramaInfo" causes the NVIDIA X driver to still register its
+    Xinerama implementation but report a single screen-sized region. On X
+    servers without RandR 1.2 support, disabling "nvidiaXineramaInfo" causes
+    the NVIDIA X driver to not register its Xinerama implementation.
+
+    For backwards compatibility, "NoTwinViewXineramaInfo" is a synonym for
+    disabling "nvidiaXineramaInfo".
+
+Option "nvidiaXineramaInfoOrder" "string"
+
+    When the NVIDIA X driver provides nvidiaXineramaInfo (see the
+    nvidiaXineramaInfo X config option), it by default reports the currently
+    enabled display devices in the order "CRT, DFP". The
+    nvidiaXineramaInfoOrder X config option can be used to override this
+    order.
+
+    The option string is a comma-separated list of display device names. The
+    display device names can either be general (e.g, "CRT", which identifies
+    all CRTs), or specific (e.g., "CRT-1", which identifies a particular CRT).
+    Not all display devices need to be identified in the option string;
+    display devices that are not listed will be implicitly appended to the end
+    of the list, in their default order.
+
+    Note that nvidiaXineramaInfoOrder tracks all display devices that could
+    possibly be connected to the GPU, not just the ones that are currently
+    enabled. When reporting the Xinerama information, the NVIDIA X driver
+    walks through the display devices in the order specified, only reporting
+    enabled display devices.
+
+    Some high-resolution "tiled" monitors are represented internally as
+    multiple display devices. These will be combined by default into a single
+    Xinerama screen. The position of the device in nvidiaXineramaInfoOrder
+    corresponding to the top-left tile will determine when the screen will be
+    reported.
+
+    Examples:
+    
+            "DFP"
+            "DFP-1, DFP-0, CRT"
+    
+    In the first example, any enabled DFPs would be reported first (any
+    enabled CRTs would be reported afterwards). In the second example, if
+    DFP-1 were enabled, it would be reported first, then DFP-0, and then any
+    enabled CRTs; finally, any other enabled DFPs would be reported.
+
+    For backwards compatibility, "TwinViewXineramaInfoOrder" is a synonym for
+    "nvidiaXineramaInfoOrder".
+
+    Default: "CRT, DFP"
+
+Option "nvidiaXineramaInfoOverride" "string"
+
+    This option overrides the values reported by the NVIDIA X driver's
+    nvidiaXineramaInfo implementation. This disregards the actual display
+    devices used by the X screen and any order specified in
+    nvidiaXineramaInfoOrder.
+
+    The option string is interpreted as a comma-separated list of regions,
+    specified as '[width]x[height]+[x-offset]+[y-offset]'. The regions' sizes
+    and offsets are not validated against the X screen size, but are directly
+    reported to any Xinerama client.
+
+    Examples:
+    
+            "1600x1200+0+0, 1600x1200+1600+0"
+            "1024x768+0+0, 1024x768+1024+0, 1024x768+0+768, 1024x768+1024+768"
+    
+    
+    For backwards compatibility, "TwinViewXineramaInfoOverride" is a synonym
+    for "nvidiaXineramaInfoOverride".
+
+Option "Stereo" "integer"
+
+    Enable offering of quad-buffered stereo visuals on NVIDIA RTX/Quadro.
+    Integer indicates the type of stereo equipment being used:
+    
+        Value             Equipment
+        --------------    ---------------------------------------------------
+        3                 Onboard stereo support. This is usually only found
+                          on professional cards. The glasses connect via a
+                          DIN connector on the back of the graphics card.
+        4                 One-eye-per-display passive stereo. This mode
+                          allows each display to be configured to statically
+                          display either left or right eye content. This can
+                          be especially useful with multi-display
+                          configurations (TwinView or SLI Mosaic). For
+                          example, this is commonly used in conjunction with
+                          special projectors to produce 2 polarized images
+                          which are then viewed with polarized glasses. To
+                          use this stereo mode, it is recommended that you
+                          configure TwinView (or pairs of displays in SLI
+                          Mosaic) in clone mode with the same resolution,
+                          panning offset, and panning domains on each
+                          display. See Chapter 12 for more information about
+                          configuring multiple displays.
+        5                 Vertical interlaced stereo mode, for use with
+                          SeeReal Stereo Digital Flat Panels.
+        6                 Color interleaved stereo mode, for use with
+                          Sharp3D Stereo Digital Flat Panels.
+        7                 Horizontal interlaced stereo mode, for use with
+                          Arisawa, Hyundai, Zalman, Pavione, and Miracube
+                          Digital Flat Panels.
+        8                 Checkerboard pattern stereo mode, for use with 3D
+                          DLP Display Devices.
+        9                 Inverse checkerboard pattern stereo mode, for use
+                          with 3D DLP Display Devices.
+        10                NVIDIA 3D Vision mode for use with NVIDIA 3D
+                          Vision glasses. The NVIDIA 3D Vision infrared
+                          emitter must be connected to a USB port of your
+                          computer, and to the 3-pin DIN connector of an
+                          NVIDIA RTX/Quadro graphics board before starting
+                          the X server. Hot-plugging the USB infrared stereo
+                          emitter is not yet supported. Also, 3D Vision
+                          Stereo Linux support requires a Linux kernel built
+                          with USB device filesystem (usbfs) and USB 2.0
+                          support. Not presently supported on FreeBSD or
+                          Solaris.
+        11                NVIDIA 3D VisionPro mode for use with NVIDIA 3D
+                          VisionPro glasses. The NVIDIA 3D VisionPro RF hub
+                          must be connected to a USB port of your computer,
+                          and to the 3-pin DIN connector of an NVIDIA
+                          RTX/Quadro graphics board before starting the X
+                          server. Hot-plugging the USB RF hub is not yet
+                          supported. Also, 3D VisionPro Stereo Linux support
+                          requires a Linux kernel built with USB device
+                          filesystem (usbfs) and USB 2.0 support. When RF
+                          hub is connected and X is started in NVIDIA 3D
+                          VisionPro stereo mode, a new page will be
+                          available in nvidia-settings for various
+                          configuration settings. Some of these settings can
+                          also be done via nvidia-settings command line
+                          interface. Refer to the corresponding Help section
+                          in nvidia-settings for further details. Not
+                          presently supported on FreeBSD or Solaris.
+        12                HDMI 3D mode for use with HDMI 3D compatible
+                          display devices with their own stereo emitters.
+        13                Tridelity SL stereo mode, for use with Tridelity
+                          SL display devices.
+        14                Generic active stereo with in-band DisplayPort
+                          stereo signaling, for use with DisplayPort display
+                          devices with their own stereo emitters. See the
+                          documentation for the "InbandStereoSignaling" X
+                          config option for more details.
+    
+    Default: 0 (Stereo is not enabled).
+
+    Stereo options 3, 10, 11, 12, and 14 are known as "active" stereo. Other
+    options are known as "passive" stereo.
+
+    When active stereo is used with multiple display devices, it is
+    recommended that modes within each MetaMode have identical timing values
+    (modelines). See Chapter 18 for suggestions on making sure the modes
+    within your MetaModes are identical.
+
+    The following table summarizes the available stereo modes, their supported
+    GPUs, and their intended display devices:
+    
+        Stereo mode (value)     Graphics card           Display supported
+                                supported [1]       
+        --------------------    --------------------    --------------------
+        Onboard DIN (3)         NVIDIA RTX/Quadro       Displays with high
+                                graphics cards          refresh rate
+        One-eye-per-display     NVIDIA RTX/Quadro       Any
+        (4)                     graphics cards      
+        Vertical Interlaced     NVIDIA RTX/Quadro       SeeReal Stereo DFP
+        (5)                     graphics cards      
+        Color Interleaved       NVIDIA RTX/Quadro       Sharp3D stereo DFP
+        (6)                     graphics cards      
+        Horizontal              NVIDIA RTX/Quadro       Arisawa, Hyundai,
+        Interlaced (7)          graphics cards          Zalman, Pavione,
+                                                        and Miracube
+        Checkerboard            NVIDIA RTX/Quadro       3D DLP display
+        Pattern (8)             graphics cards          devices
+        Inverse                 NVIDIA RTX/Quadro       3D DLP display
+        Checkerboard (9)        graphics cards          devices
+        NVIDIA 3D Vision        NVIDIA RTX/Quadro       Supported 3D Vision
+        (10)                    graphics cards [2]      ready displays [3]
+        NVIDIA 3D VisionPro     NVIDIA RTX/Quadro       Supported 3D Vision
+        (11)                    graphics cards [2]      ready displays [3]
+        HDMI 3D (12)            NVIDIA RTX/Quadro       Supported HDMI 3D
+                                graphics cards          displays [4]
+        Tridelity SL (13)       NVIDIA RTX/Quadro       Tridelity SL DFP
+                                graphics cards      
+        Generic active          NVIDIA RTX/Quadro       DisplayPort
+        stereo (in-band DP)     graphics cards          displays with
+        (14)                                            in-band stereo
+                                                        support
+        
+    
+    
+    
+        [1] NVIDIA RTX/Quadro graphics cards excluding Quadro NVS cards.
+        [2]
+        http://www.nvidia.com/object/quadro_pro_graphics_boards_linux.html
+        [3] http://www.nvidia.com/object/3D_Vision_Requirements.html
+        [4] Supported 3D TVs, Projectors, and Home Theater Receivers listed
+        on http://www.nvidia.com/object/3dtv-play-system-requirements.html
+        and Desktop LCD Monitors with 3D Vision HDMI support listed on
+        http://www.nvidia.com/object/3D_Vision_Requirements.html
+    
+    
+    UBB must be enabled when stereo is enabled (this is the default behavior).
+
+    Active stereo can be enabled on digital display devices (connected via
+    DVI, HDMI, or DisplayPort). However, some digital display devices might
+    not behave as desired with active stereo:
+    
+       o Some digital display devices may not be able to toggle pixel colors
+         quickly enough when flipping between eyes on every vblank.
+    
+       o Some digital display devices may have an optical polarization that
+         interferes with stereo goggles.
+    
+       o Active stereo requires high refresh rates, because a vertical refresh
+         is needed to display each eye. Some digital display devices have a
+         low refresh rate, which will result in flickering when used for
+         active stereo.
+    
+       o Some digital display devices might internally convert from other
+         refresh rates to their native refresh rate (e.g., 60Hz), resulting in
+         incompatible rates between the stereo glasses and stereo displayed on
+         screen.
+    
+    These limitations do not apply to any display devices suitable for stereo
+    options 10, 11, or 12.
+
+    Interlaced modes are disabled when active stereo is enabled.
+
+    Stereo option 12 (HDMI 3D) is also known as HDMI Frame Packed Stereo mode,
+    where the left and right eye images are stacked into a single frame with a
+    doubled pixel clock and refresh rate. This doubled refresh rate is used
+    for Frame Lock and in refresh rate queries through NV-CONTROL clients, and
+    the doubled pixel clock and refresh rate are used in mode validation.
+    Interlaced modes are not supported with this stereo mode. The following
+    nvidia-settings command line can be used to determine whether a display's
+    current mode is an HDMI 3D mode with a doubled refresh rate:
+    
+        nvidia-settings --query=Hdmi3D
+    
+    
+    Stereo applies to an entire X screen, so it will apply to all display
+    devices on that X screen, whether or not they all support the selected
+    Stereo mode.
+
+Option "ForceStereoFlipping" "boolean"
+
+    Stereo flipping is the process by which left and right eyes are displayed
+    on alternating vertical refreshes. Normally, stereo flipping is only
+    performed when a stereo drawable is visible. This option forces stereo
+    flipping even when no stereo drawables are visible.
+
+    This is to be used in conjunction with the "Stereo" option. If "Stereo" is
+    0, the "ForceStereoFlipping" option has no effect. If otherwise, the
+    "ForceStereoFlipping" option will force the behavior indicated by the
+    "Stereo" option, even if no stereo drawables are visible. This option is
+    useful in a multiple-screen environment in which a stereo application is
+    run on a different screen than the stereo master.
+
+    Possible values:
+    
+        Value             Behavior
+        --------------    ---------------------------------------------------
+        0                 Stereo flipping is not forced. The default
+                          behavior as indicated by the "Stereo" option is
+                          used.
+        1                 Stereo flipping is forced. Stereo is running even
+                          if no stereo drawables are visible. The stereo
+                          mode depends on the value of the "Stereo" option.
+    
+    Default: 0 (Stereo flipping is not forced).
+
+Option "XineramaStereoFlipping" "boolean"
+
+    By default, when using Stereo with Xinerama, all physical X screens having
+    a visible stereo drawable will stereo flip. Use this option to allow only
+    one physical X screen to stereo flip at a time.
+
+    This is to be used in conjunction with the "Stereo" and "Xinerama"
+    options. If "Stereo" is 0 or "Xinerama" is 0, the "XineramaStereoFlipping"
+    option has no effect.
+
+    If you wish to have all X screens stereo flip all the time, see the
+    "ForceStereoFlipping" option.
+
+    Possible values:
+    
+        Value             Behavior
+        --------------    ---------------------------------------------------
+        0                 Stereo flipping is enabled on one X screen at a
+                          time. Stereo is enabled on the first X screen
+                          having the stereo drawable.
+        1                 Stereo flipping in enabled on all X screens.
+    
+    Default: 1 (Stereo flipping is enabled on all X screens).
+
+Option "MultisampleCompatibility" "boolean"
+
+    Enable or disable the use of separate front and back multisample buffers.
+    Enabling this will consume more memory but is necessary for correct output
+    when rendering to both the front and back buffers of a multisample or FSAA
+    drawable. This option is necessary for correct operation of SoftImage XSI.
+    Default: false (a single multisample buffer is shared between the front
+    and back buffers).
+
+Option "NoPowerConnectorCheck" "boolean"
+
+    The NVIDIA X driver will fail initialization on a GPU if it detects that
+    the GPU that requires an external power connector does not have an
+    external power connector plugged in. This option can be used to bypass
+    this test.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    Default: false (the power connector test is performed).
+
+Option "ThermalConfigurationCheck" "boolean"
+
+    The NVIDIA X driver will fail initialization on a GPU if it detects that
+    the GPU has a bad thermal configuration. This may indicate a problem with
+    how your graphics board was built, or simply a driver bug. It is
+    recommended that you contact your graphics board vendor if you encounter
+    this problem.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    This option can be set to False to bypass this test. Default: true (the
+    thermal configuration test is performed).
+
+Option "DamageEvents" "boolean"
+
+    Use OS-level events to efficiently notify X when a client has performed
+    direct rendering to a window that needs to be composited. This will
+    significantly improve performance and interactivity when using GLX
+    applications with a composite manager running. It will also affect
+    applications using GLX when rotation is enabled. Enabled by default.
+
+Option "ExactModeTimingsDVI" "boolean"
+
+    Forces the initialization of the X server with the exact timings specified
+    in the ModeLine. Default: false (for DVI devices, the X server initializes
+    with the closest mode in the EDID list).
+
+    The "AllowNonEdidModes" token in the "ModeValidation" X configuration
+    option has the same effect as "ExactModeTimingsDVI", but
+    "AllowNonEdidModes" has per-display device granularity.
+
+Option "Coolbits" "integer"
+
+    Enables various unsupported features, such as support for GPU clock
+    manipulation in the NV-CONTROL X extension. This option accepts a bit mask
+    of features to enable.
+
+    WARNING: this may cause system damage and void warranties. This utility
+    can run your computer system out of the manufacturer's design
+    specifications, including, but not limited to: higher system voltages,
+    above normal temperatures, excessive frequencies, and changes to BIOS that
+    may corrupt the BIOS. Your computer's operating system may hang and result
+    in data loss or corrupted images. Depending on the manufacturer of your
+    computer system, the computer system, hardware and software warranties may
+    be voided, and you may not receive any further manufacturer support.
+    NVIDIA does not provide customer service support for the Coolbits option.
+    It is for these reasons that absolutely no warranty or guarantee is either
+    express or implied. Before enabling and using, you should determine the
+    suitability of the utility for your intended use, and you shall assume all
+    responsibility in connection therewith.
+
+    When "8" (Bit 3) is set in the "Coolbits" option value, the PowerMizer
+    page in the nvidia-settings control panel will display a table that allows
+    setting per-clock domain and per-performance level offsets to apply to
+    clock values. This is allowed on certain GeForce GPUs. Not all clock
+    domains or performance levels may be modified. On GPUs based on the Pascal
+    architecture the offset is applied to all performance levels.
+
+    When "16" (Bit 4) is set in the "Coolbits" option value, the
+    nvidia-settings command line interface allows setting GPU overvoltage.
+    This is allowed on certain GeForce GPUs.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    The default for this option is 0 (unsupported features are disabled).
+
+Option "SLI" "string"
+
+    This option controls the configuration of SLI rendering in supported
+    configurations.
+    
+        Value                               Behavior
+        --------------------------------    --------------------------------
+        0, no, off, false, Single           Use only a single GPU when
+                                            rendering
+        Mosaic                              Enable SLI and use SLI Mosaic
+                                            Mode. Use this in conjunction
+                                            with the MetaModes X
+                                            configuration option to specify
+                                            the combination of mode(s) used
+                                            on each display.
+    
+    
+Option "TripleBuffer" "boolean"
+
+    Enable or disable the use of triple buffering. If this option is enabled,
+    OpenGL windows that sync to vblank and are double-buffered will be given a
+    third buffer. This decreases the time an application stalls while waiting
+    for vblank events, but increases latency slightly (delay between user
+    input and displayed result).
+
+Option "DPI" "string"
+
+    This option specifies the Dots Per Inch for the X screen; for example:
+    
+        Option "DPI" "75 x 85"
+    
+    will set the horizontal DPI to 75 and the vertical DPI to 85. By default,
+    the X driver will compute the DPI of the X screen from the EDID of any
+    connected display devices. See Appendix E for details. Default: string is
+    NULL (disabled).
+
+Option "UseEdidDpi" "string"
+
+    By default, the NVIDIA X driver computes the DPI of an X screen based on
+    the physical size of the display device, as reported in the EDID, and the
+    size in pixels of the first mode to be used on the display device. If
+    multiple display devices are used by the X screen, then the NVIDIA X
+    screen will choose which display device to use. This option can be used to
+    specify which display device to use. The string argument can be a display
+    device name, such as:
+    
+        Option "UseEdidDpi" "DFP-0"
+    
+    or the argument can be "FALSE" to disable use of EDID-based DPI
+    calculations:
+    
+        Option "UseEdidDpi" "FALSE"
+    
+    See Appendix E for details. Default: string is NULL (the driver computes
+    the DPI from the EDID of a display device and selects the display device).
+
+Option "ConstantDPI" "boolean"
+
+    By default on X.Org 6.9 or newer, the NVIDIA X driver recomputes the size
+    in millimeters of the X screen whenever the size in pixels of the X screen
+    is changed using XRandR, such that the DPI remains constant.
+
+    This behavior can be disabled (which means that the size in millimeters
+    will not change when the size in pixels of the X screen changes) by
+    setting the "ConstantDPI" option to "FALSE"; e.g.,
+    
+        Option "ConstantDPI" "FALSE"
+    
+    ConstantDPI defaults to True.
+
+    On X releases older than X.Org 6.9, the NVIDIA X driver cannot change the
+    size in millimeters of the X screen. Therefore the DPI of the X screen
+    will change when XRandR changes the size in pixels of the X screen. The
+    driver will behave as if ConstantDPI was forced to FALSE.
+
+Option "CustomEDID" "string"
+
+    This option forces the X driver to use the EDID specified in a file rather
+    than the display's EDID. You may specify a semicolon separated list of
+    display names and filename pairs. Valid display device names include
+    "CRT-0", "CRT-1", "DFP-0", "DFP-1", "TV-0", "TV-1", or one of the generic
+    names "CRT", "DFP", "TV", which apply the EDID to all devices of the
+    specified type. Additionally, if SLI Mosaic is enabled, this name can be
+    prefixed by a GPU name (e.g., "GPU-0.CRT-0"). The file contains a raw EDID
+    (e.g., a file generated by nvidia-settings).
+
+    For example:
+    
+        Option "CustomEDID" "CRT-0:/tmp/edid1.bin; DFP-0:/tmp/edid2.bin"
+    
+    will assign the EDID from the file /tmp/edid1.bin to the display device
+    CRT-0, and the EDID from the file /tmp/edid2.bin to the display device
+    DFP-0. Note that a display device name must always be specified even if
+    only one EDID is specified.
+
+    Caution: Specifying an EDID that doesn't exactly match your display may
+    damage your hardware, as it allows the driver to specify timings beyond
+    the capabilities of your display. Use with care.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+Option "IgnoreEDIDChecksum" "string"
+
+    This option forces the X driver to accept an EDID even if the checksum is
+    invalid. You may specify a comma separated list of display names. Valid
+    display device names include "CRT-0", "CRT-1", "DFP-0", "DFP-1", "TV-0",
+    "TV-1", or one of the generic names "CRT", "DFP", "TV", which ignore the
+    EDID checksum on all devices of the specified type. Additionally, if SLI
+    Mosaic is enabled, this name can be prefixed by a GPU name (e.g.,
+    "GPU-0.CRT-0").
+
+    For example:
+    
+        Option "IgnoreEDIDChecksum" "CRT, DFP-0"
+    
+    will cause the nvidia driver to ignore the EDID checksum for all CRT
+    monitors and the displays DFP-0 and TV-0.
+
+    Caution: An invalid EDID checksum may indicate a corrupt EDID. A corrupt
+    EDID may have mode timings beyond the capabilities of your display, and
+    using it could damage your hardware. Use with care.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+Option "ModeValidation" "string"
+
+    This option provides fine-grained control over each stage of the mode
+    validation pipeline, disabling individual mode validation checks. This
+    option should only very rarely be used.
+
+    The option string is a semicolon-separated list of comma-separated lists
+    of mode validation arguments. Each list of mode validation arguments can
+    optionally be prepended with a display device name and GPU specifier.
+    
+        "<dpy-0>: <tok>, <tok>; <dpy-1>: <tok>, <tok>, <tok>; ..."
+    
+    
+    Possible arguments:
+    
+       o "NoMaxPClkCheck": each mode has a pixel clock; this pixel clock is
+         validated against the maximum pixel clock of the hardware (for a DFP,
+         this is the maximum pixel clock of the TMDS encoder, for a CRT, this
+         is the maximum pixel clock of the DAC). This argument disables the
+         maximum pixel clock checking stage of the mode validation pipeline.
+    
+       o "NoEdidMaxPClkCheck": a display device's EDID can specify the maximum
+         pixel clock that the display device supports; a mode's pixel clock is
+         validated against this pixel clock maximum. This argument disables
+         this stage of the mode validation pipeline.
+    
+       o "NoMaxSizeCheck": each NVIDIA GPU has a maximum resolution that it
+         can drive; this argument disables this stage of the mode validation
+         pipeline.
+    
+       o "NoHorizSyncCheck": a mode's horizontal sync is validated against the
+         range of valid horizontal sync values; this argument disables this
+         stage of the mode validation pipeline.
+    
+       o "NoVertRefreshCheck": a mode's vertical refresh rate is validated
+         against the range of valid vertical refresh rate values; this
+         argument disables this stage of the mode validation pipeline.
+    
+       o "NoVirtualSizeCheck": if the X configuration file requests a specific
+         virtual screen size, a mode cannot be larger than that virtual size;
+         this argument disables this stage of the mode validation pipeline.
+    
+       o "NoVesaModes": when constructing the mode pool for a display device,
+         the X driver uses a built-in list of VESA modes as one of the mode
+         sources; this argument disables use of these built-in VESA modes.
+    
+       o "NoEdidModes": when constructing the mode pool for a display device,
+         the X driver uses any modes listed in the display device's EDID as
+         one of the mode sources; this argument disables use of EDID-specified
+         modes.
+    
+       o "NoXServerModes": when constructing the mode pool for a display
+         device, the X driver uses the built-in modes provided by the core
+         Xorg X server as one of the mode sources; this argument disables use
+         of these modes. Note that this argument does not disable custom
+         ModeLines specified in the X config file; see the "NoCustomModes"
+         argument for that.
+    
+       o "NoCustomModes": when constructing the mode pool for a display
+         device, the X driver uses custom ModeLines specified in the X config
+         file (through the "Mode" or "ModeLine" entries in the Monitor
+         Section) as one of the mode sources; this argument disables use of
+         these modes.
+    
+       o "NoPredefinedModes": when constructing the mode pool for a display
+         device, the X driver uses additional modes predefined by the NVIDIA X
+         driver; this argument disables use of these modes.
+    
+       o "NoUserModes": additional modes can be added to the mode pool
+         dynamically, using the NV-CONTROL X extension; this argument
+         prohibits user-specified modes via the NV-CONTROL X extension.
+    
+       o "NoExtendedGpuCapabilitiesCheck": allow mode timings that may exceed
+         the GPU's extended capability checks.
+    
+       o "ObeyEdidContradictions": an EDID may contradict itself by listing a
+         mode as supported, but the mode may exceed an EDID-specified valid
+         frequency range (HorizSync, VertRefresh, or maximum pixel clock).
+         Normally, the NVIDIA X driver prints a warning in this scenario, but
+         does not invalidate an EDID-specified mode just because it exceeds an
+         EDID-specified valid frequency range. However, the
+         "ObeyEdidContradictions" argument instructs the NVIDIA X driver to
+         invalidate these modes.
+    
+       o "NoTotalSizeCheck": allow modes in which the individual visible or
+         sync pulse timings exceed the total raster size.
+    
+       o "NoDualLinkDVICheck": for mode timings used on dual link DVI DFPs,
+         the driver must perform additional checks to ensure that the correct
+         pixels are sent on the correct link. For some of these checks, the
+         driver will invalidate the mode timings; for other checks, the driver
+         will implicitly modify the mode timings to meet the GPU's dual link
+         DVI requirements. This token disables this dual link DVI checking.
+    
+       o "NoDisplayPortBandwidthCheck": for mode timings used on DisplayPort
+         devices, the driver must verify that the DisplayPort link can be
+         configured to carry enough bandwidth to support a given mode's pixel
+         clock. For example, some DisplayPort-to-VGA adapters only support 2
+         DisplayPort lanes, limiting the resolutions they can display. This
+         token disables this DisplayPort bandwidth check.
+    
+       o "AllowNon3DVisionModes": modes that are not optimized for NVIDIA 3D
+         Vision are invalidated, by default, when 3D Vision (stereo mode 10)
+         or 3D Vision Pro (stereo mode 11) is enabled. This token allows the
+         use of non-3D Vision modes on a 3D Vision monitor. (Stereo behavior
+         of non-3D Vision modes on 3D Vision monitors is undefined.)
+    
+       o "AllowNonHDMI3DModes": modes that are incompatible with HDMI 3D are
+         invalidated, by default, when HDMI 3D (stereo mode 12) is enabled.
+         This token allows the use of non-HDMI 3D modes when HDMI 3D is
+         selected. HDMI 3D will be disabled when a non-HDMI 3D mode is in use.
+    
+       o "AllowNonEdidModes": if a mode is not listed in a display device's
+         EDID mode list, then the NVIDIA X driver will discard the mode if the
+         EDID 1.3 "GTF Supported" flag is unset, if the EDID 1.4 "Continuous
+         Frequency" flag is unset, or if the display device is connected to
+         the GPU by a digital protocol (e.g., DVI, DP, etc). This token
+         disables these checks for non-EDID modes.
+    
+       o "NoEdidHDMI2Check": HDMI 2.0 adds support for 4K@60Hz modes with
+         either full RGB 4:4:4 pixel encoding or YUV (also known as YCbCr)
+         4:2:0 pixel encoding. Using these modes with RGB 4:4:4 pixel encoding
+         requires GPU support as well as display support indicated in the
+         display device's EDID. This token allows the use of these modes at
+         RGB 4:4:4 as long as the GPU supports them, even if the display
+         device's EDID does not indicate support. Otherwise, these modes will
+         be displayed in the YUV 4:2:0 color space.
+    
+       o "AllowDpInterlaced": When driving interlaced modes over DisplayPort
+         protocol, NVIDIA GPUs do not provide all the spec-mandated metadata.
+         Some DisplayPort monitors are tolerant of this missing metadata. But,
+         in the interest of DisplayPort specification compliance, the NVIDIA
+         driver prohibits interlaced modes over DisplayPort protocol by
+         default. Use this mode validation token to allow interlaced modes
+         over DisplayPort protocol anyway.
+    
+       o "NoInterlacedModes": Use this mode validation token to prohibit
+         interlaced modes.
+    
+       o "MaxOneHardwareHead": The display hardware of the GPU has a pipeline
+         that produces the images that are sent to each display device. One
+         unit within this pipeline is the "head", which generates the mode
+         timings for the display device. Some extremely high pixel clock mode
+         timings, such as 8K @ 60Hz, exceed the capabilities of a single head.
+         On Turing and later GPUs, the NVIDIA GPU driver can use multiple
+         heads within the GPU to produce the mode timings for one of these
+         display devices; the driver will do so implicitly when needed. In the
+         "Display Device Information" pages within nvidia-settings, this case
+         will be indicated by reporting "Number of Hardware Heads Used" as "2"
+         rather than "1". However, NVIDIA GPUs have a total of four hardware
+         heads. Using two of them to drive one high pixel clock display device
+         will mean that there are only two available to drive other display
+         devices in the desktop (thus, the GPU may only be able to drive a
+         total of three display devices if one of them requires the use of two
+         hardware heads, or the GPU may only be able to drive a total of two
+         display devices if each of them requires the use of two hardware
+         heads). Set the "MaxOneHardwareHead" ModeValidation token to force
+         the driver to use at most one hardware head to drive the display
+         device, falling back to a lower refresh rate or resolution, if
+         necessary.
+    
+         Note that the ability to use two hardware heads to drive one display
+         device requires hardware support only available in Turing and later
+         GPUs. Also, the use of two hardware heads with one display device is
+         not currently compatible with Quadro Sync.
+    
+    
+    Examples:
+    
+        Option "ModeValidation" "NoMaxPClkCheck"
+    
+    disable the maximum pixel clock check when validating modes on all display
+    devices.
+    
+        Option "ModeValidation" "CRT-0: NoEdidModes, NoMaxPClkCheck;
+    GPU-0.DFP-0: NoVesaModes"
+    
+    do not use EDID modes and do not perform the maximum pixel clock check on
+    CRT-0, and do not use VESA modes on DFP-0 of GPU-0.
+
+Option "ColorSpace" "string"
+
+    This option sets the preferred color space for all or a subset of the
+    connected flat panels.
+
+    The option string is a semicolon-separated list of device specific
+    options. Each option can optionally be prepended with a display device
+    name and a GPU specifier.
+    
+        "<dpy-0>: <tok>; <dpy-1>: <tok>; ..."
+    
+    
+    Possible arguments:
+    
+       o "RGB": sets color space to RGB. RGB color space supports two valid
+         color ranges; full and limited. By default, full color range is set
+         when the color space is RGB.
+    
+       o "YCbCr444": sets color space to YCbCr 4:4:4. YCbCr supports only
+         limited color range. It is not possible to set this color space if
+         the GPU or display is not capable of limited range.
+    
+    
+    If the ColorSpace option is not specified, or is incorrectly specified,
+    then the color space is set to RGB by default. If driving the current mode
+    in the RGB 4:4:4 color space would require a pixel clock that exceeds the
+    display's or GPU's capabilities, and the display and GPU are capable of
+    driving that mode in the YCbCr 4:2:0 color space, then the color space
+    will be overridden to YCbCr 4:2:0. The current actual color space in use
+    on the display can be queried with the following nvidia-settings command
+    line:
+    
+        nvidia-settings --query=CurrentColorSpace
+    
+    
+    Examples:
+    
+        Option "ColorSpace" "YCbCr444"
+    
+    set the color space to YCbCr 4:4:4 on all flat panels.
+    
+        Option "ColorSpace" "GPU-0.DFP-0: YCbCr444"
+    
+    set the color space to YCbCr 4:4:4 on DFP-0 of GPU-0.
+
+Option "ColorRange" "string"
+
+    This option sets the preferred color range for all or a subset of the
+    connected flat panels.
+
+    The option string is a semicolon-separated list of device specific
+    options. Each option can optionally be prepended with a display device
+    name and a GPU specifier.
+    
+        "<dpy-0>: <tok>; <dpy-1>: <tok>; ..."
+    
+    
+    Either full or limited color range may be selected as the preferred color
+    range. The actual color range depends on the current color space, and will
+    be overridden to limited color range if the current color space requires
+    it. The current actual color range in use on the display can be queried
+    with the following nvidia-settings command line:
+    
+        nvidia-settings --query=CurrentColorRange
+    
+    
+    Possible arguments:
+    
+       o "Full": sets color range to full range. By default, full color range
+         is set when the color space is RGB.
+    
+       o "Limited": sets color range to limited range. YCbCr444 supports only
+         limited color range. Consequently, limited range is selected by the
+         driver when color space is set to YCbCr444, and can not be changed.
+    
+    
+    If the ColorRange option is not specified, or is incorrectly specified,
+    then an appropriate default value is selected based on the selected color
+    space.
+
+    Examples:
+    
+        Option "ColorRange" "Limited"
+    
+    set the color range to limited on all flat panels.
+    
+        Option "ColorRange" "GPU-0.DFP-0: Limited"
+    
+    set the color range to limited on DFP-0 of GPU-0.
+
+Option "ModeDebug" "boolean"
+
+    This option causes the X driver to print verbose details about mode
+    validation to the X log file. Note that this option is applied globally:
+    setting this option to TRUE will enable verbose mode validation logging
+    for all NVIDIA X screens in the X server.
+
+Option "FlatPanelProperties" "string"
+
+    This option requests particular properties for all or a subset of the
+    connected flat panels.
+
+    The option string is a semicolon-separated list of comma-separated
+    property=value pairs. Each list of property=value pairs can optionally be
+    prepended with a flat panel name and GPU specifier.
+    
+        "<DFP-0>: <property=value>, <property=value>; <DFP-1>:
+    <property=value>; ..."
+    
+    
+    Recognized properties:
+    
+       o "Dithering": controls the flat panel dithering configuration;
+         possible values are: 'Auto' (the driver will decide when to dither),
+         'Enabled' (the driver will always dither, if possible), and
+         'Disabled' (the driver will never dither).
+    
+       o "DitheringMode": controls the flat panel dithering mode; possible
+         values are: 'Auto' (the driver will choose possible default mode),
+         'Dynamic-2x2' (a 2x2 dithering pattern is updated for every frame),
+         'Static-2x2' (a 2x2 dithering pattern remains constant throughout the
+         frames), and 'Temporal' (a pseudo-random dithering algorithm is
+         used).
+    
+    
+    Examples:
+    
+        Option "FlatPanelProperties" "DitheringMode = Static-2x2"
+    
+    set the flat panel dithering mode to Static-2x2 on all flat panels.
+    
+        Option "FlatPanelProperties" "GPU-0.DFP-0: Dithering = Disabled;
+    DFP-1: Dithering = Enabled, DitheringMode = Static-2x2"
+    
+    set dithering to disabled on DFP-0 on GPU-0, set DFP-1's dithering to
+    enabled and dithering mode to static 2x2.
+
+Option "ProbeAllGpus" "boolean"
+
+    When the NVIDIA X driver initializes, it probes all GPUs in the system,
+    even if no X screens are configured on them. This is done so that the X
+    driver can report information about all the system's GPUs through the
+    NV-CONTROL X extension. This option can be set to FALSE to disable this
+    behavior, such that only GPUs with X screens configured on them will be
+    probed.
+
+    Note that disabling this option may affect configurability through
+    nvidia-settings, since the X driver will not know about GPUs that aren't
+    currently being used or the display devices attached to them.
+
+    Default: all GPUs in the system are probed.
+
+Option "IncludeImplicitMetaModes" "boolean"
+
+    When the X server starts, a mode pool is created per display device,
+    containing all the mode timings that the NVIDIA X driver determined to be
+    valid for the display device. However, the only MetaModes that are made
+    available to the X server are the ones explicitly requested in the X
+    configuration file.
+
+    It is convenient for fullscreen applications to be able to change between
+    the modes in the mode pool, even if a given target mode was not explicitly
+    requested in the X configuration file.
+
+    To facilitate this, the NVIDIA X driver will implicitly add MetaModes for
+    all modes in the primary display device's mode pool. This makes all the
+    modes in the mode pool available to full screen applications that use the
+    XF86VidMode extension or RandR 1.0/1.1 requests.
+
+    Further, to make sure that fullscreen applications have a reasonable set
+    of MetaModes available to them, the NVIDIA X driver will also add implicit
+    MetaModes for common resolutions: 1920x1200, 1920x1080, 1600x1200,
+    1280x1024, 1280x720, 1024x768, 800x600, 640x480. For these common
+    resolution implicit MetaModes, the common resolution will be the
+    ViewPortIn, and nvidia-auto-select will be the mode. The ViewPortOut will
+    be configured such that the ViewPortIn is aspect scaled within the mode.
+    Each common resolution implicit MetaMode will be added if there is not
+    already a MetaMode with that resolution, and if the resolution is not
+    larger than the nvidia-auto-select mode of the display device. See Chapter
+    12 for details of the relationship between ViewPortIn, ViewPortOut, and
+    the mode within a MetaMode.
+
+    The IncludeImplicitMetaModes X configuration option can be used to disable
+    the addition of implicit MetaModes. Or, it can be used to alter how
+    implicit MetaModes are added. The option can have either a boolean value
+    or a comma-separated list of token=value pairs, where the possible tokens
+    are:
+    
+       o "DisplayDevice": specifies the display device for which the implicit
+         MetaModes should be created. Any name that can be used to identify a
+         display device can be used here; see Appendix C for details.
+    
+       o "Mode": specifies the name of the mode to use with the common
+         resolution-based implicit MetaModes. The default is
+         "nvidia-auto-select". Any mode in the display device's mode pool can
+         be used here.
+    
+       o "Scaling": specifies how the ViewPortOut should be configured between
+         the ViewPortIn and the mode for the common resolution-based implicit
+         MetaModes. Possible values are "Scaled", "Aspect-Scaled", or
+         "Centered". The default is "Aspect-Scaled".
+    
+       o "UseModePool": specifies whether modes from the display device's mode
+         pool should be used to create implicit MetaModes. The default is
+         "true".
+    
+       o "UseCommonResolutions": specifies whether the common resolution list
+         should be used to create implicit MetaModes. The default is "true".
+    
+       o "Derive16x9Mode": specifies whether to create an implicit MetaMode
+         with a resolution whose aspect ratio is 16:9, using the width of
+         nvidia-auto-select. E.g., using a 2560x1600 monitor, this would
+         create an implicit MetaMode of 2560x1440. The default is "true".
+    
+       o "ExtraResolutions": a comma-separated list of additional resolutions
+         to use for creating implicit MetaModes. These will be created in the
+         same way as the common resolution implicit MetaModes: the resolution
+         will be used as the ViewPortIn, the nvidia-auto-select mode will be
+         used as the mode, and the ViewPortOut will be computed to aspect
+         scale the resolution within the mode. Note that the list of
+         resolutions must be enclosed in parentheses, so that the commas are
+         not interpreted as token=value pair separators.
+    
+    Some examples:
+    
+    Option "IncludeImplicitMetaModes" "off"
+    Option "IncludeImplicitMetaModes" "on" (the default)
+    Option "IncludeImplicitMetaModes" "DisplayDevice = DVI-I-2,
+    Scaling=Aspect-Scaled, UseModePool = false"
+    Option "IncludeImplicitMetaModes" "ExtraResolutions = ( 2560x1440, 320x200
+    ), DisplayDevice = DVI-I-0"
+    
+    
+Option "AllowSHMPixmaps" "boolean"
+
+    This option controls whether applications can use the MIT-SHM X extension
+    to create pixmaps whose contents are shared between the X server and the
+    client. These pixmaps prevent the NVIDIA driver from performing a number
+    of optimizations and degrade performance in many circumstances.
+
+    Disabling this option disables only shared memory pixmaps. Applications
+    can still use the MIT-SHM extension to transfer data to the X server
+    through shared memory using XShmPutImage.
+
+    Default: off (shared memory pixmaps are not allowed).
+
+Option "SoftwareRenderCacheSize" "boolean"
+
+    This option controls the size of a cache in system memory used to
+    accelerate software rendering. The size is specified in bytes, but may be
+    rounded or capped based on inherent limits of the cache.
+
+    Default: 0x800000 (8 Megabytes).
+
+Option "AllowIndirectGLXProtocol" "boolean"
+
+    There are two ways that GLX applications can render on an X screen: direct
+    and indirect. Direct rendering is generally faster and more featureful,
+    but indirect rendering may be used in more configurations. Direct
+    rendering requires that the application be running on the same machine as
+    the X server, and that the OpenGL library have sufficient permissions to
+    access the kernel driver. Indirect rendering works with remote X11
+    connections as well as unprivileged clients like those in a chroot with no
+    access to device nodes.
+
+    For those who wish to disable the use of indirect GLX protocol on a given
+    X screen, setting the "AllowIndirectGLXProtocol" to a true value will
+    cause GLX CreateContext requests with the "direct" parameter set to
+    "False" to fail with a BadValue error.
+
+    Starting with X.Org server 1.16, there are also command-line switches to
+    enable or disable use of indirect GLX contexts. "-iglx" disables use of
+    indirect GLX protocol, and "+iglx" enables use of indirect GLX protocol.
+    +iglx is the default in server 1.16. -iglx is the default in server 1.17
+    and newer.
+
+    The NVIDIA GLX implementation will prohibit creation of indirect GLX
+    contexts if the AllowIndirectGLXProtocol option is set to False, or the
+    -iglx switch was passed to the X server (X.Org server 1.16 or higher), or
+    the X server defaulted to '-iglx'.
+
+    Default: enabled (indirect protocol is allowed, unless disabled by the
+    server).
+
+Option "AllowUnofficialGLXProtocol" "boolean"
+
+    By default, the NVIDIA GLX implementation will not expose GLX protocol for
+    GL commands if the protocol is not considered complete. Protocol could be
+    considered incomplete for a number of reasons. The implementation could
+    still be under development and contain known bugs, or the protocol
+    specification itself could be under development or going through review.
+    If users would like to test the server-side portion of such protocol when
+    using indirect rendering, they can enable this option. If any X screen
+    enables this option, it will enable protocol on all screens in the server.
+
+    When an NVIDIA GLX client is used, the related environment variable
+    "__GL_ALLOW_UNOFFICIAL_PROTOCOL" will need to be set as well to enable
+    support in the client.
+
+Option "PanAllDisplays" "boolean"
+
+    When this option is enabled, all displays in the current MetaMode will pan
+    as the pointer is moved. If disabled, only the displays whose panning
+    domain contains the pointer (at its new location) are panned.
+
+    Default: enabled (all displays are panned when the pointer is moved).
+
+Option "Interactive" "boolean"
+
+    This option controls the behavior of the driver's watchdog, which attempts
+    to detect and terminate GPU programs that get stuck, in order to ensure
+    that the GPU remains available for other processes. GPU compute
+    applications, however, often have long-running GPU programs, and killing
+    them would be undesirable. If you are using GPU compute applications and
+    they are getting prematurely terminated, try turning this option off.
+
+    When this option is set for an X screen, it will be applied to all X
+    screens running on the same GPU.
+
+    Default: on. The driver will attempt to detect and terminate GPU programs
+    that cause excessive delays for other processes using the GPU.
+
+Option "BaseMosaic" "boolean"
+
+    This option can be used to extend a single X screen transparently across
+    display outputs on each GPU. This is like SLI Mosaic mode except that it
+    does not require a video bridge or nvlink bridge connected to the graphics
+    cards. Due to this Base Mosaic does not guarantee there will be no tearing
+    between the display boundaries.
+
+    Use this in conjunction with the MetaModes X configuration option to
+    specify the combination of mode(s) used on each display. nvidia-xconfig
+    can be used to configure Base Mosaic via a command like 'nvidia-xconfig
+    --base-mosaic --metamodes=METAMODES' where the METAMODES string specifies
+    the desired grid configuration. For example, to configure four DFPs in a
+    2x2 configuration, each running at 1920x1024, with two DFPs connected to
+    two cards, the command would be:
+    
+        nvidia-xconfig --base-mosaic --metamodes="GPU-0.DFP-0: 1920x1024+0+0,
+    GPU-0.DFP-1: 1920x1024+1920+0, GPU-1.DFP-0: 1920x1024+0+1024, GPU-1.DFP-1:
+    1920x1024+1920+1024"
+    
+    
+Option "ConstrainCursor" "boolean"
+
+    When this option is enabled, the mouse cursor will be constrained to the
+    region of the desktop that is visible within the union of all displays'
+    panning domains in the current MetaMode. When it is disabled, it may be
+    possible to move the cursor to regions of the X screen that are not
+    visible on any display.
+
+    Note that if this would make a display's panning domain inaccessible (in
+    other words, if the union of all panning domains is disjoint), then the
+    cursor will not be constrained.
+
+    This option has no effect if the X server doesn't support cursor
+    constraint. This support was added in X.Org server version 1.10.
+
+    Default: on, if the X server supports it. The cursor will be constrained
+    to the panning domain of each monitor, when possible.
+
+Option "UseHotplugEvents" "boolean"
+
+    When this option is enabled, the NVIDIA X driver will generate RandR
+    display changed events when displays are plugged into or unplugged from an
+    NVIDIA GPU. Some desktop environments will listen for these events and
+    dynamically reconfigure the desktop when displays are added or removed.
+
+    Disabling this option suppresses the generation of these RandR events for
+    non-DisplayPort displays, i.e., ones connected via VGA, DVI, or HDMI.
+    Hotplug events cannot be suppressed for displays connected via
+    DisplayPort.
+
+    Note that probing the display configuration (e.g. with xrandr or
+    nvidia-settings) may cause RandR display changed events to be generated,
+    regardless of whether this option is enabled or disabled. Additionally,
+    some VGA ports are incapable of hotplug detection: on such ports, the
+    addition or removal of displays can only be detected by re-probing the
+    display configuration.
+
+    Default: on. The driver will generate RandR events when displays are added
+    or removed.
+
+Option "AllowEmptyInitialConfiguration" "boolean"
+
+    Normally, the NVIDIA X driver will start even if there are no display
+    devices connected to the NVIDIA GPU. Manually disabling
+    AllowEmptyInitialConfiguration will prevent the NVIDIA X driver from
+    loading if it cannot find any display devices.
+
+    Disabling this option makes sense in configurations where X should not
+    start without any displays connected. It would also make sense to disable
+    this option to preserve behavior on older systems.
+
+    Default: on. The driver will start even if it cannot find any connected
+    display devices.
+
+Option "InbandStereoSignaling" "boolean"
+
+    This option can be used to enable the DisplayPort in-band stereo signaling
+    done via the MISC1 field in the main stream attribute (MSA) data that's
+    sent once per frame during the vertical blanking period of the main video
+    stream. DisplayPort in-band stereo signaling is only available on certain
+    NVIDIA RTX/Quadro boards. This option is implied by stereo mode 14
+    (Generic active stereo with in-band DP), and selecting that stereo mode
+    will override this option.
+
+    Default: off. DisplayPort in-band stereo signaling will be disabled.
+
+Option "UseSysmemPixmapAccel" "boolean"
+
+    For discrete GPUs with dedicated video memory, this option allows the GPU
+    to accelerate X drawing operations using system memory in addition to
+    memory on the GPU. Disabling this option is generally not recommended, but
+    it may reduce X driver memory usage in some situations at the cost of some
+    performance.
+
+    This option does not affect the usage of GPU acceleration for pixmaps
+    bound to GLX drawables, EGL surfaces, or EGL images. GPU acceleration of
+    such pixmaps is critical for interactive performance.
+
+    Default: on. When video memory is unavailable, the GPU will still attempt
+    to accelerate X drawing operations on pixmaps allocated in system memory.
+
+    This option is not applicable for Tegra integrated graphics as it does not
+    have dedicated video memory.
+
+Option "ForceCompositionPipeline" "string"
+
+    The NVIDIA X driver can use a composition pipeline to apply X screen
+    transformations and rotations. Normally, this composition pipeline is
+    enabled implicitly when necessary, or when the MetaMode token
+    "ForceCompositionPipeline" is specified. This X configuration option can
+    be used to explicitly enable the composition pipeline, even if the
+    corresponding MetaMode token is not specified.
+
+    The option value is a comma-separated list of display device names. The
+    composition pipeline will be forced on for all display devices in the
+    comma-separated list.
+
+    Alternatively, the option value can be any boolean true string ("1", "on",
+    "true", "yes"), in which case all display devices will have their
+    composition pipeline enabled.
+
+    By default, the option value is NULL.
+
+Option "ForceFullCompositionPipeline" "string"
+
+    This option has the same possible values and semantics as
+    "ForceCompositionPipeline", but it additionally makes use of the
+    composition pipeline to apply ViewPortOut scaling.
+
+Option "AllowHMD" "string"
+
+    Most Virtual Reality Head Mounted Displays (HMDs), such as the HTC VIVE,
+    require special image processing. This means it is usually undesirable to
+    display the X11 desktop on an HMD. By default, the NVIDIA X driver will
+    treat any detected HMDs as disconnected. To override this behavior, set
+    the X configuration option "AllowHMD" to "yes", or explicitly list the
+    HMDs to allow (any other HMDs will continue to be ignored).
+
+    Examples:
+    
+        Option "AllowHMD" "yes"
+    
+    
+    
+        Option "AllowHMD" "HDMI-0, HDMI-1"
+    
+    
+Option "TegraReserveDisplayBandwidth" "boolean"
+
+    The NVIDIA X driver on Tegra dynamically calculates the amount of display
+    bandwidth required for the current configuration of monitors, resolutions,
+    and refresh rates. It uses this calculation to reserve only as much
+    display bandwidth as is necessary for the current configuration,
+    potentially allowing the system to run at lower clocks and conserve power.
+
+    However, in rare cases where other programs also use display without the X
+    driver's knowledge, the calculated display bandwidth may be insufficient,
+    resulting in underflow.
+
+    This option can be used to disable the X driver's dynamic display
+    bandwidth reservation, causing the system to assume worst case display
+    usage. This may result in higher power usage, but will avoid the risk of
+    underflow.
+
+    Default: true (the X driver will only reserve as much display bandwidth as
+    it calculates is necessary).
+
+Option "AllowExternalGpus" "boolean"
+
+    This option allows the NVIDIA X driver to configure X screens on external
+    GPUs, also known as eGPUs. Note that this option is applied globally:
+    setting this option to true will enable the use of all eGPUs.
+
+    "AllowExternalGpus" defaults to false, to avoid putting the X server in a
+    situation where a GPU it is actively using can be hot-unplugged. External
+    GPUs are often used in short-running compute scenarios, which better
+    tolerate the eGPU being hot-unplugged. In such cases, a different GPU may
+    be used to display the X11 desktop.
+
+    In addition to eGPUs, "AllowExternalGpus" set to false may prevent the
+    NVIDIA X driver from configuring X screens on GPUs attached to internal
+    PCIe slots with surprise removal/hot-unplug support, such as in some
+    enterprise systems.
+
+    This option can be placed either in the "Device" or "ServerLayout" section
+    of the X.Org configuration file.
+
+    Default: false. The NVIDIA X driver will not configure X screens on eGPUs.
+
+Option "LimitFrameRateWhenHeadless" "boolean"
+
+    When there are no active displays, the resulting configuration is
+    "headless". In a headless configuration, OpenGL and Vulkan applications
+    are not able to sync to vblank, and without framerate limiting will run
+    unbounded, potentially wasting system resources and power.
+
+    To prevent this from happening unintentionally, OpenGL and Vulkan
+    applications that sync to vblank are restricted to 1 frame per second when
+    there are no active displays. If X starts without displays, framerate
+    limiting is disabled to avoid interfering with intended headless
+    configurations.
+
+    Default: true. OpenGL and Vulkan applications will be limited to 1 frame
+    per second when there are no active displays. If no displays are
+    configured when the NVIDIA X driver initializes, the option will be forced
+    to false.
+
+Option "HardDPMS" "boolean"
+
+    By default, the NVIDIA X driver puts displays to sleep using modesets
+    rather than the VESA DPMS ("Display Power Management Signaling") standard.
+    There should be no visible difference to users of LCDs -- DPMS was
+    originally designed for CRT monitors, and includes intermediate states
+    that are redundant for LCDs.
+
+    When displays are put to sleep using modesets, they are completely shut
+    down. As a result, OpenGL and Vulkan applications will behave as though
+    the system were headless, and will not be able to sync to vblank, instead
+    being subject to automatic framerate limiting where applicable; see
+    LimitFrameRateWhenHeadless.
+
+    When "HardDPMS" is set to false, the NVIDIA X driver will put displays to
+    sleep using the VESA DPMS standard rather than modesets. Some LCDs may
+    fail to respond correctly to VESA DPMS, which leaves them powered on when
+    they should be in a sleep state.
+
+    Default: true. The NVIDIA X driver will put displays to sleep using
+    modesets.
+
+Option "SidebandSocketPath" "string"
+
+    The NVIDIA X driver uses a UNIX domain socket to pass information to other
+    driver components. If unable to connect to this socket, some driver
+    features, such as G-Sync, may not work correctly. The socket will be bound
+    to a file with a name unique to the X server instance created in the
+    directory specified by this option. Note that on Linux, an additional
+    abstract socket (not associated with a file) will also be created, with
+    this pathname socket serving as a fallback if connecting to the abstract
+    socket fails.
+
+    Default: /var/run bind the pathname socket to a file created in this
+    directory.
+
+Option "ConnectToAcpid" "boolean"
+
+    The ACPI daemon (acpid) receives information about ACPI events like
+    AC/Battery power, docking, etc. acpid will deliver these events to the
+    NVIDIA X driver via a UNIX domain socket connection. By default, the
+    NVIDIA X driver will attempt to connect to acpid to receive these events.
+    Set this option to "off" to prevent the NVIDIA X driver from connecting to
+    acpid. Default: on (the NVIDIA X driver will attempt to connect to acpid).
+
+Option "AcpidSocketPath" "string"
+
+    The NVIDIA X driver attempts to connect to the ACPI daemon (acpid) via a
+    UNIX domain socket. The default path to this socket is
+    "/var/run/acpid.socket". Set this option to specify an alternate path to
+    acpid's socket. Default: "/var/run/acpid.socket".
+
+Option "EnableACPIBrightnessHotkeys" "boolean"
+
+    Enable or disable handling of ACPI brightness change hotkey events.
+    Default: enabled
+
+Option "3DVisionUSBPath" "string"
+
+    When NVIDIA 3D Vision is enabled, the X driver searches through the usbfs
+    to find the connected USB dongle. Set this option to specify the sysfs
+    path of the dongle, from which the X driver will infer the usbfs path.
+
+    Example:
+    
+    Option "3DVisionUSBPath" "/sys/bus/usb/devices/1-1"
+    
+    
+Option "3DVisionProConfigFile" "string"
+
+    NVIDIA 3D VisionPro provides various configuration options and pairs
+    various glasses to sync to the hub. It is convenient to store this
+    configuration information to re-use when X restarts. Filename provided in
+    this option is used by NVIDIA X driver to store this information. Ensure
+    that X server has read and write access permissions to the filename
+    provided. Default: No configuration is stored.
+
+    Example:
+    
+    Option "3DVisionProConfigFile" "/etc/nvidia_3d_vision_pro_config_filename"
+    
+    
+Option "3DVisionDisplayType" "integer"
+
+    When NVIDIA 3D Vision is enabled with a non 3D Vision ready display, use
+    this option to specify the display type.
+    
+        Value             Behavior
+        --------------    ---------------------------------------------------
+        1                 Assume it is a CRT.
+        2                 Assume it is a DLP.
+        3                 Assume it is a DLP TV and enable the checkerboard
+                          output.
+    
+    
+    Default: 1
+
+    Example:
+    
+    Option "3DVisionDisplayType" "1"
+    
+    
+Option "3DVisionProHwButtonPairing" "boolean"
+
+    When NVIDIA 3D Vision Pro is enabled, use this option to disable hardware
+    button based pairing. Single click button on the hub to enter into pairing
+    mode which pairs single pair of glasses at a time. Double click button on
+    the hub to enter into a pairing mode which pairs multiple pairs of glasses
+    at a time.
+
+    Default: True
+
+    Example:
+    
+    Option "3DVisionProHwButtonPairing" "False"
+    
+    
+Option "3DVisionProHwSinglePairingTimeout" "integer"
+
+    When NVIDIA 3D Vision Pro and hardware button based pairing are enabled,
+    use this option to set timeout in seconds for pairing single pair of
+    glasses.
+
+    Default: 6
+
+    Example:
+    
+    Option "3DVisionProHwSinglePairingTimeout" "10"
+    
+    
+Option "3DVisionProHwMultiPairingTimeout" "integer"
+
+    When NVIDIA 3D Vision Pro and hardware button based pairing is enabled,
+    use this option to set timeout in seconds for pairing multiple pairs of
+    glasses.
+
+    Default: 10
+
+    Example:
+    
+    Option "3DVisionProHwMultiPairingTimeout" "10"
+    
+    
+Option "3DVisionProHwDoubleClickThreshold" "integer"
+
+    When NVIDIA 3D Vision Pro and hardware button based pairing is enabled,
+    use this option to set the threshold for detecting double click event of
+    the button. Threshold is time in ms. within which user has to click the
+    button twice to generate double click event.
+
+    Default: 1000 ms
+
+    Example:
+    
+    Option "3DVisionProHwDoubleClickThreshold" "1500"
+    
+    
+Option "DisableBuiltin3DVisionEmitter" "boolean"
+
+    This option can be used to disable the NVIDIA 3D Vision infrared emitter
+    that is built into some 3D Vision ready display panels. This can be useful
+    when an external NVIDIA 3D Vision emitter needs to be used with such a
+    panel.
+
+    Default: False
+
+    Example:
+    
+    Option "DisableBuiltin3DVisionEmitter" "True"
+    
+    
+
+The following NVIDIA X driver options are global to the X server, and should
+be specified in the "ServerLayout" section of the X configuration file.
+
+Option "AllowNVIDIAGPUScreens" "boolean"
+
+    When this option is enabled, and the X server version supports GPU screens
+    (xorg-server 1.13 or newer), the NVIDIA X driver will allow GPU screens to
+    be created for each NVIDIA GPU detected in the system for which there is
+    no X screen configured or auto-configured.
+
+    GPU screens within the X server are generally not directly addressable by
+    X11 applications: the 'screen' index in any X protocol request can only
+    specify X screens, not GPU screens. But, GPU screens are useful for PRIME
+    render offload configurations.
+
+    Default: The NVIDIA X driver will allow GPU screens on X.Org xserver
+    version 1.20.7 and higher.
+
+Option "AllowPRIMEDisplayOffloadSink" "boolean"
+
+    RandR PRIME Display Offload Sink support, also known as "Reverse PRIME",
+    is disabled by default for NVIDIA RandR providers on X.Org X servers prior
+    to version 1.20.7 due to latent bugs that can result in crashes when used
+    with the NVIDIA driver. X server version 1.20.6 contains fixes for the
+    crashing, but cannot be detected automatically.
+
+    This option overrides the default behavior, allowing PRIME Display Offload
+    Sink to be used regardless of X server version.
+
+    Default: PRIME Display Offload Sink will be allowed only for X server
+    1.20.7 or newer.
+
+
+______________________________________________________________________________
+
+Appendix C. Display Device Names
+______________________________________________________________________________
+
+A "display device" refers to a hardware device capable of displaying an image.
+Most NVIDIA GPUs can drive multiple display devices simultaneously.
+
+Many X configuration options can be used to separately configure each display
+device in use by the X screen. To address an individual display device, you
+can use one of several names that are assigned to it.
+
+For example, the "ModeValidation" X configuration option by default applies to
+all display devices on the X screen. E.g.,
+
+    Option "ModeValidation" "NoMaxPClkCheck"
+
+You can use a display device name qualifier to configure each display device's
+ModeValidation separately. E.g.,
+
+    Option "ModeValidation" "DFP-0: NoMaxPClkCheck; CRT-1: NoVesaModes"
+
+
+The description of each X configuration option in Appendix B provides more
+detail on the available syntax for each option.
+
+The available display device names vary by GPU. To find all available names
+for your configuration, start the X server with verbose logging enabled (e.g.,
+`startx -- -logverbose 5`, or enable the "ModeDebug" X configuration option
+with `nvidia-xconfig --mode-debug` and restart the X server).
+
+The X log (normally /var/log/Xorg.0.log) will contain a list of what display
+devices are valid for the GPU. E.g.,
+
+(--) NVIDIA(0): Valid display device(s) on Quadro 6000 at PCI:10:0:0
+(--) NVIDIA(0):     CRT-0
+(--) NVIDIA(0):     CRT-1
+(--) NVIDIA(0):     DELL U2410 (DFP-0) (connected)
+(--) NVIDIA(0):     NEC LCD1980SXi (DFP-1) (connected)
+
+
+
+The X log will also contain a list of which display devices are assigned to
+the X screen. E.g.,
+
+(II) NVIDIA(0): Display device(s) assigned to X screen 0:
+(II) NVIDIA(0):   CRT-0
+(II) NVIDIA(0):   CRT-1
+(II) NVIDIA(0):   DELL U2410 (DFP-0)
+(II) NVIDIA(0):   NEC LCD1980SXi (DFP-1)
+
+
+Note that when multiple X screens are configured on the same GPU, the NVIDIA X
+driver assigns different display devices to each X screen. On X servers that
+support RandR 1.2 or later, the NVIDIA X driver will create an RandR output
+for each display device assigned to an X screen.
+
+The X log will also report a list of "Name Aliases" for each display device.
+E.g.,
+
+(--) NVIDIA(0): Name Aliases for NEC LCD1980SXi (DFP-1):
+(--) NVIDIA(0):   DFP
+(--) NVIDIA(0):   DFP-1
+(--) NVIDIA(0):   DPY-3
+(--) NVIDIA(0):   DVI-I-3
+(--) NVIDIA(0):   DPY-EDID-373091cb-5c07-6430-54d2-1112efd64b44
+(--) NVIDIA(0):   Connector-0
+
+
+These aliases can be used interchangeably to refer to the same display device
+in any X configuration option, as an nvidia-settings target specification, or
+in NV-CONTROL protocol that uses similar strings, such as
+NV_CTRL_STRING_CURRENT_METAMODE_VERSION_2 (available through the
+nvidia-settings command line as `nvidia-settings --query CurrentMetaMode`).
+
+Each alias has different properties that may affect which alias is appropriate
+to use. The possible alias names are:
+
+
+   o A "type"-based name (e.g., "DFP-1"). This name is a unique index plus a
+     display device type name, though in actuality the "type name" is selected
+     based on the protocol through which the X driver communicates to the
+     display device. If the X driver communicates using VGA, then the name is
+     "CRT"; if the driver communicates using TMDS, LVDS, or DP, then the name
+     is "DFP".
+
+     This may cause confusion in some cases (e.g., a digital flat panel
+     connected via VGA will have the name "CRT"), but this name alias is
+     provided for backwards compatibility with earlier NVIDIA driver releases.
+
+     Also for backwards compatibility, an alias is provided that uses the
+     "type name" without an index. This name alias will match any display
+     device of that type: it is not unique across the X screen.
+
+     Note that the index in this type-based name is based on which physical
+     connector is used. If you reconnect a display device to a different
+     connector on the GPU, the type-based name will be different.
+
+   o A connector-based name (e.g., "DVI-I-3"). This name is a unique index
+     plus a name that is based on the physical connector through which the
+     display device is connected to the GPU. E.g., "VGA-1", "DVI-I-0",
+     "DVI-D-3", "LVDS-1", "DP-2", "HDMI-3", "eDP-6", "USB-C-0". On X servers
+     that support RandR 1.2 or later, this name is also used as the RandR
+     output name.
+
+     Note that the index in this connector-based name is based on which
+     physical connector is used. If you reconnect a display device to a
+     different connector on the GPU, the connector-based name will be
+     different.
+
+     When Mosaic is enabled, this name is prefixed with a GPU identifier to
+     make it unique. For example, a Mosaic configuration with two DisplayPort
+     devices might have two different outputs with names "GPU-0.DP-0" and
+     "GPU-1.DP-0", respectively. See Appendix K for a description of valid GPU
+     names.
+
+   o An EDID-based name (e.g.,
+     "DPY-EDID-373091cb-5c07-6430-54d2-1112efd64b44"). This name is a SHA-1
+     hash, formatted in canonical UUID 8-4-4-4-12 format, of the display
+     device's EDID. This name will be the same regardless of which physical
+     connector on the GPU you use, but it will not be unique if you have
+     multiple display devices with the same EDID.
+
+   o An NV-CONTROL target ID-based name (e.g., "DPY-3"). The NVIDIA X driver
+     will assign a unique ID to each display device on the entire X server.
+     These IDs are not guaranteed to be persistent from one run of the X
+     server to the next, so is likely not convenient for X configuration file
+     use. It is more frequently used in communication with NV-CONTROL clients
+     such as nvidia-settings.
+
+   o A connector number-based name (e.g., "Connector-0"), where each name
+     identifies a physical connector on the graphics card. Connector numbers
+     for these names are guaranteed to begin at 0 and monotonically increase
+     to the maximum number of connectors on the graphics card.
+
+     Note that multiple display devices may have the same connector
+     number-based name: DisplayPort Multi-Stream devices on the same
+     connector, or display devices representing different protocols that can
+     be possibly driven by the same connector (e.g., DisplayPort versus TMDS
+     protocols driven over a DisplayPort connector).
+
+     This name is most useful with the "ConnectedMonitor" X configuration
+     option in situations where you want to emulate the presence of one or
+     more connected monitors, but do not necessarily care which physical
+     connectors are used. E.g.,
+     
+         Option "ConnectedMonitor" "Connector-0, Connector-1"
+     
+     
+
+When DisplayPort 1.2 branch devices are present, display devices will be
+created with type- and connector-based names that are based on how they are
+connected to the branch device tree. For example, if a connector named DP-2
+has a branch device attached and a DisplayPort device is connected to the
+branch device's first downstream port, a display device named "DP-2.1" might
+be created. If another branch device is connected between the first branch
+device and the display device, the name might be "DP-2.1.1".
+
+Any display device name can have an optional GPU qualifier prefix. E.g.,
+"GPU-0.DVI-I-3". This is useful in Mosaic configurations: type- and
+connector-based display device names are only unique within a GPU, so the GPU
+qualifier is used to distinguish between identically named display devices on
+different GPUs. For example:
+
+    Option "MetaModes"   "GPU-0.CRT-0: 1600x1200, GPU-1.CRT-0: 1024x768"
+
+If no GPU is specified for a particular display device name, the setting will
+apply to any devices with that name across all GPUs. Note that the GPU UUID
+can also be used as the qualifier. E.g.,
+"GPU-758a4cf7-0761-62c7-9bf7-c7d950b817c6.DVI-I-1". See Appendix K For
+details.
+
+______________________________________________________________________________
+
+Appendix D. GLX Support
+______________________________________________________________________________
+
+This release supports GLX 1.4.
+
+Additionally, the following GLX extensions are supported on appropriate GPUs:
+
+   o GLX_EXT_visual_info
+
+   o GLX_EXT_visual_rating
+
+   o GLX_SGIX_fbconfig
+
+   o GLX_SGIX_pbuffer
+
+   o GLX_ARB_get_proc_address
+
+   o GLX_SGI_video_sync
+
+   o GLX_SGI_swap_control
+
+   o GLX_ARB_multisample
+
+   o GLX_NV_float_buffer
+
+   o GLX_ARB_fbconfig_float
+
+   o GLX_NV_swap_group
+
+   o GLX_NV_video_out
+
+   o GLX_EXT_texture_from_pixmap
+
+   o GLX_NV_copy_image
+
+   o GLX_ARB_create_context
+
+   o GLX_EXT_import_context
+
+   o GLX_EXT_fbconfig_packed_float
+
+   o GLX_EXT_framebuffer_sRGB
+
+   o GLX_NV_present_video
+
+   o GLX_NV_multisample_coverage
+
+   o GLX_EXT_swap_control
+
+   o GLX_NV_video_capture
+
+   o GLX_ARB_create_context_profile
+
+   o GLX_EXT_create_context_es_profile
+
+   o GLX_EXT_create_context_es2_profile
+
+   o GLX_EXT_swap_control_tear
+
+   o GLX_EXT_buffer_age
+
+   o GLX_ARB_create_context_robustness
+
+   o GLX_ARB_context_flush_control
+
+   o GLX_ARB_create_context_no_error
+
+   o GLX_EXT_libglvnd
+
+   o GLX_EXT_stereo_tree
+
+   o GLX_NV_copy_buffer
+
+   o GLX_NV_delay_before_swap
+
+   o GLX_NV_robustness_video_memory_purge
+
+   o GLX_NV_multigpu_context
+
+For a description of these extensions, see the OpenGL extension registry at
+http://www.opengl.org/registry/
+
+Some of the above extensions exist as part of core GLX 1.4 functionality,
+however, they are also exported as extensions for backwards compatibility.
+
+Unofficial GLX protocol support exists in NVIDIA's GLX client and GLX server
+implementations for the following OpenGL extensions:
+
+   o GL_ARB_geometry_shader4
+
+   o GL_ARB_shader_objects
+
+   o GL_ARB_texture_buffer_object
+
+   o GL_ARB_vertex_buffer_object
+
+   o GL_ARB_vertex_shader
+
+   o GL_EXT_bindable_uniform
+
+   o GL_EXT_compiled_vertex_array
+
+   o GL_EXT_geometry_shader4
+
+   o GL_EXT_gpu_shader4
+
+   o GL_EXT_texture_buffer_object
+
+   o GL_NV_geometry_program4
+
+   o GL_NV_vertex_program
+
+   o GL_NV_parameter_buffer_object
+
+   o GL_NV_vertex_program4
+
+Until the GLX protocol for these OpenGL extensions is finalized, using these
+extensions through GLX indirect rendering will require the
+AllowUnofficialGLXProtocol X configuration option, and the
+__GL_ALLOW_UNOFFICIAL_PROTOCOL environment variable in the environment of the
+client application. Unofficial protocol requires the use of NVIDIA GLX
+libraries on both the client and the server. Note: GLX protocol is used when
+an OpenGL application indirect renders (i.e., runs on one computer, but
+submits protocol requests such that the rendering is performed on another
+computer). The above OpenGL extensions are fully supported when doing direct
+rendering.
+
+GLX visuals and FBConfigs are only available for X screens with depths 16, 24,
+or 30.
+
+______________________________________________________________________________
+
+Appendix E. Dots Per Inch
+______________________________________________________________________________
+
+DPI (Dots Per Inch), also known as PPI (Pixels Per Inch), is a property of an
+X screen that describes the physical size of pixels. Some X applications, such
+as xterm, can use the DPI of an X screen to determine how large (in pixels) to
+draw an object in order for that object to be displayed at the desired
+physical size on the display device.
+
+The DPI of an X screen is computed by dividing the size of the X screen in
+pixels by the size of the X screen in inches:
+
+    DPI = SizeInPixels / SizeInInches
+
+Since the X screen stores its physical size in millimeters rather than inches
+(1 inch = 25.4 millimeters):
+
+    DPI = (SizeInPixels * 25.4) / SizeInMillimeters
+
+The NVIDIA X driver reports the size of the X screen in pixels and in
+millimeters. When the XRandR extension resizes the X screen in pixels, the
+NVIDIA X driver computes a new size in millimeters for the X screen, to
+maintain a constant DPI (see the "Physical Size" column of the `xrandr -q`
+output as an example). This is done because a changing DPI can cause
+interaction problems for some applications. To disable this behavior, and
+instead keep the same millimeter size for the X screen (and therefore have a
+changing DPI), set the ConstantDPI option to FALSE.
+
+You can query the DPI of your X screen by running:
+
+
+    % xdpyinfo | grep -B1 dot
+
+
+which should generate output like this:
+
+
+    dimensions:    1280x1024 pixels (382x302 millimeters)
+    resolution:    85x86 dots per inch
+
+
+
+The NVIDIA X driver performs several steps during X screen initialization to
+determine the DPI of each X screen:
+
+
+   o If the display device provides an EDID, and the EDID contains information
+     about the physical size of the display device, that is used to compute
+     the DPI, along with the size in pixels of the first mode to be used on
+     the display device.
+
+     Note that in some cases, the physical size information stored in a
+     display device's EDID may be unreliable. This could result in a display
+     device's DPI being computed incorrectly, potentially leading to undesired
+     consequences such as fonts that are scaled larger or smaller than
+     expected. These issues can be worked around by manually setting a DPI
+     using the "DPI" X configuration option, or by disabling the use of the
+     EDID's physical size information for computing DPI by setting the
+     UseEdidDpi X configuration option to "FALSE"'.
+
+     If multiple display devices are used by this X screen, then the NVIDIA X
+     screen will choose which display device to use. You can override this
+     with the "UseEdidDpi" X configuration option: you can specify a
+     particular display device to use; e.g.:
+     
+         Option "UseEdidDpi" "DFP-1"
+     
+     or disable EDID-computed DPI by setting this option to false:
+     
+         Option "UseEdidDpi" "FALSE"
+     
+     EDID-based DPI computation is enabled by default when an EDID is
+     available.
+
+   o If the "-dpi" commandline option to the X server is specified, that is
+     used to set the DPI (see `X -h` for details). This will override the
+     "UseEdidDpi" option.
+
+   o If the DPI X configuration option is specified, that will be used to set
+     the DPI. This will override the "UseEdidDpi" option.
+
+   o If none of the above are available, then the "DisplaySize" X config file
+     Monitor section information will be used to determine the DPI, if
+     provided; see the xorg.conf man page for details.
+
+   o If none of the above are available, the DPI defaults to 75x75.
+
+
+You can find how the NVIDIA X driver determined the DPI by looking in your X
+log file. There will be a line that looks something like the following:
+
+    (--) NVIDIA(0): DPI set to (101, 101); computed from "UseEdidDpi" X config
+option
+
+
+Note that the physical size of the X screen, as reported through `xdpyinfo` is
+computed based on the DPI and the size of the X screen in pixels.
+
+The DPI of an X screen can be poorly defined when multiple display devices are
+enabled on the X screen: those display devices might have different actual
+DPIs, yet DPI is advertised from the X server to the X application with X
+screen granularity. Solutions for this include:
+
+
+   o Use separate X screens, with one display device on each X screen; see
+     Chapter 14 for details.
+
+   o The RandR X extension version 1.2 and later reports the physical size of
+     each RandR Output, so applications could possibly choose to render
+     content at different sizes, depending on which portion of the X screen is
+     displayed on which display devices. Client applications can also
+     configure the reported per-RandR Output physical size. See, e.g., the
+     xrandr(1) '--fbmm' command line option.
+
+   o Experiment with different DPI settings to find a DPI that is suitable for
+     all display devices on the X screen.
+
+
+______________________________________________________________________________
+
+Appendix F. i2c Bus Support
+______________________________________________________________________________
+
+The NVIDIA Linux kernel module now includes i2c (also called I-squared-c,
+Inter-IC Communications, or IIC) functionality that allows the NVIDIA Linux
+kernel module to export i2c ports found on board NVIDIA cards to the Linux
+kernel. This allows i2c devices on-board the NVIDIA graphics card, as well as
+devices connected to the VGA and/or DVI ports, to be accessed from kernel
+modules or userspace programs in a manner consistent with other i2c ports
+exported by the Linux kernel through the i2c framework.
+
+You must have i2c support compiled into the kernel, or as a module, and X must
+be running. The Linux kernel documentation covers the kernel and userspace
+/dev APIs, which you may wish to use to access NVIDIA i2c ports.
+
+For further information regarding the Linux kernel's i2c framework, refer to
+the documentation for your kernel, located at .../Documentation/i2c/ within
+the kernel source tree.
+
+The following functionality is currently supported:
+
+
+  I2C_FUNC_I2C
+  I2C_FUNC_SMBUS_QUICK
+  I2C_FUNC_SMBUS_BYTE
+  I2C_FUNC_SMBUS_BYTE_DATA
+  I2C_FUNC_SMBUS_WORD_DATA
+
+
+
+______________________________________________________________________________
+
+Appendix G. VDPAU Support
+______________________________________________________________________________
+
+This release includes support for the Video Decode and Presentation API for
+Unix-like systems (VDPAU) on most GeForce 8 series and newer add-in cards, as
+well as motherboard chipsets with integrated graphics that have PureVideo
+support based on these GPUs.
+
+Use of VDPAU requires installation of a separate wrapper library called
+libvdpau. Please see your system distributor's documentation for information
+on how to install this library. More information can be found at
+http://freedesktop.org/wiki/Software/VDPAU/.
+
+VDPAU is only available for X screens with depths 16, 24, or 30.
+
+VDPAU supports Xinerama. The following restrictions apply:
+
+   o Physical X screen 0 must be driven by the NVIDIA driver.
+
+   o VDPAU will only display on physical X screens driven by the NVIDIA
+     driver, and which are driven by a GPU both compatible with VDPAU, and
+     compatible with the GPU driving physical X screen 0.
+
+
+Under Xinerama, VDPAU performs all operations other than display on a single
+GPU. By default, the GPU associated with physical X screen 0 is used. The
+environment variable VDPAU_NVIDIA_XINERAMA_PHYSICAL_SCREEN may be used to
+specify a physical screen number, and then VDPAU will operate on the GPU
+associated with that physical screen. This variable should be set to the
+integer screen number as configured in the X configuration file. The selected
+physical X screen must be driven by the NVIDIA driver.
+
+
+G1. IMPLEMENTATION LIMITS
+
+VDPAU is specified as a generic API - the choice of which features to support,
+and performance levels of those features, is left up to individual
+implementations. The details of NVIDIA's implementation are provided below.
+
+
+VDPVIDEOSURFACE
+
+The maximum supported resolution is 8192x8192 for GPUs with VDPAU feature sets
+H and I, and 4096x4096 for all other GPUs.
+
+The following surface formats and get-/put-bits combinations are supported:
+
+   o VDP_CHROMA_TYPE_420 (Supported get-/put-bits formats are
+     VDP_YCBCR_FORMAT_NV12, VDP_YCBCR_FORMAT_YV12)
+
+   o VDP_CHROMA_TYPE_422 (Supported get-/put-bits formats are
+     VDP_YCBCR_FORMAT_UYVY, VDP_YCBCR_FORMAT_YUYV)
+
+
+
+VDPBITMAPSURFACE
+
+The maximum supported resolution is 16384x16384 pixels.
+
+The following surface formats are supported:
+
+   o VDP_RGBA_FORMAT_B8G8R8A8
+
+   o VDP_RGBA_FORMAT_R8G8B8A8
+
+   o VDP_RGBA_FORMAT_B10G10R10A2
+
+   o VDP_RGBA_FORMAT_R10G10B10A2
+
+   o VDP_RGBA_FORMAT_A8
+
+
+Note that VdpBitmapSurfaceCreate's frequently_accessed parameter directly
+controls whether the bitmap data will be placed into video RAM (VDP_TRUE) or
+system memory (VDP_FALSE). Note that if the bitmap data cannot be placed into
+video RAM when requested due to resource constraints, the implementation will
+automatically fall back to placing the data into system RAM.
+
+
+VDPOUTPUTSURFACE
+
+The maximum supported resolution is 16384x16384 pixels.
+
+The following surface formats are supported:
+
+   o VDP_RGBA_FORMAT_B8G8R8A8
+
+   o VDP_RGBA_FORMAT_R10G10B10A2
+
+
+For all surface formats, the following get-/put-bits indexed formats are
+supported:
+
+   o VDP_INDEXED_FORMAT_A4I4
+
+   o VDP_INDEXED_FORMAT_I4A4
+
+   o VDP_INDEXED_FORMAT_A8I8
+
+   o VDP_INDEXED_FORMAT_I8A8
+
+
+For all surface formats, the following get-/put-bits YCbCr formats are
+supported:
+
+   o VDP_YCBCR_FORMAT_Y8U8V8A8
+
+   o VDP_YCBCR_FORMAT_V8U8Y8A8
+
+
+
+VDPDECODER
+
+In all cases, VdpDecoder objects solely support 8-bit 4:2:0 streams, and only
+support writing to VDP_CHROMA_TYPE_420 surfaces.
+
+The exact set of supported VdpDecoderProfile values depends on the GPU in use.
+Appendix A lists which GPUs support which video feature set. An explanation of
+each video feature set may be found below. When reading these lists, please
+note that VC1_SIMPLE and VC1_MAIN may be referred to as WMV, WMV3, or WMV9 in
+other contexts. Partial acceleration means that VLD (bitstream) decoding is
+performed on the CPU, with the GPU performing IDCT and motion compensation.
+Complete acceleration means that the GPU performs all of VLD, IDCT, and motion
+compensation.
+
+
+VDPAU FEATURE SETS A AND B
+
+GPUs with VDPAU feature sets A and B are not supported by this driver.
+
+
+VDPAU FEATURE SETS C, D, AND E
+
+GPUs with VDPAU feature set C, D, or E support at least the following
+VdpDecoderProfile values, and associated limits:
+
+   o VDP_DECODER_PROFILE_MPEG1, VDP_DECODER_PROFILE_MPEG2_SIMPLE,
+     VDP_DECODER_PROFILE_MPEG2_MAIN:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 3 macroblocks (48 pixels).
+     
+        o Maximum width or height: 128 macroblocks (2048 pixels) for feature
+          set C, 252 macroblocks (4032 pixels) wide by 253 macroblocks (4048
+          pixels) high for feature set D, 255 macroblocks (4080 pixels) for
+          feature set E.
+     
+        o Maximum macroblocks: 8192 for feature set C, 65536 for feature sets
+          D or E.
+     
+     
+   o VDP_DECODER_PROFILE_H264_MAIN, VDP_DECODER_PROFILE_H264_HIGH,
+     VDP_DECODER_PROFILE_H264_CONSTRAINED_BASELINE,
+     VDP_DECODER_PROFILE_H264_PROGRESSIVE_HIGH,
+     VDP_DECODER_PROFILE_H264_CONSTRAINED_HIGH:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 3 macroblocks (48 pixels).
+     
+        o Maximum width or height: 128 macroblocks (2048 pixels) for feature
+          set C, 252 macroblocks (4032 pixels) wide by 255 macroblocks (4080
+          pixels) high for feature set D, 256 macroblocks (4096 pixels) for
+          feature set E.
+     
+        o Maximum macroblocks: 8192 for feature set C, 65536 for feature sets
+          D or E.
+     
+     
+   o VDP_DECODER_PROFILE_H264_BASELINE, VDP_DECODER_PROFILE_H264_EXTENDED:
+     
+        o Partial acceleration. The NVIDIA VDPAU implementation does not
+          support flexible macroblock ordering, arbitrary slice ordering,
+          redundant slices, data partitioning, SI slices, or SP slices.
+          Content utilizing these features may decode with visible corruption.
+     
+        o Minimum width or height: 3 macroblocks (48 pixels).
+     
+        o Maximum width or height: 128 macroblocks (2048 pixels) for feature
+          set C, 252 macroblocks (4032 pixels) wide by 255 macroblocks (4080
+          pixels) high for feature set D, 256 macroblocks (4096 pixels) for
+          feature set E.
+     
+        o Maximum macroblocks: 8192 for feature set C, 65536 for feature sets
+          D or E.
+     
+     
+   o VDP_DECODER_PROFILE_VC1_SIMPLE, VDP_DECODER_PROFILE_VC1_MAIN,
+     VDP_DECODER_PROFILE_VC1_ADVANCED:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 3 macroblocks (48 pixels).
+     
+        o Maximum width or height: 128 macroblocks (2048 pixels).
+     
+        o Maximum macroblocks: 8190
+     
+     
+   o VDP_DECODER_PROFILE_MPEG4_PART2_SP, VDP_DECODER_PROFILE_MPEG4_PART2_ASP,
+     VDP_DECODER_PROFILE_DIVX4_QMOBILE, VDP_DECODER_PROFILE_DIVX4_MOBILE,
+     VDP_DECODER_PROFILE_DIVX4_HOME_THEATER,
+     VDP_DECODER_PROFILE_DIVX4_HD_1080P, VDP_DECODER_PROFILE_DIVX5_QMOBILE,
+     VDP_DECODER_PROFILE_DIVX5_MOBILE, VDP_DECODER_PROFILE_DIVX5_HOME_THEATER,
+     VDP_DECODER_PROFILE_DIVX5_HD_1080P
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 3 macroblocks (48 pixels).
+     
+        o Maximum width or height: 128 macroblocks (2048 pixels).
+     
+        o Maximum macroblocks: 8192
+     
+     The following features are currently not supported:
+     
+        o GMC (Global Motion Compensation)
+     
+        o Data partitioning
+     
+        o reversible VLC
+     
+     
+
+These GPUs also support VDP_VIDEO_MIXER_FEATURE_HIGH_QUALITY_SCALING_L1.
+
+GPUs with VDPAU feature set E support an enhanced error concealment mode which
+provides more robust error handling when decoding corrupted video streams.
+This error concealment is on by default, and may have a minor CPU performance
+impact in certain configurations. To disable this, set the environment
+variable VDPAU_NVIDIA_DISABLE_ERROR_CONCEALMENT to 1.
+
+
+VDPAU FEATURE SET F
+
+GPUs with VDPAU feature set F support all of the same VdpDecoderProfile values
+and other features as VDPAU feature set E. Feature set F adds:
+
+   o VDP_DECODER_PROFILE_HEVC_MAIN, VDP_DECODER_PROFILE_HEVC_MAIN_10:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 4096 luma samples (pixels) wide by 2304
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+   o VDP_DECODER_PROFILE_VP9_PROFILE_0:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 4096 luma samples (pixels) wide by 2304
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+
+
+VDPAU FEATURE SET G
+
+GPUs with VDPAU feature set G support all of the same VdpDecoderProfile values
+and other features as VDPAU feature set F. Feature set G adds:
+
+   o VDP_DECODER_PROFILE_HEVC_MAIN_12:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 4096 luma samples (pixels) wide by 4096
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+
+
+VDPAU FEATURE SET H
+
+GPUs with VDPAU feature set H support all of the same VdpDecoderProfile values
+and other features as VDPAU feature set G. Feature set H adds:
+
+   o VDP_DECODER_PROFILE_HEVC_MAIN, VDP_DECODER_PROFILE_HEVC_MAIN_10
+     VDP_DECODER_PROFILE_HEVC_MAIN_12:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 8192 luma samples (pixels) wide by 8192
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+   o VDP_DECODER_PROFILE_VP9_PROFILE_0, VDP_DECODER_PROFILE_VP9_PROFILE_2:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 8192 luma samples (pixels) wide by 8192
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+
+
+VDPAU FEATURE SET I
+
+GPUs with VDPAU feature set I support all of the same VdpDecoderProfile values
+and other features as VDPAU feature set H.
+
+
+VDPAU FEATURE SET J
+
+GPUs with VDPAU feature set J support all of the same VdpDecoderProfile values
+and other features as VDPAU feature set H. Feature set J adds:
+
+   o VDP_DECODER_PROFILE_HEVC_MAIN_444, VDP_DECODER_PROFILE_HEVC_MAIN_444_10
+     VDP_DECODER_PROFILE_HEVC_MAIN_444_12:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 8192 luma samples (pixels) wide by 8192
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+
+
+VDPAU FEATURE SET K
+
+GPUs with VDPAU feature set K support all of the same VdpDecoderProfile values
+and other features as VDPAU feature set J.Feature set K adds:
+
+   o VDP_DECODER_PROFILE_AV1_MAIN:
+     
+        o Complete acceleration.
+     
+        o Minimum width or height: 128 luma samples (pixels).
+     
+        o Maximum width or height: 8192 luma samples (pixels) wide by 8192
+          luma samples (pixels) tall.
+     
+        o Maximum macroblocks: not applicable.
+     
+     
+
+
+VDPAU FEATURES NOTE 2
+
+Note that all GPUs with VDPAU feature sets H and above, except GPUs with this
+note, support VDP_DECODER_PROFILE_VP9_PROFILE_2. Please check "VDPAU
+information" page in nvidia-settings for the list of supported profiles.
+
+
+VDPAU FEATURES NOTE 3
+
+Note that codec support may vary by product manufacturer and region. For
+further details, please consult the documentation provided by the Add-In Card
+manufacturer or system manufacturer of your product.
+
+
+VDPVIDEOMIXER
+
+The maximum supported resolution is 8192x8192 for GPUs with VDPAU feature set
+H, and 4096x4096 for all other GPUs.
+
+The video mixer supports all video and output surface resolutions and formats
+that the implementation supports.
+
+The video mixer supports at most 4 auxiliary layers.
+
+The following features are supported:
+
+   o VDP_VIDEO_MIXER_FEATURE_DEINTERLACE_TEMPORAL
+
+   o VDP_VIDEO_MIXER_FEATURE_DEINTERLACE_TEMPORAL_SPATIAL
+
+   o VDP_VIDEO_MIXER_FEATURE_INVERSE_TELECINE
+
+   o VDP_VIDEO_MIXER_FEATURE_NOISE_REDUCTION
+
+   o VDP_VIDEO_MIXER_FEATURE_SHARPNESS
+
+   o VDP_VIDEO_MIXER_FEATURE_LUMA_KEY
+
+
+In order for either VDP_VIDEO_MIXER_FEATURE_DEINTERLACE_TEMPORAL or
+VDP_VIDEO_MIXER_FEATURE_DEINTERLACE_TEMPORAL_SPATIAL to operate correctly, the
+application must supply at least 2 past and 1 future fields to each
+VdpMixerRender call. If those fields are not provided, the VdpMixer will fall
+back to bob de-interlacing.
+
+Both regular de-interlacing and half-rate de-interlacing are supported. Both
+have the same requirements in terms of the number of past/future fields
+required. Both modes should produce equivalent results.
+
+In order for VDP_VIDEO_MIXER_FEATURE_INVERSE_TELECINE to have any effect, one
+of VDP_VIDEO_MIXER_FEATURE_DEINTERLACE_TEMPORAL or
+VDP_VIDEO_MIXER_FEATURE_DEINTERLACE_TEMPORAL_SPATIAL must be requested and
+enabled. Inverse telecine has the same requirement on the minimum number of
+past/future fields that must be provided. Inverse telecine will not operate
+when "half-rate" de-interlacing is used.
+
+While it is possible to apply de-interlacing algorithms to progressive streams
+using the techniques outlined in the VDPAU documentation, NVIDIA does not
+recommend doing so. One is likely to introduce more artifacts due to the
+inverse telecine process than are removed by detection of bad edits etc.
+
+
+VDPPRESENTATIONQUEUE
+
+The resolution of VdpTime is approximately 10 nanoseconds. At some arbitrary
+point during system startup, the initial value of this clock is synchronized
+to the system's real-time clock, as represented by nanoseconds since since Jan
+1, 1970. However, no attempt is made to keep the two time-bases synchronized
+after this point. Divergence can and will occur.
+
+NVIDIA's VdpPresentationQueue supports two methods for displaying surfaces;
+overlay and blit. The overlay method will be used wherever possible, with the
+blit method acting as a more general fallback.
+
+Whenever a presentation queue is created, the driver determines whether the
+overlay method may ever be used, based on system configuration, and whether
+any other application already owns the overlay. If overlay usage is
+potentially possible, the presentation queue is marked as owning the overlay.
+
+Whenever a surface is displayed, the driver determines whether the overlay
+method may be used for that frame, based on both whether the presentation
+queue owns the overlay, and the set of overlay usage limitations below. In
+other words, the driver may switch back and forth between overlay and blit
+methods dynamically. The most likely cause for dynamic switching is when a
+compositing manager is enabled or disabled, and the window becomes redirected
+or unredirected.
+
+The following conditions or system configurations will prevent usage of the
+overlay path:
+
+   o Overlay hardware already in use, e.g. by another VDPAU, GL, or X11
+     application.
+
+   o Desktop rotation enabled on the given X screen.
+
+   o The presentation target window is redirected, due to a compositing
+     manager actively running.
+
+   o The environment variable VDPAU_NVIDIA_NO_OVERLAY is set to a string
+     representation of a non-zero integer.
+
+   o The driver determines that the performance requirements of overlay usage
+     cannot be met by the current hardware configuration.
+
+
+Both the overlay and blit methods sync to VBLANK. The overlay path is
+guaranteed never to tear, whereas the blit method is classed as "best effort".
+
+When TwinView is enabled, the blit method can only sync to one of the display
+devices; this may cause tearing corruption on the display device to which
+VDPAU is not syncing. You can use the environment variable
+VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE to specify the display device to which VDPAU
+should sync. You should set this environment variable to the name of a display
+device, for example "CRT-1". Look for the line "Connected display device(s):"
+in your X log file for a list of the display devices present and their names.
+You may also find it useful to review Chapter 12 "Configuring Twinview" and
+the section on Ensuring Identical Mode Timings in Chapter 18.
+
+A VdpPresentationQueue allows a maximum of 8 surfaces to be QUEUED or VISIBLE
+at any one time. This limit is per presentation queue. If this limit is
+exceeded, VdpPresentationQueueDisplay blocks until an entry in the
+presentation queue becomes free.
+
+
+G2. PERFORMANCE LEVELS
+
+This documentation describes the capabilities of the NVIDIA VDPAU
+implementation. Hardware performance may vary significantly between cards. No
+guarantees are made, nor implied, that any particular combination of system
+configuration, GPU configuration, VDPAU feature set, VDPAU API usage,
+application, video stream, etc., will be able to decode streams at any
+particular frame rate.
+
+
+G3. GETTING THE BEST PERFORMANCE FROM THE API
+
+System performance (raw throughput, latency, and jitter tolerance) can be
+affected by a variety of factors. One of these factors is how the client
+application uses VDPAU; i.e. the number of surfaces allocated for buffering,
+order of operations, etc.
+
+NVIDIA GPUs typically contain a number of separate hardware modules that are
+capable of performing different parts of the video decode, post-processing,
+and display operations in parallel. To obtain the best performance, the client
+application must attempt to keep all these modules busy with work at all
+times.
+
+Consider the decoding process. At a bare minimum, the application must
+allocate one video surface for each reference frame that the stream can use (2
+for MPEG or VC-1, a variable stream-dependent number for H.264) plus one
+surface for the picture currently being decoded. However, if this minimum
+number of surfaces is used, performance may be poor. This is because
+back-to-back decodes of non-reference frames will need to be written into the
+same video surface. This will require that decode of the second frame wait
+until decode of the first has completed; a pipeline stall.
+
+Further, if the video surfaces are being read by the video mixer for
+post-processing, and eventual display, this will "lock" the surfaces for even
+longer, since the video mixer needs to read the data from the surface, which
+prevents any subsequent decode operations from writing to the surface. Recall
+that when advanced de-interlacing techniques are used, a history of video
+surfaces must be provided to the video mixer, thus necessitating that even
+more video surfaces be allocated.
+
+For this reason, NVIDIA recommends the following number of video surfaces be
+allocated:
+
+   o (num_ref + 3) for progressive content, and no de-interlacing.
+
+   o (num_ref + 5) for interlaced content using advanced de-interlacing.
+
+
+Next, consider the display path via the presentation queue. This portion of
+the pipeline requires at least 2 output surfaces; one that is being actively
+displayed by the presentation queue, and one being rendered to for subsequent
+display. As before, using this minimum number of surfaces may not be optimal.
+For some video streams, the hardware may only achieve real-time decoding on
+average, not for each individual frame. Using compositing APIs to render
+on-screen displays, graphical user interfaces, etc., may introduce extra
+jitter and latency into the pipeline. Similarly, system level issues such as
+scheduler algorithms and system load may prevent the CPU portion of the driver
+from operating for short periods of time. All of these potential issues may be
+solved by allocating more output surfaces, and queuing more than one
+outstanding output surface into the presentation queue.
+
+The reason for using more than the minimum number of video surfaces is to
+ensure that the decoding and post-processing pipeline is not stalled, and
+hence is kept busy for the maximum amount of time possible. In contrast, the
+reason for using more than the minimum number of output surfaces is to hide
+jitter and latency in various GPU and CPU operations.
+
+The choice of exactly how many surfaces to allocate is a resource usage v.s.
+performance trade-off; Allocating more than the minimum number of surfaces
+will increase performance, but use proportionally more video RAM. This may
+cause allocations to fail. This could be particularly problematic on systems
+with a small amount of video RAM. A stellar application would automatically
+adjust to this by initially allocating the bare minimum number of surfaces
+(failures being fatal), then attempting to allocate more and more surfaces,
+provided the allocations kept succeeding, up to the suggested limits above.
+
+The video decoder's memory usage is also proportional to the maximum number of
+reference frames specified at creation time. Requesting a larger number of
+reference frames can significantly increase memory usage. Hence it is best for
+applications that decode H.264 to request only the actual number of reference
+frames specified in the stream, rather than e.g. hard-coding a limit of 16, or
+even the maximum number of surfaces allowable by some specific H.264 level at
+the stream's resolution.
+
+Note that the NVIDIA implementation correctly implements all required
+interlocks between the various pipelined hardware modules. Applications never
+need worry about correctness (providing their API usage is legal and
+sensible), but simply have to worry about performance.
+
+
+G4. ADDITIONAL NOTES
+
+Note that output and bitmap surfaces are not cleared to any specific value
+upon allocation. It is the application's responsibility to initialize all
+surfaces prior to using them as input to any function. Video surfaces are
+cleared to black upon allocation.
+
+
+G5. DEBUGGING AND TRACING
+
+The VDPAU wrapper library supports tracing VDPAU function calls, and their
+parameters. This tracing is controlled by the following environment variables:
+
+VDPAU_TRACE
+
+    Enables tracing. Set to 1 to trace function calls. Set to 2 to trace all
+    arguments passed to the function.
+
+VDPAU_TRACE_FILE
+
+    Filename to write traces to. By default, traces are sent to stderr. This
+    variable may either contain a plain filename, or a reference to an
+    existing open file-descriptor in the format "&N" where N is the file
+    descriptor number.
+
+
+The VDPAU wrapper library is responsible for determining which vendor-specific
+driver to load for a given X11 display/screen. At present, it hard-codes
+"nvidia" as the driver. The environment variable VDPAU_DRIVER may be set to
+override this default. The actual library loaded will be
+libvdpau_${VDPAU_DRIVER}.so. Setting VDPAU_DRIVER to "trace" is not advised.
+
+The NVIDIA VDPAU driver can emit some diagnostic information when an error
+occurs. To enable this, set the environment variable VDPAU_NVIDIA_DEBUG. A
+value of 1 will request a small diagnostic that will enable NVIDIA engineers
+to locate the source of the problem. A value of 3 will request that a complete
+stack backtrace be printed, which provide NVIDIA engineers with more detailed
+information, which may be needed to diagnose some problems.
+
+
+G6. MULTI-THREADING
+
+VDPAU supports multiple threads actively executing within the driver, subject
+to certain limitations.
+
+If any object is being created or destroyed, the VDPAU driver will become
+single-threaded. This includes object destruction during preemption cleanup.
+
+Otherwise, up to one thread may actively execute VdpDecoderRender per
+VdpDecoder object, and up to one thread may actively execute any other
+rendering API per VdpDevice (or child) object. Note that the driver enforces
+these restrictions internally; applications are not required to implement the
+rules outlined above.
+
+Finally, some of the "query" or "get" APIs may actively execute irrespective
+of the number of rendering threads currently executing.
+
+
+G7. XWAYLAND SUPPORT IN VDPAU
+
+The NVIDIA VDPAU driver supports running within the X Window System: either on
+the native X.org X server, or on the Xwayland X server within an Xwayland
+environment. VDPAU applications do not have to change their VDPAU API usage
+depending on the X server.
+
+
+REQUIREMENTS
+
+In order to make use of Xwayland for decode and presentation purposes, certain
+requirements need to be satisfied. See section "39B. REQUIREMENTS" for the
+list of requirements.
+
+
+KNOWN ISSUES
+
+
+   o The current implementation of VDPAU with Xwayland does not honor the
+     "Presentation Time Stamp" passed by the application to the VDPAU driver.
+
+   o The NVIDIA VDPAU driver running in an Xwayland environment in some cases
+     may lead to corruption and flickering during a video playback. This is a
+     known issue and is tracked by:
+     https://gitlab.freedesktop.org/xorg/xserver/-/issues/1317
+
+
+______________________________________________________________________________
+
+Appendix H. Audio Support
+______________________________________________________________________________
+
+Many NVIDIA GPUs support embedding an audio stream in HDMI and DisplayPort
+signals. In most cases, the GPU contains a standard HD-Audio controller, for
+which there is a standard ALSA driver. For more details on how to configure
+and use the ALSA driver with NVIDIA hardware, please see
+https://download.nvidia.com/XFree86/gpu-hdmi-audio-document/.
+
+______________________________________________________________________________
+
+Appendix I. Tips for New Linux Users
+______________________________________________________________________________
+
+This installation guide assumes that the user has at least a basic
+understanding of Linux techniques and terminology. In this section we provide
+tips that the new user may find helpful. While the these tips are meant to
+clarify and assist users in installing and configuring the NVIDIA Linux
+Driver, it is by no means a tutorial on the use or administration of the Linux
+operating system. Unlike many desktop operating systems, it is relatively easy
+to cause irreparable damage to your Linux system. If you are unfamiliar with
+the use of Linux, we strongly recommend that you seek a tutorial through your
+distributor before proceeding.
+
+
+I1. THE COMMAND PROMPT
+
+While newer releases of Linux bring new desktop interfaces to the user, much
+of the work in Linux takes place at the command prompt. If you are familiar
+with the Windows operating system, the Linux command prompt is analogous to
+the Windows command prompt, although the syntax and use varies somewhat. All
+of the commands in this section are performed at the command prompt. Some
+systems are configured to boot into console mode, in which case the user is
+presented with a prompt at login. Other systems are configured to start the X
+window system, in which case the user must open a terminal or console window
+in order to get a command prompt. This can usually be done by searching the
+desktop menus for a terminal or console program. While it is customizable, the
+basic prompt usually consists of a short string of information, one of the
+characters '#', '$', or '%', and a cursor (possibly flashing) that indicates
+where the user's input will be displayed.
+
+
+I2. NAVIGATING THE DIRECTORY STRUCTURE
+
+Linux has a hierarchical directory structure. From anywhere in the directory
+structure, the 'ls' command will list the contents of that directory. The
+'file' command will print the type of files in a directory. For example,
+
+    % file filename
+
+will print the type of the file 'filename'. Changing directories is done with
+the 'cd' command.
+
+    % cd dirname
+
+will change the current directory to 'dirname'. From anywhere in the directory
+structure, the command 'pwd' will print the name of the current directory.
+There are two special directories, '.' and '..', which refer to the current
+directory and the next directory up the hierarchy, respectively. For any
+commands that require a file name or directory name as an argument, you may
+specify the absolute or the relative paths to those elements. An absolute path
+begins with the "/" character, referring to the top or root of the directory
+structure. A relative path begins with a directory in the current working
+directory. The relative path may begin with '.' or '..'. Elements of a path
+are separated with the "/" character. As an example, if the current directory
+is '/home/jesse' and the user wants to change to the '/usr/local' directory,
+he can use either of the following commands to do so:
+
+    % cd /usr/local
+
+or
+
+    % cd ../../usr/local
+
+
+
+I3. FILE PERMISSIONS AND OWNERSHIP
+
+All files and directories have permissions and ownership associated with them.
+This is useful for preventing non-administrative users from accidentally (or
+maliciously) corrupting the system. The permissions and ownership for a file
+or directory can be determined by passing the -l option to the 'ls' command.
+For example:
+
+% ls -l
+drwxr-xr-x     2    jesse    users    4096    Feb     8 09:32 bin
+drwxrwxrwx    10    jesse    users    4096    Feb    10 12:04 pub
+-rw-r--r--     1    jesse    users      45    Feb     4 03:55 testfile
+-rwx------     1    jesse    users      93    Feb     5 06:20 myprogram
+-rw-rw-rw-     1    jesse    users     112    Feb     5 06:20 README
+% 
+
+The first character column in the first output field states the file type,
+where 'd' is a directory and '-' is a regular file. The next nine columns
+specify the permissions (see paragraph below) of the element. The second field
+indicates the number of files associated with the element, the third field
+indicates the owner, the fourth field indicates the group that the file is
+associated with, the fifth field indicates the size of the element in bytes,
+the sixth, seventh and eighth fields indicate the time at which the file was
+last modified and the ninth field is the name of the element.
+
+As stated, the last nine columns in the first field indicate the permissions
+of the element. These columns are grouped into threes, the first grouping
+indicating the permissions for the owner of the element ('jesse' in this
+case), the second grouping indicating the permissions for the group associated
+with the element, and the third grouping indicating the permissions associated
+with the rest of the world. The 'r', 'w', and 'x' indicate read, write and
+execute permissions, respectively, for each of these associations. For
+example, user 'jesse' has read and write permissions for 'testfile', users in
+the group 'users' have read permission only, and the rest of the world also
+has read permissions only. However, for the file 'myprogram', user 'jesse' has
+read, write and execute permissions (suggesting that 'myprogram' is a program
+that can be executed), while the group 'users' and the rest of the world have
+no permissions (suggesting that the owner doesn't want anyone else to run his
+program). The permissions, ownership and group associated with an element can
+be changed with the commands 'chmod', 'chown' and 'chgrp', respectively. If a
+user with the appropriate permissions wanted to change the user/group
+ownership of 'README' from jesse/users to joe/admin, he would do the
+following:
+
+    # chown joe README
+    # chgrp admin README
+
+The syntax for chmod is slightly more complicated and has several variations.
+The most concise way of setting the permissions for a single element uses a
+triplet of numbers, one for each of user, group and world. The value for each
+number in the triplet corresponds to a combination of read, write and execute
+permissions. Execute only is represented as 1, write only is represented as 2,
+and read only is represented as 4. Combinations of these permissions are
+represented as sums of the individual permissions. Read and execute is
+represented as 5, where as read, write and execute is represented as 7. No
+permissions is represented as 0. Thus, to give the owner read, write and
+execute permissions, the group read and execute permissions and the world no
+permissions, a user would do as follows:
+
+    % chmod 750 myprogram
+
+
+
+I4. THE SHELL
+
+The shell provides an interface between the user and the operating system. It
+is the job of the shell to interpret the input that the user gives at the
+command prompt and call upon the system to do something in response. There are
+several different shells available, each with somewhat different syntax and
+capabilities. The two most common flavors of shells used on Linux stem from
+the Bourne shell ('sh') and the C-shell ('csh') Different users have
+preferences and biases towards one shell or the other, and some certainly make
+it easier (or at least more intuitive) to do some things than others. You can
+determine your current shell by printing the value of the 'SHELL' environment
+variable from the command prompt with
+
+    % echo $SHELL
+
+You can start a new shell simply by entering the name of the shell from the
+command prompt:
+
+    % csh
+
+or
+
+    % sh
+
+and you can run a program from within a specific shell by preceding the name
+of the executable with the name of the shell in which it will be run:
+
+    % sh myprogram
+
+The user's default shell at login is determined by whoever set up his account.
+While there are many syntactic differences between shells, perhaps the one
+that is encountered most frequently is the way in which environment variables
+are set.
+
+
+I5. SETTING ENVIRONMENT VARIABLES
+
+Every session has associated with it environment variables, which consist of
+name/value pairs and control the way in which the shell and programs run from
+the shell behave. An example of an environment variable is the 'PATH'
+variable, which tells the shell which directories to search when trying to
+locate an executable file that the user has entered at the command line. If
+you are certain that a command exists, but the shell complains that it cannot
+be found when you try to execute it, there is likely a problem with the 'PATH'
+variable. Environment variables are set differently depending on the shell
+being used. For the Bourne shell ('sh'), it is done as:
+
+    % export MYVARIABLE="avalue"
+
+for the C-shell, it is done as:
+
+    % setenv MYVARIABLE "avalue"
+
+In both cases the quotation marks are only necessary if the value contains
+spaces. The 'echo' command can be used to examine the value of an environment
+variable:
+
+    % echo $MYVARIABLE
+
+Commands to set environment variables can also include references to other
+environment variables (prepended with the "$" character), including
+themselves. In order to add the path '/usr/local/bin' to the beginning of the
+search path, and the current directory '.' to the end of the search path, a
+user would enter
+
+    % export PATH=/usr/local/bin:$PATH:.
+
+in the Bourne shell, and
+
+    % setenv PATH /usr/local/bin:${PATH}:.
+
+in C-shell. Note the curly braces are required to protect the variable name in
+C-shell.
+
+
+I6. EDITING TEXT FILES
+
+There are several text editors available for the Linux operating system. Some
+of these editors require the X window system, while others are designed to
+operate in a console or terminal. It is generally a good thing to be competent
+with a terminal-based text editor, as there are times when the files necessary
+for X to run are the ones that must be edited. Three popular editors are 'vi',
+'pico' and 'emacs', each of which can be started from the command line,
+optionally supplying the name of a file to be edited. 'vi' is arguably the
+most ubiquitous as well as the least intuitive of the three. 'pico' is
+relatively straightforward for a new user, though not as often installed on
+systems. If you don't have 'pico', you may have a similar editor called
+'nano'. 'emacs' is highly extensible and fairly widely available, but can be
+somewhat unwieldy in a non-X environment. The newer versions each come with
+online help, and offline help can be found in the manual and info pages for
+each (see the section on Linux Manual and Info pages). Many programs use the
+'EDITOR' environment variable to determine which text editor to start when
+editing is required.
+
+
+I7. ROOT USER
+
+Upon installation, almost all distributions set up the default administrative
+user with the username 'root'. There are many things on the system that only
+'root' (or a similarly privileged user) can do, one of which is installing the
+NVIDIA Linux Driver. WE MUST EMPHASIZE THAT ASSUMING THE IDENTITY OF 'root' IS
+INHERENTLY RISKY AND AS 'root' IT IS RELATIVELY EASY TO CORRUPT YOUR SYSTEM OR
+OTHERWISE RENDER IT UNUSABLE. There are three ways to become 'root'. You may
+log in as 'root' as you would any other user, you may use the switch user
+command ('su') at the command prompt, or, on some systems, use the 'sudo'
+utility, which allows users to run programs as 'root' while keeping a log of
+their actions. This last method is useful in case a user inadvertently causes
+damage to the system and cannot remember what he has done (or prefers not to
+admit what he has done). It is generally a good practice to remain 'root' only
+as long as is necessary to accomplish the task requiring 'root' privileges
+(another useful feature of the 'sudo' utility).
+
+
+I8. BOOTING TO A DIFFERENT RUNLEVEL
+
+Runlevels in Linux dictate which services are started and stopped
+automatically when the system boots or shuts down. The runlevels typically
+range from 0 to 6, with runlevel 5 typically starting the X window system as
+part of the services (runlevel 0 is actually a system halt, and 6 is a system
+reboot). It is good practice to install the NVIDIA Linux Driver while X is not
+running, and it is a good idea to prevent X from starting on reboot in case
+there are problems with the installation (otherwise you may find yourself with
+a broken system that automatically tries to start X, but then hangs during the
+startup, preventing you from doing the repairs necessary to fix X). Depending
+on your network setup, runlevels 1, 2 or 3 should be sufficient for installing
+the Driver. Level 3 typically includes networking services, so if utilities
+used by the system during installation depend on a remote filesystem, Levels 1
+and 2 will be insufficient. If your system typically boots to a console with a
+command prompt, you should not need to change anything. If your system
+typically boots to the X window system with a graphical login and desktop, you
+must both exit X and change your default runlevel.
+
+On most distributions, the default runlevel is stored in the file
+'/etc/inittab', although you may have to consult the guide for your own
+distribution. The line that indicates the default runlevel appears as
+
+    id:n:initdefault:
+
+or similar, where "n" indicates the number of the runlevel. '/etc/inittab'
+must be edited as root. Please read the sections on editing files and root
+user if you are unfamiliar with this concept. Also, it is recommended that you
+create a copy of the file prior to editing it, particularly if you are new to
+Linux text editors, in case you accidentally corrupt the file:
+
+    # cp /etc/inittab /etc/inittab.original
+
+The line should be edited such that an appropriate runlevel is the default (1,
+2, or 3 on most systems):
+
+    id:3:initdefault:
+
+After saving the changes, exit X. After the Driver installation is complete,
+you may revert the default runlevel to its original state, either by editing
+the '/etc/inittab' again or by moving your backup copy back to its original
+name.
+
+Different distributions provide different ways to exit X. On many systems, the
+'init' utility will change the current runlevel. This can be used to change to
+a runlevel in which X is not running.
+
+    # init 3
+
+There are other methods by which to exit X. Please consult your distribution.
+
+
+I9. LINUX MANUAL AND INFO PAGES
+
+System manual or info pages are usually installed during installation. These
+pages are typically up-to-date and generally contain a comprehensive listing
+of the use of programs and utilities on the system. Also, many programs
+include the --help option, which usually prints a list of common options for
+that program. To view the manual page for a command, enter
+
+    % man commandname
+
+at the command prompt, where commandname refers to the command in which you
+are interested. Similarly, entering
+
+    % info commandname
+
+will bring up the info page for the command. Depending on the application, one
+or the other may be more up-to-date. The interface for the info system is
+interactive and navigable. If you are unable to locate the man page for the
+command you are interested in, you may need to add additional elements to your
+'MANPATH' environment variable. See the section on environment variables.
+
+______________________________________________________________________________
+
+Appendix J. Application Profiles
+______________________________________________________________________________
+
+
+J1. INTRODUCTION
+
+The NVIDIA Linux driver supports configuring various driver settings on a
+per-process basis through the use of "application profiles": collections of
+settings that are only applied if the current process matches attributes
+detected by the driver when it is loaded into the process. This mechanism
+allows users to selectively override global driver settings for a particular
+application without the need to set environment variables on the command line
+prior to running the application.
+
+Application profiles consist of "rules" and "profiles". A "profile" defines
+what settings to use, and a "rule" identifies an application and defines what
+profile should be used with that application.
+
+A rule identifies an application by describing various features of the
+application; for example, the name of the application binary (e.g. "glxgears")
+or a shared library loaded into the application (e.g. "libpthread.so.0"). The
+particular features supported by this NVIDIA Linux implementation are listed
+below in the "Supported Features" section.
+
+Currently, application profiles are only supported by the NVIDIA Linux GLX
+implementation, but other NVIDIA driver components may use them in the future.
+
+Application profiles can be configured using the nvidia-settings control
+panel. To learn more, consult the online help text by clicking the "Help"
+button under the "Application Profiles" page in nvidia-settings.
+
+
+J2. ENABLING APPLICATION PROFILES IN THE OPENGL DRIVER
+
+Note: if HOME is unset, then any configuration files listed below located
+under $HOME will not be loaded by the driver.
+
+To enable application profile support globally on a system, edit the file
+$HOME/.nv/nvidia-application-profile-globals-rc to contain a JSON object with
+a member "enabled" set to true or false. For example, if this file contains
+the following string:
+
+{ "enabled" : true }
+
+application profiles will be enabled globally in the driver. If this file does
+not exist or cannot be read by the parser, application profiles will be
+enabled by default.
+
+Application profile support in the driver can be toggled for an individual
+application by using the __GL_APPLICATION_PROFILE environment variable.
+Setting this to 1 enables application profile support, and setting this to 0
+disables application profile support. If this environment variable is set,
+this overrides any setting specified in
+$HOME/.nv/nvidia-application-profile-globals-rc.
+
+Additionally, the application profile parser can log debugging information to
+stderr if the __GL_APPLICATION_PROFILE_LOG environment variable is set to 1.
+Conversely, setting __GL_APPLICATION_PROFILE_LOG to 0 disables logging of
+parse information to stderr.
+
+
+J3. APPLICATION PROFILE SEARCH PATH
+
+By default, when the driver component ("libGL.so.1" in the case of GLX) is
+loaded by a process, the driver looks for files in the following search path:
+
+   o '$HOME/.nv/nvidia-application-profiles-rc'
+
+   o '$HOME/.nv/nvidia-application-profiles-rc.d'
+
+   o '/etc/nvidia/nvidia-application-profiles-rc'
+
+   o '/etc/nvidia/nvidia-application-profiles-rc.d'
+
+   o '/usr/share/nvidia/nvidia-application-profiles-565.77-rc'
+
+By convention, the '*-rc.d' files are directories and the '*-rc' files are
+regular files, but the driver places no restrictions on file type, and any of
+the above files can be a directory or regular file, or a symbolic link which
+resolves to a directory or regular file. Files of other types (e.g. character
+or block devices, sockets, and named pipes) will be ignored.
+
+If a file in the search path is a directory, the parser will examine all
+regular files (or symbolic links which resolve to regular files) in that
+directory in alphanumeric order, as determined by strcoll(3). Files in the
+directory of other types (e.g. other directories, character or block devices,
+sockets, and named pipes) will be ignored.
+
+
+J4. CONFIGURATION FILE SYNTAX
+
+When application profiles are enabled in the driver, the driver configuration
+is defined by a set of PROFILES and RULES. Profiles are collections of driver
+settings given as key/value pairs, and rules are mappings between one or more
+PATTERNS which match against some feature of the process and a profile.
+
+Configuration files are written in a superset of JSON (http://www.json.org/)
+with the following additional features:
+
+   o A hash mark ('#') appearing outside of a JSON string denotes a comment,
+     and any text appearing between the hash mark and the end of the line
+     inclusively is ignored.
+
+   o Integers can be specified in base 8 or 16, in addition to base 10.
+     Numbers beginning with '0' and followed by a digit are interpreted to be
+     octal, and numbers beginning with '0' and followed by 'x' or 'X' are
+     interpreted to be hexadecimal.
+
+
+Each file consists of a root object with two optional members:
+
+   o "rules", which contains an array of rules, and
+
+   o "profiles", which contains an array of profiles.
+
+Each rule is an object with the following members:
+
+   o "pattern", which contains either a string, a pattern object, or an array
+     of zero or more pattern objects. If a string is given, it is interpreted
+     to be a pattern object with the "feature" member set to "procname" and
+     the "matches" member set to the value of the string. During application
+     detection, the driver determines if each pattern in the rule matches the
+     running process, and only applies the rule if all patterns in the rule
+     match. If an empty array is given, the rule is unconditionally applied.
+
+   o "profile", which contains either a string, array, or profile. If a string
+     is given, it is interpreted to be the name of some profile in the
+     configuration. If a profile is given, it is implicitly defined as part of
+     the rule. If an array is given, the array is interpreted to be an inline
+     profile with its "settings" member set to the contents of the array.
+
+Each profile is an object with the following members:
+
+   o "name", a string which names the profile for use in a rule. This member
+     is mandatory if the profile is specified as part of the root object's
+     profiles array, but optional if the profile is defined inline as part of
+     a rule.
+
+   o "settings", an array of settings which can be given in two different
+     formats:
+     
+       1. As an array of keys and values, e.g.
+          
+          [ "key1", "value1", "key2", 3.14159, "key3", 0xF00D ]
+          
+          Keys must be specified as strings, while a value may be a string,
+          number, or true/false.
+     
+       2. as an array of JSON setting objects.
+     
+     
+Each setting object contains the following members:
+
+   o "k" (or "key"), the key given as a string
+
+   o "v" (or "value"), the value, given as a string, number, or true/false.
+
+A pattern object may consist of a pattern primitive, or a logical operation on
+pattern objects. A pattern primitive is an object containing the following
+members:
+
+   o "feature", the feature to match the pattern against. Supported features
+     are listed in the "Supported Features" section below.
+
+   o "matches", the string to match.
+
+A pattern operation is an object containing the following members:
+
+   o "op", a string describing the logical operation to apply to the
+     subpatterns. Valid values are "and", "or", or "not".
+
+   o "sub": a pattern object or array of one or more pattern objects, to serve
+     as the operands. Note that the "not" operator expects exactly one object;
+     any other number of objects will cause the pattern to fail to match.
+
+If the pattern is an operation, then the pattern matches if and only if the
+logical operation applied to the subpatterns is true. For example,
+
+
+    {
+        "op" : "or",
+        "sub" : [ { "feature" : "procname", "matches" : "foo" },
+                  { "feature" : "procname", "matches" : "bar" } ]
+    }
+
+
+matches all processes with the name "foo" *or* "bar". Similarly,
+
+
+    {
+        "op" : "and",
+        "sub" : [ { "feature" : "procname", "matches" : "foo" },
+                  { "feature" : "dso", "matches" : "bar.so" } ]
+    }
+
+
+matches all processes with the name "foo" that load DSO "bar.so", and
+
+
+    {
+        "op" : "not",
+        "sub" : { "feature" : "procname", "matches" : "foo" }
+    }
+
+
+matches a process which is *not* named "foo". Nested operations are possible;
+for example:
+
+
+    {
+        "op" : "and",
+        "sub" : [
+            { "feature" : "dso", "matches" : "foo.so" },
+            { "op" : "not", "sub" : { "feature" : "procname", "matches" :
+"bar" } }
+         ]
+    }
+
+
+matches processes that are *not* named "bar" that load DSO "foo.so".
+
+
+J5. EXTENDED BACKUS-NAUR FORM (EBNF) GRAMMAR
+
+Note: this definition omits the presence of whitespace or comments, which can
+be inserted between any pair of symbols.
+
+This is written in an "EBNF-like" grammar based on ISO/IEC 14977, using the
+following (non-EBNF) extensions:
+
+   o object(A, B, ...) indicates that each symbol A, B, etc. must appear
+     exactly once in any order, delimited by commas and bracketed by curly
+     braces, unless the given symbol expands to an empty string.
+
+     For example, assuming A and B are nonempty symbols:
+     
+     object(A, B) ;
+     
+     is equivalent to:
+     
+     '{',  (A, ',', B) | (B, ',', A), '}' ;
+     
+     Also,
+     
+     object([A], [B]);
+     
+     is equivalent to:
+     
+     '{', [ A | B | (A, ',', B) | (B, ',', A) ], '}' ;
+     
+     
+   o attr(str, A) is shorthand for:
+     
+     ( '"str"' | "'str'" ), ':', A
+     
+     
+   o array(A) is shorthand for:
+     
+     '[', [ array_A ], ']'
+     
+     where array_A is defined as:
+     
+     array_A = (array_A, ',' A) | A
+     
+     
+The grammar follows.
+
+
+    config_file = object( [ attr(rules, array(rule)) ] ,
+                          [ attr(profiles, array(profile)) ] ) ;
+    rule = object(attr(pattern, pattern_object | array(pattern_object)),
+                  attr(profile, profile_ref)) ;
+    pattern_object = pattern_op | pattern_primitive ;
+    pattern_op = object(attr(op, string),
+                        attr(sub, pattern_object | array(pattern_object))) ;
+    pattern_primitive = object(attr(feature, string),
+                               attr(matches, string)) ;
+    profile_ref = string | settings | rule_profile ;
+    profile = object(attr(name, string),
+                     attr(settings,
+                          (array(setting_kv) | array(setting_obj)))) ;
+    rule_profile = object([ attr(name, string) ],
+                          attr(settings,
+                          (array(setting_kv) | array(setting_obj)))) ;
+    setting_kv = string ',' value ;
+    setting_obj = object(attr(k,string) | attr(key,string),
+                         attr(v,value) | attr(value,value)) ;
+    string = ? any valid json string ? ;
+    value = ? any valid json number ? | 'true' | 'false' |
+            hex_value | oct_value ;
+    hex_value = '0', ('x' | 'x'), hex_digit, { hex_digit } ;
+    oct_value = '0', oct_digit, { oct_digit } ;
+    hex_digit = ? any character in the range [0-9a-fA-F] ? ;
+    oct_digit = ? any character in the range [0-7] ? ;
+            
+
+
+
+J6. RULE PRECEDENCE
+
+Profiles may be specified in any order, and rules defined in files earlier in
+the search path may refer to profiles defined later in the search path.
+
+Rules are prioritized based on the order in which they are defined: each rule
+has precedence over rules defined after it in the same file, and rules defined
+in a file have precedence over rules defined in files that come after that
+file in the search path.
+
+For example, if there are two files A and B, such that A comes before B in the
+search path, with the following contents:
+
+
+    # File A
+    {
+        "rules" : [ { "pattern" : "foo",
+                      "profile" : [ "a", 1 ] },
+                    { "pattern" : "foo",
+                      "profile" : [ "a", 0, "b", 2 ] } ]
+    }
+
+    # File B
+    {
+        "rules" : [ { "pattern" : "foo",
+                      "profile" : [ "a", 0, "b", 0, "c", 3 ] } ]
+    }
+            
+
+and the driver is loaded into a process with the name "foo", it will apply the
+settings "a" = 1, "b" = 2, and "c" = 3.
+
+Settings specified via application profiles have higher precedence than global
+settings specified in nvidia-settings, but lower precedence than settings
+specified directly via environment variables.
+
+
+J7. CONFIGURATION FILE EXAMPLE
+
+The following is a sample configuration file which demonstrates the various
+ways one can specify application profiles and rules for different processes.
+
+
+    {
+    "rules" : [
+
+        # Define a rule with an inline profile, (implicitly) using
+        # feature "procname".
+        { "pattern" : "glxgears", "profile" : [ "GLSyncToVBlank", "1" ] },
+
+        # Define a rule with a named profile, (implicitly) using feature
+        # "procname".
+        { "pattern" : "gloss", "profile" : "p0" },
+
+        # Define a rule with a named profile, using feature "dso".
+        { "pattern" : { "feature" : "dso", "matches" : "libpthread.so.0" },
+          "profile" : "p1" },
+
+        # Define a rule with a named, inline profile, using feature "true";
+        # patterns using this feature will always match, and can be used
+        # to write catch-all rules.
+        { "pattern" : { "feature" : "true", "matches" : "" },
+          "profile" : { "name" : "p2",
+                        "settings" : [ "GLSyncToVBlank", 1 ] } },
+
+        # Define a rule with multiple patterns. This rule will only be
+        # applied if the current process is named "foo" and has loaded
+        # "bar.so".
+        { "pattern" : [ { "feature" : "procname", "matches" : "foo" },
+                        { "feature" : "dso", "matches" : "bar.so" } ],
+          "profile" : "p1" },
+
+        # Define a rule with no patterns. This rule will always be applied.
+        { "pattern" : [], "profile" : "p1" }
+
+    ],
+    "profiles" : [
+
+        # define a profile with settings defined in a key/value array
+        { "name" : "p0", "settings" : [ "GLSyncToVBlank", 0 ] },
+
+        # define a profile with settings defined in an array of setting
+        # objects
+        { "name" : "p1", "settings" : [ { "k" : "GLDoom3", "v" : false } ] }
+
+    ]
+    }
+        
+
+
+
+J8. SUPPORTED FEATURES
+
+This NVIDIA Linux driver supports detection of the following features:
+
+   o "true": patterns using this feature will always match, regardless of the
+     contents of the string provided by "matches".
+
+   o "procname": patterns using this feature compare the string provided by
+     "matches" against the pathname of the current process with the leading
+     directory components removed and match if they are equal.
+
+   o "commname": patterns using this feature compare the string provided by
+     "matches" against the commandname of the current process, as stored in
+     /proc/self/comm.
+
+   o "cmdline": patterns using this feature compare the string provided by
+     "matches" against the argument 0 of the command line for the current
+     process, as stored in /proc/self/cmdline (with leading directory
+     components removed, separated by slashes and backslashes).
+
+     This is useful for applications and games running through Wine. For
+     example "glxgears" would match a process started with "/usr/bin/glxgears"
+     or "notepad.exe" would match a process started with "wine
+     C:\Windows\notepad.exe".
+
+   o "dso": patterns using this feature compare the string provided by
+     "matches" against the list of currently loaded libraries in the current
+     process and match if the string matches one of the entries in the list
+     (with leading directory components removed).
+
+     Please note that application detection occurs when the driver component
+     ("libGL.so.1" in the case of GLX) is first loaded by a process, so a
+     pattern using this feature may fail to match if the library specified by
+     the pattern is loaded after the component is loaded. A potential
+     workaround for this on Linux is to set the LD_PRELOAD environment
+     variable (see ld-linux(8)) to include the component, as in the following
+     example:
+     
+     
+         LD_PRELOAD="libGL.so.1" glxgears
+     
+     
+     Note this defeats one of the objectives of application detection (namely
+     the need to set environment variables on the command line before running
+     the application), but this may be useful when there is a need to
+     frequently change driver settings for a particular application: one can
+     write a wrapper script to set LD_PRELOAD once, then modify the JSON
+     configuration repeatedly without needing to edit the wrapper script later
+     on.
+
+     Also note that the pattern matches against library names as they appear
+     in the maps file of that process (see proc(5)), and not the names of
+     symbolic links to these libraries.
+
+   o "findfile": patterns using this feature should provide a colon-separated
+     list of filenames in the "matches" argument. At runtime, the driver scans
+     the directory of the process executable and matches the pattern if every
+     file specified in this list is present in the same directory. Please note
+     there is currently no support for matching against files in other paths
+     than the process executable directory.
+
+
+
+J9. LIST OF SUPPORTED APPLICATION PROFILE SETTINGS
+
+The list of supported application profile settings and their equivalent
+environment variable names (if any) is as follows:
+
+   o "GLFSAAMode" : see __GL_FSAA_MODE
+
+   o "GLLogMaxAniso" : see __GL_LOG_MAX_ANISO
+
+   o "GLNoDsoFinalizer" : see __GL_NO_DSO_FINALIZER
+
+   o "GLSingleThreaded" : see __GL_SINGLE_THREADED
+
+   o "GLSyncDisplayDevice" : see __GL_SYNC_DISPLAY_DEVICE
+
+   o "GLSyncToVblank" : see __GL_SYNC_TO_VBLANK
+
+   o "GLSortFbconfigs" : see __GL_SORT_FBCONFIGS
+
+   o "GLAllowUnofficialProtocol" : see __GL_ALLOW_UNOFFICIAL_PROTOCOL
+
+   o "GLSELinuxBooleans" : see __GL_SELINUX_BOOLEANS
+
+   o "GLShaderDiskCache" : see __GL_SHADER_DISK_CACHE
+
+   o "GLShaderDiskCachePath" : see __GL_SHADER_DISK_CACHE_PATH
+
+   o "GLYield" : see __GL_YIELD
+
+   o "GLThreadedOptimizations" : see __GL_THREADED_OPTIMIZATIONS
+
+   o "GLDoom3" : see __GL_DOOM3
+
+   o "GLExtensionStringVersion" : see __GL_ExtensionStringVersion
+
+   o "GLConformantBlitFramebufferScissor" : see
+     __GL_ConformantBlitFramebufferScissor
+
+   o "GLAllowFXAAUsage" : see __GL_ALLOW_FXAA_USAGE
+
+   o "GLVRRAllowed" : see __GL_VRR_ALLOWED
+
+   o "GLWriteTextSection" : see __GL_WRITE_TEXT_SECTION
+
+   o "GLIgnoreGLSLExtReqs" : see __GL_IGNORE_GLSL_EXT_REQS
+
+   o "EGLVisibleDGPUDevices"
+
+     On a multi-device system, this option can be used to make EGL ignore
+     certain devices. This setting takes a 32-bit mask encoding a whitelist of
+     visible devices. The bit position matches the minor number of the device
+     to make visible.
+
+     For instance, the profile
+     
+     
+         {
+             "rules" : [
+                 { "pattern" : [],
+                   "profile" : [ "EGLVisibleDGPUDevices", 0x00000002 ] }
+             ]
+         }
+                     
+     
+     would only make the device with minor number 1 visible (i.e.
+     /dev/nvidia1).
+
+   o "EGLVisibleTegraDevices" : Same semantics as EGLVisibleDGPUDevices
+
+   o "GLShowGraphicsOSD" : see __GL_SHOW_GRAPHICS_OSD
+
+   o "GLSharpenEnable" : see __GL_SHARPEN_ENABLE
+
+   o "GLSharpenValue" : see __GL_SHARPEN_VALUE
+
+   o "GLSharpenIgnoreFilmGrain" : see __GL_SHARPEN_IGNORE_FILM_GRAIN
+
+
+______________________________________________________________________________
+
+Appendix K. GPU Names
+______________________________________________________________________________
+
+Many X configuration options that take a display device name can also be
+qualified with a GPU. This is done by prepending one of the GPU's names to the
+display device name. For example, the "MetaModes" X configuration option can
+be used to enable display devices from multiple GPUs in SLI Mosaic or Base
+Mosaic configurations:
+
+    Option "MetaModes" "1280x1024 +0+0, 1280x1024 +1280+0"
+
+You can use a display device name qualifier along with a GPU qualifier to
+configure which display should be picked and from which GPU. E.g.,
+
+    Option "MetaModes" "GPU-1.DFP-0:1280x1024 +0+0, GPU-0.DFP-0:1280x1024
++1280+0"
+
+
+Other X configuration options that support GPU names include:
+
+
+   o ColorRange
+
+   o ColorSpace
+
+   o ConnectedMonitor
+
+   o CustomEDID
+
+   o FlatPanelProperties
+
+   o IgnoreEDIDChecksum
+
+   o ModeValidation
+
+   o nvidiaXineramaInfoOrder
+
+   o UseDisplayDevice
+
+   o UseEdidFreqs
+
+
+The description of each X configuration option in Appendix B provides more
+detail on the available syntax for each option.
+
+To find all available names for your configuration, start the X server with
+verbose logging enabled (e.g., `startx -- -logverbose 5`, or enable the
+"ModeDebug" X configuration option with `nvidia-xconfig --mode-debug` and
+restart the X server).
+
+The X log (normally /var/log/Xorg.0.log) will contain information regarding
+each GPU. E.g.,
+
+(II) NVIDIA(0): NVIDIA GPU NVS 510 (GK107) at PCI:15:0:0 (GPU-0)
+(II) NVIDIA(0): VERBOSE: GPU UUID: GPU-758a4cf7-0761-62c7-9bf7-c7d950b817c6
+
+
+
+Alternatively, nvidia-xconfig can be used to query the GPU names:
+`nvidia-xconfig --query-gpu-info` 
+
+GPU #0:
+  Name      : NVS 510
+  UUID      : GPU-758a4cf7-0761-62c7-9bf7-c7d950b817c6
+  PCI BusID : PCI:3:0:0
+
+
+
+Each name has different properties that may affect which name is appropriate
+to use. The possible names are:
+
+
+   o An NV-CONTROL target ID-based name (e.g., "GPU-0"). The NVIDIA X driver
+     will assign a unique ID to each GPU on the entire X server. These IDs are
+     not guaranteed to be persistent from one run of the X server to the next,
+     so is likely not convenient for X configuration file use. It is more
+     frequently used in communication with NV-CONTROL clients such as
+     nvidia-settings.
+
+   o An UUID-based name (e.g., "GPU-758a4cf7-0761-62c7-9bf7-c7d950b817c6").
+     This name is a SHA-1 hash, formatted in canonical UUID 8-4-4-4-12 format.
+     This UUID is unique for each physical GPU, and will be the same
+     regardless of where the GPU is connected.
+
+
+______________________________________________________________________________
+
+Appendix L. Wayland Known Issues
+______________________________________________________________________________
+
+
+L1. OVERVIEW
+
+There are several areas in which the NVIDIA driver lacks feature parity
+between X11 and Wayland. These may be due to limitations of the driver itself,
+the Wayland protocol, or the specific Wayland compositor in use. Over time
+this list is expected to shorten as missing functionality is implemented both
+in the driver and in upstream components, but the following captures the
+situation as of the release of this driver version. Note that this assumes a
+compositor with reasonably complete support for graphics-related Wayland
+protocol extensions.
+
+
+L2. NVIDIA DRIVER LIMITATIONS
+
+
+   o Wayland compositors may not be designed to handle the case where two DRM
+     drivers instantiate independent device nodes capable of driving the same
+     display. When the nvidia-drm driver does not remove conflicting
+     framebuffers and instantiate its own DRM fbdev support, simpledrm will
+     remain present for driving the initial framebuffer console if initially
+     loaded. In this situation, both simpledrm and nvidia-drm have DRI device
+     nodes driving the same display. This can lead to issues such as a black
+     screen, corruption, or flickering. A workaround for this is to set the
+     fbdev=1 module parameter for the nvidia-drm kernel module.
+
+   o The NvFBC desktop capture library does not have native Wayland support
+     and does not work with Xwayland.
+
+   o The nvidia-drm module does support the DEGAMMA_LUT, CTM, and GAMMA_LUT
+     CRTC properties. However the COLOR_ENCODING and COLOR_RANGE plane
+     properties are unsupported. This may impact some advanced compositor
+     features related to color correction.
+
+   o The nvidia-settings configuration tool has limited functionality on
+     Wayland.
+
+   o Front-buffer rendering in GLX does not work with Xwayland.
+
+   o Explicit Sync refers to using DRM Syncobj timeline synchronization points
+     to explicitly signal ownership transfers of shared buffers to and from
+     the compositor. Explicit Sync support requires a kernel that contains the
+     following two commits, which fix bugs preventing Explicit Sync from
+     working correctly. These are present in 6.8.x or newer kernels.
+
+
+   o "drm/syncobj: fix DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE" with commit hash
+     101c9f637efa1655f55876644d4439e552267527.
+
+   o "drm/syncobj: handle NULL fence in syncobj_eventfd_entry_func" with
+     commit hash 2aa6f5b0fd052e363bb9d4b547189f0bf6b3d6d3.
+
+
+
+
+L3. WAYLAND PROTOCOL OR COMPOSITOR LIMITATIONS
+
+
+   o The following workstation features are not supported by any Wayland
+     compositors or the Wayland protocol. They will also likely require new
+     EGL extensions or other means to expose the related hardware
+     functionality. Features followed by an asterisk (*) are supported with
+     VK_KHR_display.
+
+
+   o SLI Mosaic (Chapter 31)
+
+   o Frame Lock and Genlock (Chapter 32)*
+
+   o Swap Groups*
+
+   o Advanced display pipeline features including warp and blend, pixel shift,
+     and emulated YUV420.
+
+   o Stereo rendering*
+
+
+   o There is no established public API through which Wayland compositors can
+     power off video memory via RTD3 (Chapter 22).
+
+   o Display multiplexers (muxes) are typically used in laptops with both
+     integrated and discrete GPUs to provide a direct connection between the
+     discrete GPU and the built-in display (internal mux) or an external
+     display (external mux). On X11, the display mux can be automatically
+     switched when a full-screen application is running on the discrete GPU,
+     enabling enhanced display features and improved performance, but no
+     Wayland compositors currently support this functionality.
+
+   o Indirect GLX is not supported by Xwayland.
+
+   o Hardware overlays cannot be used by GLX applications with Xwayland.
+
+
